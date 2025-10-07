@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#6366f1">
     <title>Shop Smart</title>
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU2hvcCBTbWFydCIsInNob3J0X25hbWUiOiJTaG9wU21hcnQiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2ZmZmZmZiIsInRoZW1lX2NvbG9yIjoiIzYzNjZmMSJ9">
     <style>
         * {
             margin: 0;
@@ -40,11 +39,6 @@
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
-        }
-
-        .icon-sm {
-            width: 20px;
-            height: 20px;
         }
 
         body {
@@ -149,12 +143,6 @@
             border-radius: 0 0 3px 3px;
         }
 
-        .nav-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         .container {
             padding: 20px;
             max-width: 100%;
@@ -217,11 +205,6 @@
         .badge-success {
             background: var(--success);
             color: white;
-        }
-
-        .badge-secondary {
-            background: var(--gray-100);
-            color: var(--gray-700);
         }
 
         .btn {
@@ -535,10 +518,6 @@
             transition: all 0.2s;
         }
 
-        .store-item:hover {
-            border-color: var(--primary);
-        }
-
         .store-info {
             flex: 1;
             cursor: pointer;
@@ -706,16 +685,13 @@
         const initDB = () => {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open(DB_NAME, DB_VERSION);
-
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
                     db = request.result;
                     resolve(db);
                 };
-
                 request.onupgradeneeded = (e) => {
                     db = e.target.result;
-
                     if (!db.objectStoreNames.contains('stores')) {
                         db.createObjectStore('stores', { keyPath: 'id', autoIncrement: true });
                     }
@@ -743,6 +719,42 @@
                 return new Promise((resolve, reject) => {
                     const transaction = db.transaction([storeName], 'readwrite');
                     const store = transaction.objectStore(storeName);
+                    const request = store.add(data);
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            },
+            getAll: (storeName) => {
+                return new Promise((resolve, reject) => {
+                    const transaction = db.transaction([storeName], 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.getAll();
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            },
+            get: (storeName, id) => {
+                return new Promise((resolve, reject) => {
+                    const transaction = db.transaction([storeName], 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.get(id);
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            },
+            update: (storeName, data) => {
+                return new Promise((resolve, reject) => {
+                    const transaction = db.transaction([storeName], 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.put(data);
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            },
+            delete: (storeName, id) => {
+                return new Promise((resolve, reject) => {
+                    const transaction = db.transaction([storeName], 'readwrite');
+                    const store = transaction.objectStore(storeName);
                     const request = store.delete(id);
                     request.onsuccess = () => resolve();
                     request.onerror = () => reject(request.error);
@@ -760,15 +772,8 @@
             }
         };
 
-        const DEFAULT_STORE_CATEGORIES = [
-            'Grocery Store', 'Hardware Store', 'Pharmacy', 'Electronics Store', 
-            'Pet Store', 'Department Store', 'Other'
-        ];
-
-        const DEFAULT_ITEM_CATEGORIES = [
-            'Produce', 'Dairy', 'Meat', 'Bakery', 'Frozen', 'Pantry', 
-            'Beverages', 'Snacks', 'Household', 'Personal Care', 'Other'
-        ];
+        const DEFAULT_STORE_CATEGORIES = ['Grocery Store', 'Hardware Store', 'Pharmacy', 'Electronics Store', 'Pet Store', 'Department Store', 'Other'];
+        const DEFAULT_ITEM_CATEGORIES = ['Produce', 'Dairy', 'Meat', 'Bakery', 'Frozen', 'Pantry', 'Beverages', 'Snacks', 'Household', 'Personal Care', 'Other'];
 
         let currentPage = 'home';
         let currentStore = null;
@@ -796,7 +801,6 @@
             const fab = document.getElementById('fab');
             const headerTitle = document.getElementById('headerTitle');
             const headerAction = document.getElementById('headerAction');
-
             headerAction.classList.add('hidden');
             fab.classList.add('hidden');
 
@@ -843,155 +847,70 @@
         const renderHome = async (container) => {
             const lists = await dbOps.getAll('lists');
             const openLists = lists.filter(l => l.status === 'open');
-
             if (openLists.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">${icons.cart}</div>
-                        <div class="empty-state-text">No active shopping lists<br>Tap + to create one</div>
-                    </div>
-                `;
+                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">No active shopping lists<br>Tap + to create one</div></div>`;
                 return;
             }
-
             let html = '';
             for (const list of openLists) {
                 const store = await dbOps.get('stores', list.storeId);
                 const items = await dbOps.getByIndex('listItems', 'listId', list.id);
                 const checkedCount = items.filter(i => i.checked).length;
-
-                html += `
-                    <div class="card" onclick="openList(${list.id})">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">${store.name}</div>
-                                <div class="card-subtitle">${icons.tag} ${store.category}</div>
-                            </div>
-                            <span class="badge badge-primary">${icons.checkCircle} ${checkedCount}/${items.length}</span>
-                        </div>
-                        <div class="card-subtitle" style="margin-top: 8px;">${icons.clock} ${formatDate(list.createdAt)}</div>
-                    </div>
-                `;
+                html += `<div class="card" onclick="openList(${list.id})"><div class="card-header"><div><div class="card-title">${store.name}</div><div class="card-subtitle">${icons.tag} ${store.category}</div></div><span class="badge badge-primary">${icons.checkCircle} ${checkedCount}/${items.length}</span></div><div class="card-subtitle" style="margin-top: 8px;">${icons.clock} ${formatDate(list.createdAt)}</div></div>`;
             }
-
             container.innerHTML = html;
         };
 
         const renderStores = async (container) => {
             const stores = await dbOps.getAll('stores');
-
             if (stores.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">${icons.store}</div>
-                        <div class="empty-state-text">No stores yet<br>Tap + to add one</div>
-                    </div>
-                `;
+                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.store}</div><div class="empty-state-text">No stores yet<br>Tap + to add one</div></div>`;
                 return;
             }
-
             let html = '';
             for (const store of stores) {
                 const items = await dbOps.getByIndex('items', 'storeId', store.id);
-                html += `
-                    <div class="store-item">
-                        <div class="store-info" onclick="viewStoreItems(${store.id})">
-                            <div class="store-name">${store.name}</div>
-                            <div class="store-category">${icons.tag} ${store.category} • ${items.length} items</div>
-                        </div>
-                        <div class="store-actions">
-                            <button class="icon-btn" onclick="editStore(${store.id})">${icons.edit}</button>
-                            <button class="icon-btn danger" onclick="deleteStore(${store.id})">${icons.trash}</button>
-                        </div>
-                    </div>
-                `;
+                html += `<div class="store-item"><div class="store-info" onclick="viewStoreItems(${store.id})"><div class="store-name">${store.name}</div><div class="store-category">${icons.tag} ${store.category} • ${items.length} items</div></div><div class="store-actions"><button class="icon-btn" onclick="editStore(${store.id})">${icons.edit}</button><button class="icon-btn danger" onclick="deleteStore(${store.id})">${icons.trash}</button></div></div>`;
             }
-
             container.innerHTML = html;
         };
 
         const renderHistory = async (container) => {
             const lists = await dbOps.getAll('lists');
-            const completedLists = lists.filter(l => l.status === 'completed').sort((a, b) => 
-                new Date(b.completedAt) - new Date(a.completedAt)
-            );
-
+            const completedLists = lists.filter(l => l.status === 'completed').sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
             if (completedLists.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">${icons.list}</div>
-                        <div class="empty-state-text">No completed lists yet</div>
-                    </div>
-                `;
+                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.list}</div><div class="empty-state-text">No completed lists yet</div></div>`;
                 return;
             }
-
             let html = '';
             for (const list of completedLists) {
                 const store = await dbOps.get('stores', list.storeId);
                 const items = await dbOps.getByIndex('listItems', 'listId', list.id);
                 const total = items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
-
-                html += `
-                    <div class="card" onclick="viewCompletedList(${list.id})">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">${store.name}</div>
-                                <div class="card-subtitle">${icons.clock} ${formatDateTime(list.completedAt)}</div>
-                            </div>
-                            <span class="badge badge-success">${icons.check} ${items.length}</span>
-                        </div>
-                        ${total > 0 ? `<div class="card-subtitle" style="margin-top: 8px; font-weight: 700; color: var(--primary);">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}
-                    </div>
-                `;
+                html += `<div class="card" onclick="viewCompletedList(${list.id})"><div class="card-header"><div><div class="card-title">${store.name}</div><div class="card-subtitle">${icons.clock} ${formatDateTime(list.completedAt)}</div></div><span class="badge badge-success">${icons.check} ${items.length}</span></div>${total > 0 ? `<div class="card-subtitle" style="margin-top: 8px; font-weight: 700; color: var(--primary);">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}</div>`;
             }
-
             container.innerHTML = html;
         };
 
         const renderStoreItems = async (container) => {
             const items = await dbOps.getByIndex('items', 'storeId', currentStore);
-
             if (items.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">${icons.box}</div>
-                        <div class="empty-state-text">No items in this store<br>Tap + to add items</div>
-                    </div>
-                `;
+                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.box}</div><div class="empty-state-text">No items in this store<br>Tap + to add items</div></div>`;
                 return;
             }
-
             const itemsByCategory = {};
             items.forEach(item => {
-                if (!itemsByCategory[item.category]) {
-                    itemsByCategory[item.category] = [];
-                }
+                if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
                 itemsByCategory[item.category].push(item);
             });
-
             let html = '';
             for (const category in itemsByCategory) {
-                html += `
-                    <div class="category-section">
-                        <div class="category-header">${category}</div>
-                `;
+                html += `<div class="category-section"><div class="category-header">${category}</div>`;
                 itemsByCategory[category].forEach(item => {
-                    html += `
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-name">${item.name}</div>
-                            </div>
-                            <div class="store-actions">
-                                <button class="icon-btn" onclick="editItem(${item.id})">${icons.edit}</button>
-                                <button class="icon-btn danger" onclick="deleteItem(${item.id})">${icons.trash}</button>
-                            </div>
-                        </div>
-                    `;
+                    html += `<div class="list-item"><div class="list-item-content"><div class="list-item-name">${item.name}</div></div><div class="store-actions"><button class="icon-btn" onclick="editItem(${item.id})">${icons.edit}</button><button class="icon-btn danger" onclick="deleteItem(${item.id})">${icons.trash}</button></div></div>`;
                 });
                 html += `</div>`;
             }
-
             container.innerHTML = html;
         };
 
@@ -1000,109 +919,41 @@
             const store = await dbOps.get('stores', list.storeId);
             const listItems = await dbOps.getByIndex('listItems', 'listId', currentList);
             const storeItems = await dbOps.getByIndex('items', 'storeId', store.id);
-            
-            const itemsWithDetails = await Promise.all(
-                listItems.map(async li => {
-                    const item = await dbOps.get('items', li.itemId);
-                    return { ...li, itemName: item.name, category: item.category };
-                })
-            );
-
+            const itemsWithDetails = await Promise.all(listItems.map(async li => {
+                const item = await dbOps.get('items', li.itemId);
+                return { ...li, itemName: item.name, category: item.category };
+            }));
             const checkedCount = itemsWithDetails.filter(i => i.checked).length;
             const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
-
             const existingItemIds = listItems.map(li => li.itemId);
             const availableItems = storeItems.filter(item => !existingItemIds.includes(item.id));
 
-            let html = `
-                <div class="shopping-header">
-                    <div class="shopping-store-name">${icons.store} ${store.name}</div>
-                    <div class="shopping-stats">
-                        <span class="shopping-stat">${icons.checkCircle} ${checkedCount}/${itemsWithDetails.length}</span>
-                        ${total > 0 ? `<span class="shopping-stat">${icons.dollarSign} ${total.toFixed(2)}</span>` : ''}
-                    </div>
-                </div>
-
-                <div class="quick-add-form">
-                    <form onsubmit="return quickAddItem(event)" id="quickAddForm" style="margin: 0;">
-                        <div class="quick-add-input">
-                            <input 
-                                type="text" 
-                                class="form-input" 
-                                id="quickAddItem" 
-                                list="quickItemsList" 
-                                placeholder="Add item..." 
-                                autocomplete="off"
-                                style="margin: 0;">
-                            <datalist id="quickItemsList">
-                                ${availableItems.map(item => `<option value="${item.name}">${item.name} (${item.category})</option>`).join('')}
-                            </datalist>
-                            <button type="submit" class="quick-add-btn">${icons.plus} Add</button>
-                        </div>
-                    </form>
-                </div>
-            `;
+            let html = `<div class="shopping-header"><div class="shopping-store-name">${icons.store} ${store.name}</div><div class="shopping-stats"><span class="shopping-stat">${icons.checkCircle} ${checkedCount}/${itemsWithDetails.length}</span>${total > 0 ? `<span class="shopping-stat">${icons.dollarSign} ${total.toFixed(2)}</span>` : ''}</div></div><div class="quick-add-form"><form onsubmit="return quickAddItem(event)" style="margin: 0;"><div class="quick-add-input"><input type="text" class="form-input" id="quickAddItem" list="quickItemsList" placeholder="Add item..." autocomplete="off" style="margin: 0;"><datalist id="quickItemsList">${availableItems.map(item => `<option value="${item.name}">${item.name} (${item.category})</option>`).join('')}</datalist><button type="submit" class="quick-add-btn">${icons.plus} Add</button></div></form></div>`;
 
             if (itemsWithDetails.length === 0) {
-                html += `
-                    <div class="empty-state" style="padding: 40px 20px;">
-                        <div class="empty-state-icon">${icons.cart}</div>
-                        <div class="empty-state-text">Your list is empty<br>Add items above to get started</div>
-                    </div>
-                `;
+                html += `<div class="empty-state" style="padding: 40px 20px;"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">Your list is empty<br>Add items above to get started</div></div>`;
             } else {
                 const itemsByCategory = {};
                 itemsWithDetails.forEach(item => {
-                    if (!itemsByCategory[item.category]) {
-                        itemsByCategory[item.category] = [];
-                    }
+                    if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
                     itemsByCategory[item.category].push(item);
                 });
-
                 for (const category in itemsByCategory) {
-                    html += `
-                        <div class="category-section">
-                            <div class="category-header">${category}</div>
-                    `;
+                    html += `<div class="category-section"><div class="category-header">${category}</div>`;
                     itemsByCategory[category].forEach(item => {
-                        html += `
-                            <div class="list-item ${item.checked ? 'checked' : ''}" onclick="toggleItem(${item.id})">
-                                <div class="checkbox ${item.checked ? 'checked' : ''}">
-                                    ${item.checked ? icons.check : ''}
-                                </div>
-                                <div class="list-item-content">
-                                    <div class="list-item-name">${item.itemName}</div>
-                                    ${item.price ? `<div class="list-item-category">${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}</div>` : ''}
-                                </div>
-                                <button class="icon-btn" onclick="event.stopPropagation(); editListItemPrice(${item.id})">${icons.dollarSign}</button>
-                            </div>
-                        `;
+                        html += `<div class="list-item ${item.checked ? 'checked' : ''}" onclick="toggleItem(${item.id})"><div class="checkbox ${item.checked ? 'checked' : ''}">${item.checked ? icons.check : ''}</div><div class="list-item-content"><div class="list-item-name">${item.itemName}</div>${item.price ? `<div class="list-item-category">${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}</div>` : ''}</div><button class="icon-btn" onclick="event.stopPropagation(); editListItemPrice(${item.id})">${icons.dollarSign}</button></div>`;
                     });
                     html += `</div>`;
                 }
             }
-
-            html += `
-                <div style="margin-top: 24px;">
-                    <button class="btn btn-success" onclick="completeList()">${icons.check} Complete Shopping</button>
-                </div>
-            `;
-
+            html += `<div style="margin-top: 24px;"><button class="btn btn-success" onclick="completeList()">${icons.check} Complete Shopping</button></div>`;
             container.innerHTML = html;
         };
 
         const showModal = (title, content) => {
             const modal = document.getElementById('modal');
             const modalContent = document.getElementById('modalContent');
-            
-            modalContent.innerHTML = `
-                <div class="modal-header">
-                    <div class="modal-title">${title}</div>
-                    <button class="close-btn" onclick="closeModal()">×</button>
-                </div>
-                ${content}
-            `;
-            
+            modalContent.innerHTML = `<div class="modal-header"><div class="modal-title">${title}</div><button class="close-btn" onclick="closeModal()">×</button></div>${content}`;
             modal.classList.add('active');
         };
 
@@ -1111,21 +962,7 @@
         };
 
         const showCreateStoreModal = () => {
-            const content = `
-                <form onsubmit="createStore(event)">
-                    <div class="form-group">
-                        <label class="form-label">Store Name</label>
-                        <input type="text" class="form-input" id="storeName" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select class="form-select" id="storeCategory" required>
-                            ${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create Store</button>
-                </form>
-            `;
+            const content = `<form onsubmit="createStore(event)"><div class="form-group"><label class="form-label">Store Name</label><input type="text" class="form-input" id="storeName" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="storeCategory" required>${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}">${cat}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Create Store</button></form>`;
             showModal('New Store', content);
         };
 
@@ -1133,51 +970,18 @@
             const stores = await dbOps.getAll('stores');
             const lists = await dbOps.getAll('lists');
             const openLists = lists.filter(l => l.status === 'open');
-            
-            const availableStores = stores.filter(store => 
-                !openLists.some(list => list.storeId === store.id)
-            );
-
+            const availableStores = stores.filter(store => !openLists.some(list => list.storeId === store.id));
             if (availableStores.length === 0) {
-                showModal('No Stores Available', `
-                    <p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p>
-                    <button class="btn btn-secondary" onclick="closeModal()">OK</button>
-                `);
+                showModal('No Stores Available', `<p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p><button class="btn btn-secondary" onclick="closeModal()">OK</button>`);
                 return;
             }
-
-            const content = `
-                <form onsubmit="createList(event)">
-                    <div class="form-group">
-                        <label class="form-label">Select Store</label>
-                        <select class="form-select" id="listStore" required>
-                            <option value="">Choose a store...</option>
-                            ${availableStores.map(store => `<option value="${store.id}">${store.name}</option>`).join('')}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create List</button>
-                </form>
-            `;
+            const content = `<form onsubmit="createList(event)"><div class="form-group"><label class="form-label">Select Store</label><select class="form-select" id="listStore" required><option value="">Choose a store...</option>${availableStores.map(store => `<option value="${store.id}">${store.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Create List</button></form>`;
             showModal('New Shopping List', content);
         };
 
         const showAddItemModal = async () => {
             const categories = await dbOps.getAll('categories');
-            const content = `
-                <form onsubmit="addItemToStore(event)">
-                    <div class="form-group">
-                        <label class="form-label">Item Name</label>
-                        <input type="text" class="form-input" id="itemName" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select class="form-select" id="itemCategory" required>
-                            ${categories.map(cat => `<option value="${cat.name}">${cat.name}</option>`).join('')}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Item</button>
-                </form>
-            `;
+            const content = `<form onsubmit="addItemToStore(event)"><div class="form-group"><label class="form-label">Item Name</label><input type="text" class="form-input" id="itemName" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="itemCategory" required>${categories.map(cat => `<option value="${cat.name}">${cat.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Add Item</button></form>`;
             showModal('Add Item', content);
         };
 
@@ -1185,35 +989,21 @@
             e.preventDefault();
             const searchValue = document.getElementById('quickAddItem').value.trim();
             if (!searchValue) return false;
-            
             const list = await dbOps.get('lists', currentList);
             const items = await dbOps.getByIndex('items', 'storeId', list.storeId);
             const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
-            
             let itemId;
             if (existingItem) {
                 itemId = existingItem.id;
             } else {
                 const categories = await dbOps.getAll('categories');
-                itemId = await dbOps.add('items', {
-                    storeId: list.storeId,
-                    name: searchValue,
-                    category: categories[0].name
-                });
+                itemId = await dbOps.add('items', { storeId: list.storeId, name: searchValue, category: categories[0].name });
             }
-            
             const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
             const alreadyInList = existingListItems.some(li => li.itemId === itemId);
-            
             if (!alreadyInList) {
-                await dbOps.add('listItems', {
-                    listId: currentList,
-                    itemId: itemId,
-                    checked: false,
-                    price: null
-                });
+                await dbOps.add('listItems', { listId: currentList, itemId: itemId, checked: false, price: null });
             }
-            
             document.getElementById('quickAddItem').value = '';
             renderPage();
             return false;
@@ -1222,19 +1012,7 @@
         window.editListItemPrice = async (listItemId) => {
             const listItem = await dbOps.get('listItems', listItemId);
             const item = await dbOps.get('items', listItem.itemId);
-            
-            const content = `
-                <form onsubmit="updateListItemPrice(event, ${listItemId})">
-                    <div class="form-group">
-                        <label class="form-label">${item.name}</label>
-                        <input type="number" step="0.01" class="form-input" id="itemPrice" value="${listItem.price || ''}" placeholder="0.00">
-                    </div>
-                    <div class="btn-row">
-                        <button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">${icons.trash} Delete</button>
-                        <button type="submit" class="btn btn-primary">${icons.check} Save</button>
-                    </div>
-                </form>
-            `;
+            const content = `<form onsubmit="updateListItemPrice(event, ${listItemId})"><div class="form-group"><label class="form-label">${item.name}</label><input type="number" step="0.01" class="form-input" id="itemPrice" value="${listItem.price || ''}" placeholder="0.00"></div><div class="btn-row"><button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">${icons.trash} Delete</button><button type="submit" class="btn btn-primary">${icons.check} Save</button></div></form>`;
             showModal('Update Price', content);
         };
 
@@ -1242,51 +1020,24 @@
             const list = await dbOps.get('lists', listId);
             const store = await dbOps.get('stores', list.storeId);
             const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
-            
-            const itemsWithDetails = await Promise.all(
-                listItems.map(async li => {
-                    const item = await dbOps.get('items', li.itemId);
-                    return { ...li, itemName: item.name, category: item.category };
-                })
-            );
-
+            const itemsWithDetails = await Promise.all(listItems.map(async li => {
+                const item = await dbOps.get('items', li.itemId);
+                return { ...li, itemName: item.name, category: item.category };
+            }));
             const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
-
             const itemsByCategory = {};
             itemsWithDetails.forEach(item => {
-                if (!itemsByCategory[item.category]) {
-                    itemsByCategory[item.category] = [];
-                }
+                if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
                 itemsByCategory[item.category].push(item);
             });
-
             let itemsHtml = '';
             for (const category in itemsByCategory) {
                 itemsHtml += `<div class="category-header">${category}</div>`;
                 itemsByCategory[category].forEach(item => {
-                    itemsHtml += `
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-name">${item.itemName}</div>
-                            </div>
-                            ${item.price ? `<div class="list-item-price">${parseFloat(item.price).toFixed(2)}</div>` : ''}
-                        </div>
-                    `;
+                    itemsHtml += `<div class="list-item"><div class="list-item-content"><div class="list-item-name">${item.itemName}</div></div>${item.price ? `<div class="list-item-price">${parseFloat(item.price).toFixed(2)}</div>` : ''}</div>`;
                 });
             }
-
-            const content = `
-                <div style="margin-bottom: 20px;">
-                    <div style="font-weight: 600; color: var(--gray-700); margin-bottom: 4px;">${icons.store} ${store.name}</div>
-                    <div style="font-size: 14px; color: var(--gray-600); display: flex; align-items: center; gap: 4px;">${icons.clock} ${formatDateTime(list.completedAt)}</div>
-                    ${total > 0 ? `<div style="font-size: 20px; font-weight: 700; color: var(--primary); margin-top: 12px; display: flex; align-items: center; gap: 6px;">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}
-                </div>
-                ${itemsHtml}
-                <div class="btn-row" style="margin-top: 24px;">
-                    <button class="btn btn-danger" onclick="deleteList(${listId})">${icons.trash} Delete List</button>
-                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
-                </div>
-            `;
+            const content = `<div style="margin-bottom: 20px;"><div style="font-weight: 600; color: var(--gray-700); margin-bottom: 4px;">${icons.store} ${store.name}</div><div style="font-size: 14px; color: var(--gray-600); display: flex; align-items: center; gap: 4px;">${icons.clock} ${formatDateTime(list.completedAt)}</div>${total > 0 ? `<div style="font-size: 20px; font-weight: 700; color: var(--primary); margin-top: 12px; display: flex; align-items: center; gap: 6px;">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}</div>${itemsHtml}<div class="btn-row" style="margin-top: 24px;"><button class="btn btn-danger" onclick="deleteList(${listId})">${icons.trash} Delete List</button><button class="btn btn-secondary" onclick="closeModal()">Close</button></div>`;
             showModal('Shopping List', content);
         };
 
@@ -1294,7 +1045,6 @@
             e.preventDefault();
             const name = document.getElementById('storeName').value;
             const category = document.getElementById('storeCategory').value;
-            
             await dbOps.add('stores', { name, category });
             closeModal();
             renderPage();
@@ -1302,23 +1052,7 @@
 
         window.editStore = async (storeId) => {
             const store = await dbOps.get('stores', storeId);
-            const content = `
-                <form onsubmit="updateStore(event, ${storeId})">
-                    <div class="form-group">
-                        <label class="form-label">Store Name</label>
-                        <input type="text" class="form-input" id="storeName" value="${store.name}" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select class="form-select" id="storeCategory" required>
-                            ${DEFAULT_STORE_CATEGORIES.map(cat => 
-                                `<option value="${cat}" ${cat === store.category ? 'selected' : ''}>${cat}</option>`
-                            ).join('')}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update Store</button>
-                </form>
-            `;
+            const content = `<form onsubmit="updateStore(event, ${storeId})"><div class="form-group"><label class="form-label">Store Name</label><input type="text" class="form-input" id="storeName" value="${store.name}" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="storeCategory" required>${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}" ${cat === store.category ? 'selected' : ''}>${cat}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Update Store</button></form>`;
             showModal('Edit Store', content);
         };
 
@@ -1326,7 +1060,6 @@
             e.preventDefault();
             const name = document.getElementById('storeName').value;
             const category = document.getElementById('storeCategory').value;
-            
             await dbOps.update('stores', { id: storeId, name, category });
             closeModal();
             renderPage();
@@ -1335,19 +1068,13 @@
         window.deleteStore = async (storeId) => {
             if (confirm('Delete this store? All items and lists will be removed.')) {
                 const items = await dbOps.getByIndex('items', 'storeId', storeId);
-                for (const item of items) {
-                    await dbOps.delete('items', item.id);
-                }
-                
+                for (const item of items) await dbOps.delete('items', item.id);
                 const lists = await dbOps.getByIndex('lists', 'storeId', storeId);
                 for (const list of lists) {
                     const listItems = await dbOps.getByIndex('listItems', 'listId', list.id);
-                    for (const li of listItems) {
-                        await dbOps.delete('listItems', li.id);
-                    }
+                    for (const li of listItems) await dbOps.delete('listItems', li.id);
                     await dbOps.delete('lists', list.id);
                 }
-                
                 await dbOps.delete('stores', storeId);
                 renderPage();
             }
@@ -1356,14 +1083,7 @@
         window.createList = async (e) => {
             e.preventDefault();
             const storeId = parseInt(document.getElementById('listStore').value);
-            
-            const listId = await dbOps.add('lists', {
-                storeId,
-                status: 'open',
-                createdAt: new Date().toISOString(),
-                completedAt: null
-            });
-            
+            const listId = await dbOps.add('lists', { storeId, status: 'open', createdAt: new Date().toISOString(), completedAt: null });
             closeModal();
             currentList = listId;
             currentStore = storeId;
@@ -1375,7 +1095,6 @@
             e.preventDefault();
             const name = document.getElementById('itemName').value;
             const category = document.getElementById('itemCategory').value;
-            
             await dbOps.add('items', { storeId: currentStore, name, category });
             closeModal();
             renderPage();
@@ -1384,24 +1103,7 @@
         window.editItem = async (itemId) => {
             const item = await dbOps.get('items', itemId);
             const categories = await dbOps.getAll('categories');
-            
-            const content = `
-                <form onsubmit="updateItem(event, ${itemId})">
-                    <div class="form-group">
-                        <label class="form-label">Item Name</label>
-                        <input type="text" class="form-input" id="itemName" value="${item.name}" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select class="form-select" id="itemCategory" required>
-                            ${categories.map(cat => 
-                                `<option value="${cat.name}" ${cat.name === item.category ? 'selected' : ''}>${cat.name}</option>`
-                            ).join('')}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update Item</button>
-                </form>
-            `;
+            const content = `<form onsubmit="updateItem(event, ${itemId})"><div class="form-group"><label class="form-label">Item Name</label><input type="text" class="form-input" id="itemName" value="${item.name}" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="itemCategory" required>${categories.map(cat => `<option value="${cat.name}" ${cat.name === item.category ? 'selected' : ''}>${cat.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Update Item</button></form>`;
             showModal('Edit Item', content);
         };
 
@@ -1410,7 +1112,6 @@
             const item = await dbOps.get('items', itemId);
             const name = document.getElementById('itemName').value;
             const category = document.getElementById('itemCategory').value;
-            
             await dbOps.update('items', { ...item, name, category });
             closeModal();
             renderPage();
@@ -1454,7 +1155,6 @@
                 list.status = 'completed';
                 list.completedAt = new Date().toISOString();
                 await dbOps.update('lists', list);
-                
                 currentPage = 'home';
                 renderPage();
             }
@@ -1463,9 +1163,7 @@
         window.deleteList = async (listId) => {
             if (confirm('Delete this list permanently?')) {
                 const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
-                for (const li of listItems) {
-                    await dbOps.delete('listItems', li.id);
-                }
+                for (const li of listItems) await dbOps.delete('listItems', li.id);
                 await dbOps.delete('lists', listId);
                 closeModal();
                 navigate('history');
@@ -1491,7 +1189,6 @@
             const date = new Date(dateStr);
             const today = new Date();
             const diffDays = Math.floor((today - date) / (1000 * 60 * 60 * 24));
-            
             if (diffDays === 0) return 'Today';
             if (diffDays === 1) return 'Yesterday';
             if (diffDays < 7) return `${diffDays} days ago`;
