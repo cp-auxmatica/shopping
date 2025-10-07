@@ -1048,7 +1048,7 @@
             if (frequentItems.length > 0) {
                 html += `<div class="suggestions-section"><div class="suggestions-header">${icons.lightbulb} Frequently bought here</div><div class="suggestion-chips">`;
                 frequentItems.forEach(item => {
-                    html += `<button class="suggestion-chip" onclick="addSuggestedItem(${item.id})">${icons.plus} ${item.name}</button>`;
+                    html += `<button class="suggestion-chip" onclick="addSuggestedItem(event, ${item.id})">${icons.plus} ${item.name}</button>`;
                 });
                 html += `</div></div>`;
             }
@@ -1147,7 +1147,9 @@
             return false;
         };
 
-        window.addSuggestedItem = async (itemId) => {
+        window.addSuggestedItem = async (event, itemId) => {
+            event.stopPropagation();
+            event.preventDefault();
             const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
             const alreadyInList = existingListItems.some(li => li.itemId === itemId);
             if (!alreadyInList) {
