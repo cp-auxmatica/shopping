@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,615 +14,618 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --secondary: #ec4899;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-        }
-
-        .icon {
-            width: 24px;
-            height: 24px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: var(--gray-50);
-            color: var(--gray-900);
-            padding-bottom: 80px;
-            overflow-x: hidden;
-            line-height: 1.5;
-        }
-
-        .header {
-            background: white;
-            color: var(--gray-900);
-            padding: 16px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 100%;
-        }
-
-        .header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .header-btn {
-            background: var(--gray-100);
-            border: none;
-            color: var(--gray-700);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-
-        .header-btn:active {
-            background: var(--gray-200);
-            transform: scale(0.96);
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid var(--gray-200);
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-            z-index: 100;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-        }
-
-        .nav-item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 8px;
-            border: none;
-            background: none;
-            color: var(--gray-600);
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-        }
-
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 32px;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 0 0 3px 3px;
-        }
-
-        .container {
-            padding: 20px;
-            max-width: 100%;
-            min-height: calc(100vh - 140px);
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            border: 1px solid var(--gray-200);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .card:active {
-            transform: translateY(1px);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 12px;
-        }
-
-        .card-title {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 4px;
-        }
-
-        .card-subtitle {
-            font-size: 14px;
-            color: var(--gray-600);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .badge-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .badge-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: var(--gray-200);
-            color: var(--gray-700);
-        }
-
-        .fab {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-            z-index: 90;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .fab:active {
-            transform: scale(0.95);
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 200;
-            animation: fadeIn 0.2s;
-        }
-
-        .modal.active {
-            display: flex;
-            align-items: flex-end;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 24px 24px 0 0;
-            padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            animation: slideUp 0.3s;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .close-btn {
-            background: var(--gray-100);
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            color: var(--gray-600);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-bottom: 8px;
-        }
-
-        .form-input, .form-select {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid var(--gray-200);
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.2s;
-            background: white;
-        }
-
-        .form-input:focus, .form-select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .quick-add-form {
-            background: white;
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 2px solid var(--gray-200);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .quick-add-input {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .quick-add-btn {
-            padding: 12px 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .quick-add-btn:active {
-            background: var(--primary-dark);
-            transform: scale(0.96);
-        }
-
-        .list-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px;
-            background: white;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            border: 2px solid var(--gray-100);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .list-item:active {
-            transform: translateY(1px);
-            border-color: var(--gray-200);
-        }
-
-        .list-item.checked {
-            background: var(--gray-50);
-            opacity: 0.7;
-        }
-
-        .list-item.checked .list-item-name {
-            text-decoration: line-through;
-            color: var(--gray-600);
-        }
-
-        .checkbox {
-            width: 24px;
-            height: 24px;
-            min-width: 24px;
-            border: 2px solid var(--gray-300);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .checkbox.checked {
-            background: var(--success);
-            border-color: var(--success);
-            color: white;
-        }
-
-        .list-item-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .list-item-name {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--gray-900);
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .list-item-category {
-            font-size: 13px;
-            color: var(--gray-600);
-            margin-top: 2px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .list-item-price {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .category-section {
-            margin-bottom: 24px;
-        }
-
-        .category-header {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--gray-600);
-            padding: 8px 4px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .category-header::before {
-            content: '';
-            width: 3px;
-            height: 14px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 80px 20px;
-            color: var(--gray-600);
-        }
-
-        .empty-state-icon {
-            margin-bottom: 16px;
-            opacity: 0.3;
-            display: flex;
-            justify-content: center;
-        }
-
-        .empty-state-icon svg {
-            width: 80px;
-            height: 80px;
-            stroke-width: 1.5;
-        }
-
-        .empty-state-text {
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .store-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            background: white;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            border: 1px solid var(--gray-200);
-            transition: all 0.2s;
-        }
-
-        .store-info {
-            flex: 1;
-            cursor: pointer;
-            min-width: 0;
-        }
-
-        .store-name {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 4px;
-        }
-
-        .store-category {
-            font-size: 13px;
-            color: var(--gray-600);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .store-actions {
-            display: flex;
-            gap: 6px;
-        }
-
-        .icon-btn {
-            width: 38px;
-            height: 38px;
-            border: none;
-            border-radius: 8px;
-            background: var(--gray-100);
-            color: var(--gray-600);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .icon-btn:active {
-            background: var(--gray-200);
-            transform: scale(0.95);
-        }
-
-        .icon-btn.danger:active {
-            background: #fee;
-            color: var(--danger);
-        }
-
-        .btn-row {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        .btn-row .btn {
-            flex: 1;
-        }
-
-        .shopping-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            padding: 24px 20px;
-            margin: -20px -20px 20px -20px;
-            border-radius: 0 0 20px 20px;
-        }
-
-        .shopping-store-name {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .shopping-stats {
-            display: flex;
-            gap: 20px;
-            font-size: 14px;
-            opacity: 0.95;
-        }
-
-        .shopping-stat {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-
-        .hidden {
-            display: none !important;
-        }
-    </style>
+```
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --secondary: #ec4899;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+    }
+
+    .icon {
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: var(--gray-50);
+        color: var(--gray-900);
+        padding-bottom: 80px;
+        overflow-x: hidden;
+        line-height: 1.5;
+    }
+
+    .header {
+        background: white;
+        color: var(--gray-900);
+        padding: 16px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 100%;
+    }
+
+    .header h1 {
+        font-size: 22px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .header-btn {
+        background: var(--gray-100);
+        border: none;
+        color: var(--gray-700);
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+    }
+
+    .header-btn:active {
+        background: var(--gray-200);
+        transform: scale(0.96);
+    }
+
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid var(--gray-200);
+        display: flex;
+        justify-content: space-around;
+        padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+        z-index: 100;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    }
+
+    .nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 8px;
+        border: none;
+        background: none;
+        color: var(--gray-600);
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 600;
+        transition: all 0.2s;
+        position: relative;
+    }
+
+    .nav-item.active {
+        color: var(--primary);
+    }
+
+    .nav-item.active::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 32px;
+        height: 3px;
+        background: var(--primary);
+        border-radius: 0 0 3px 3px;
+    }
+
+    .container {
+        padding: 20px;
+        max-width: 100%;
+        min-height: calc(100vh - 140px);
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 12px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        border: 1px solid var(--gray-200);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .card:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 12px;
+    }
+
+    .card-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 4px;
+    }
+
+    .card-subtitle {
+        font-size: 14px;
+        color: var(--gray-600);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .badge-primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .badge-success {
+        background: var(--success);
+        color: white;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn:active {
+        transform: scale(0.98);
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .btn-success {
+        background: var(--success);
+        color: white;
+    }
+
+    .btn-danger {
+        background: var(--danger);
+        color: white;
+    }
+
+    .btn-secondary {
+        background: var(--gray-200);
+        color: var(--gray-700);
+    }
+
+    .fab {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: white;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        z-index: 90;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fab:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 200;
+        animation: fadeIn 0.2s;
+    }
+
+    .modal.active {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: 24px 24px 0 0;
+        padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+        width: 100%;
+        max-height: 85vh;
+        overflow-y: auto;
+        animation: slideUp 0.3s;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .modal-title {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .close-btn {
+        background: var(--gray-100);
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--gray-600);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 8px;
+    }
+
+    .form-input, .form-select {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid var(--gray-200);
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.2s;
+        background: white;
+    }
+
+    .form-input:focus, .form-select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .quick-add-form {
+        background: white;
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 2px solid var(--gray-200);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .quick-add-input {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .quick-add-btn {
+        padding: 12px 20px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+
+    .quick-add-btn:active {
+        background: var(--primary-dark);
+        transform: scale(0.96);
+    }
+
+    .list-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px;
+        background: white;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        border: 2px solid var(--gray-100);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .list-item:active {
+        transform: translateY(1px);
+        border-color: var(--gray-200);
+    }
+
+    .list-item.checked {
+        background: var(--gray-50);
+        opacity: 0.7;
+    }
+
+    .list-item.checked .list-item-name {
+        text-decoration: line-through;
+        color: var(--gray-600);
+    }
+
+    .checkbox {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        border: 2px solid var(--gray-300);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    .checkbox.checked {
+        background: var(--success);
+        border-color: var(--success);
+        color: white;
+    }
+
+    .list-item-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .list-item-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--gray-900);
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .list-item-category {
+        font-size: 13px;
+        color: var(--gray-600);
+        margin-top: 2px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .list-item-price {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .category-section {
+        margin-bottom: 24px;
+    }
+
+    .category-header {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--gray-600);
+        padding: 8px 4px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .category-header::before {
+        content: '';
+        width: 3px;
+        height: 14px;
+        background: var(--primary);
+        border-radius: 2px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: var(--gray-600);
+    }
+
+    .empty-state-icon {
+        margin-bottom: 16px;
+        opacity: 0.3;
+        display: flex;
+        justify-content: center;
+    }
+
+    .empty-state-icon svg {
+        width: 80px;
+        height: 80px;
+        stroke-width: 1.5;
+    }
+
+    .empty-state-text {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .store-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        border: 1px solid var(--gray-200);
+        transition: all 0.2s;
+    }
+
+    .store-info {
+        flex: 1;
+        cursor: pointer;
+        min-width: 0;
+    }
+
+    .store-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 4px;
+    }
+
+    .store-category {
+        font-size: 13px;
+        color: var(--gray-600);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .store-actions {
+        display: flex;
+        gap: 6px;
+    }
+
+    .icon-btn {
+        width: 38px;
+        height: 38px;
+        border: none;
+        border-radius: 8px;
+        background: var(--gray-100);
+        color: var(--gray-600);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    .icon-btn:active {
+        background: var(--gray-200);
+        transform: scale(0.95);
+    }
+
+    .icon-btn.danger:active {
+        background: #fee;
+        color: var(--danger);
+    }
+
+    .btn-row {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .btn-row .btn {
+        flex: 1;
+    }
+
+    .shopping-header {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        color: white;
+        padding: 24px 20px;
+        margin: -20px -20px 20px -20px;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .shopping-store-name {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .shopping-stats {
+        display: flex;
+        gap: 20px;
+        font-size: 14px;
+        opacity: 0.95;
+    }
+
+    .shopping-stat {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+
+    .hidden {
+        display: none !important;
+    }
+</style>
+```
+
 </head>
 <body>
     <div class="header">
@@ -631,587 +635,588 @@
         </div>
     </div>
 
-    <div class="container" id="mainContainer"></div>
+```
+<div class="container" id="mainContainer"></div>
 
-    <button class="fab hidden" id="fab"></button>
+<button class="fab hidden" id="fab"></button>
 
-    <div class="bottom-nav">
-        <button class="nav-item active" data-page="home">
-            <div class="nav-icon">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            </div>
-            <div>Home</div>
-        </button>
-        <button class="nav-item" data-page="stores">
-            <div class="nav-icon">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>
-            </div>
-            <div>Stores</div>
-        </button>
-        <button class="nav-item" data-page="history">
-            <div class="nav-icon">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-            </div>
-            <div>History</div>
-        </button>
-    </div>
+<div class="bottom-nav">
+    <button class="nav-item active" data-page="home">
+        <div class="nav-icon">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </div>
+        <div>Home</div>
+    </button>
+    <button class="nav-item" data-page="stores">
+        <div class="nav-icon">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>
+        </div>
+        <div>Stores</div>
+    </button>
+    <button class="nav-item" data-page="history">
+        <div class="nav-icon">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+        </div>
+        <div>History</div>
+    </button>
+</div>
 
-    <div class="modal" id="modal">
-        <div class="modal-content" id="modalContent"></div>
-    </div>
+<div class="modal" id="modal">
+    <div class="modal-content" id="modalContent"></div>
+</div>
 
-    <script>
-        const icons = {
-            plus: '<svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>',
-            cart: '<svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>',
-            store: '<svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>',
-            box: '<svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
-            edit: '<svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>',
-            trash: '<svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>',
-            check: '<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>',
-            dollarSign: '<svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>',
-            clock: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
-            checkCircle: '<svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
-            tag: '<svg class="icon" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>',
-            list: '<svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>',
-            package: '<svg class="icon" viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
-            arrowLeft: '<svg class="icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>'
-        };
+<script>
+    const icons = {
+        plus: '<svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>',
+        cart: '<svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>',
+        store: '<svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>',
+        box: '<svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
+        edit: '<svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>',
+        trash: '<svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>',
+        check: '<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+        dollarSign: '<svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>',
+        clock: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
+        checkCircle: '<svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
+        tag: '<svg class="icon" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>',
+        list: '<svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>',
+        package: '<svg class="icon" viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
+        arrowLeft: '<svg class="icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>'
+    };
 
-        let db;
-        const DB_NAME = 'ShopSmartDB';
-        const DB_VERSION = 1;
+    let db;
+    const DB_NAME = 'ShopSmartDB';
+    const DB_VERSION = 1;
 
-        const initDB = () => {
+    const initDB = () => {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_NAME, DB_VERSION);
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+                db = request.result;
+                resolve(db);
+            };
+            request.onupgradeneeded = (e) => {
+                db = e.target.result;
+                if (!db.objectStoreNames.contains('stores')) {
+                    db.createObjectStore('stores', { keyPath: 'id', autoIncrement: true });
+                }
+                if (!db.objectStoreNames.contains('items')) {
+                    const itemStore = db.createObjectStore('items', { keyPath: 'id', autoIncrement: true });
+                    itemStore.createIndex('storeId', 'storeId', { unique: false });
+                }
+                if (!db.objectStoreNames.contains('lists')) {
+                    const listStore = db.createObjectStore('lists', { keyPath: 'id', autoIncrement: true });
+                    listStore.createIndex('storeId', 'storeId', { unique: false });
+                }
+                if (!db.objectStoreNames.contains('listItems')) {
+                    const listItemStore = db.createObjectStore('listItems', { keyPath: 'id', autoIncrement: true });
+                    listItemStore.createIndex('listId', 'listId', { unique: false });
+                }
+                if (!db.objectStoreNames.contains('categories')) {
+                    db.createObjectStore('categories', { keyPath: 'id', autoIncrement: true });
+                }
+            };
+        });
+    };
+
+    const dbOps = {
+        add: (storeName, data) => {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.add(data);
+                request.onsuccess = () => resolve(request.result);
                 request.onerror = () => reject(request.error);
-                request.onsuccess = () => {
-                    db = request.result;
-                    resolve(db);
-                };
-                request.onupgradeneeded = (e) => {
-                    db = e.target.result;
-                    if (!db.objectStoreNames.contains('stores')) {
-                        db.createObjectStore('stores', { keyPath: 'id', autoIncrement: true });
-                    }
-                    if (!db.objectStoreNames.contains('items')) {
-                        const itemStore = db.createObjectStore('items', { keyPath: 'id', autoIncrement: true });
-                        itemStore.createIndex('storeId', 'storeId', { unique: false });
-                    }
-                    if (!db.objectStoreNames.contains('lists')) {
-                        const listStore = db.createObjectStore('lists', { keyPath: 'id', autoIncrement: true });
-                        listStore.createIndex('storeId', 'storeId', { unique: false });
-                    }
-                    if (!db.objectStoreNames.contains('listItems')) {
-                        const listItemStore = db.createObjectStore('listItems', { keyPath: 'id', autoIncrement: true });
-                        listItemStore.createIndex('listId', 'listId', { unique: false });
-                    }
-                    if (!db.objectStoreNames.contains('categories')) {
-                        db.createObjectStore('categories', { keyPath: 'id', autoIncrement: true });
-                    }
-                };
             });
-        };
-
-        const dbOps = {
-            add: (storeName, data) => {
-                return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readwrite');
-                    const store = transaction.objectStore(storeName);
-                    const request = store.add(data);
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
-                });
-            },
-            getAll: (storeName) => {
-                return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readonly');
-                    const store = transaction.objectStore(storeName);
-                    const request = store.getAll();
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
-                });
-            },
-            get: (storeName, id) => {
-                return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readonly');
-                    const store = transaction.objectStore(storeName);
-                    const request = store.get(id);
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
-                });
-            },
-            update: (storeName, data) => {
-                return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readwrite');
-                    const store = transaction.objectStore(storeName);
-                    const request = store.put(data);
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
-                });
-            },
-            delete: (storeName, id) => {
-                return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readwrite');
-                    const store = transaction.objectStore(storeName);
-                    const request = store.delete(id);
-                    request.onsuccess = () => resolve();
-                    request.onerror = () => reject(request.error);
-                });
-            },
-            getByIndex: (storeName, indexName, value) => {
-                return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readonly');
-                    const store = transaction.objectStore(storeName);
-                    const index = store.index(indexName);
-                    const request = index.getAll(value);
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
-                });
-            }
-        };
-
-        const DEFAULT_STORE_CATEGORIES = ['Grocery Store', 'Hardware Store', 'Pharmacy', 'Electronics Store', 'Pet Store', 'Department Store', 'Other'];
-        const DEFAULT_ITEM_CATEGORIES = ['Produce', 'Dairy', 'Meat', 'Bakery', 'Frozen', 'Pantry', 'Beverages', 'Snacks', 'Household', 'Personal Care', 'Other'];
-
-        let currentPage = 'home';
-        let currentStore = null;
-        let currentList = null;
-
-        const initCategories = async () => {
-            const categories = await dbOps.getAll('categories');
-            if (categories.length === 0) {
-                for (const cat of DEFAULT_ITEM_CATEGORIES) {
-                    await dbOps.add('categories', { name: cat, type: 'item' });
-                }
-            }
-        };
-
-        const navigate = (page) => {
-            currentPage = page;
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.toggle('active', item.dataset.page === page);
+        },
+        getAll: (storeName) => {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readonly');
+                const store = transaction.objectStore(storeName);
+                const request = store.getAll();
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
             });
-            renderPage();
-        };
-
-        const renderPage = async () => {
-            const container = document.getElementById('mainContainer');
-            const fab = document.getElementById('fab');
-            const headerTitle = document.getElementById('headerTitle');
-            const headerAction = document.getElementById('headerAction');
-            headerAction.classList.add('hidden');
-            fab.classList.add('hidden');
-
-            switch(currentPage) {
-                case 'home':
-                    headerTitle.innerHTML = `${icons.cart} Shop Smart`;
-                    await renderHome(container);
-                    fab.classList.remove('hidden');
-                    fab.innerHTML = icons.plus;
-                    fab.onclick = () => showCreateListModal();
-                    break;
-                case 'stores':
-                    headerTitle.innerHTML = `${icons.store} Stores`;
-                    await renderStores(container);
-                    fab.classList.remove('hidden');
-                    fab.innerHTML = icons.plus;
-                    fab.onclick = () => showCreateStoreModal();
-                    break;
-                case 'history':
-                    headerTitle.innerHTML = `${icons.list} History`;
-                    await renderHistory(container);
-                    break;
-                case 'store-items':
-                    const store = await dbOps.get('stores', currentStore);
-                    headerTitle.innerHTML = `${icons.package} ${store.name}`;
-                    headerAction.classList.remove('hidden');
-                    headerAction.innerHTML = `${icons.arrowLeft} Back`;
-                    headerAction.onclick = () => navigate('stores');
-                    await renderStoreItems(container);
-                    fab.classList.remove('hidden');
-                    fab.innerHTML = icons.plus;
-                    fab.onclick = () => showAddItemModal();
-                    break;
-                case 'shopping':
-                    headerTitle.innerHTML = `${icons.cart} Shopping`;
-                    headerAction.classList.remove('hidden');
-                    headerAction.innerHTML = `${icons.arrowLeft} Back`;
-                    headerAction.onclick = () => navigate('home');
-                    await renderShopping(container);
-                    break;
-            }
-        };
-
-        const renderHome = async (container) => {
-            const lists = await dbOps.getAll('lists');
-            const openLists = lists.filter(l => l.status === 'open');
-            if (openLists.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">No active shopping lists<br>Tap + to create one</div></div>`;
-                return;
-            }
-            let html = '';
-            for (const list of openLists) {
-                const store = await dbOps.get('stores', list.storeId);
-                const items = await dbOps.getByIndex('listItems', 'listId', list.id);
-                const checkedCount = items.filter(i => i.checked).length;
-                html += `<div class="card" onclick="openList(${list.id})"><div class="card-header"><div><div class="card-title">${store.name}</div><div class="card-subtitle">${icons.tag} ${store.category}</div></div><span class="badge badge-primary">${icons.checkCircle} ${checkedCount}/${items.length}</span></div><div class="card-subtitle" style="margin-top: 8px;">${icons.clock} ${formatDate(list.createdAt)}</div></div>`;
-            }
-            container.innerHTML = html;
-        };
-
-        const renderStores = async (container) => {
-            const stores = await dbOps.getAll('stores');
-            if (stores.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.store}</div><div class="empty-state-text">No stores yet<br>Tap + to add one</div></div>`;
-                return;
-            }
-            let html = '';
-            for (const store of stores) {
-                const items = await dbOps.getByIndex('items', 'storeId', store.id);
-                html += `<div class="store-item"><div class="store-info" onclick="viewStoreItems(${store.id})"><div class="store-name">${store.name}</div><div class="store-category">${icons.tag} ${store.category} • ${items.length} items</div></div><div class="store-actions"><button class="icon-btn" onclick="editStore(${store.id})">${icons.edit}</button><button class="icon-btn danger" onclick="deleteStore(${store.id})">${icons.trash}</button></div></div>`;
-            }
-            container.innerHTML = html;
-        };
-
-        const renderHistory = async (container) => {
-            const lists = await dbOps.getAll('lists');
-            const completedLists = lists.filter(l => l.status === 'completed').sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
-            if (completedLists.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.list}</div><div class="empty-state-text">No completed lists yet</div></div>`;
-                return;
-            }
-            let html = '';
-            for (const list of completedLists) {
-                const store = await dbOps.get('stores', list.storeId);
-                const items = await dbOps.getByIndex('listItems', 'listId', list.id);
-                const total = items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
-                html += `<div class="card" onclick="viewCompletedList(${list.id})"><div class="card-header"><div><div class="card-title">${store.name}</div><div class="card-subtitle">${icons.clock} ${formatDateTime(list.completedAt)}</div></div><span class="badge badge-success">${icons.check} ${items.length}</span></div>${total > 0 ? `<div class="card-subtitle" style="margin-top: 8px; font-weight: 700; color: var(--primary);">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}</div>`;
-            }
-            container.innerHTML = html;
-        };
-
-        const renderStoreItems = async (container) => {
-            const items = await dbOps.getByIndex('items', 'storeId', currentStore);
-            if (items.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.box}</div><div class="empty-state-text">No items in this store<br>Tap + to add items</div></div>`;
-                return;
-            }
-            const itemsByCategory = {};
-            items.forEach(item => {
-                if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
-                itemsByCategory[item.category].push(item);
+        },
+        get: (storeName, id) => {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readonly');
+                const store = transaction.objectStore(storeName);
+                const request = store.get(id);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
             });
-            let html = '';
-            for (const category in itemsByCategory) {
-                html += `<div class="category-section"><div class="category-header">${category}</div>`;
-                itemsByCategory[category].forEach(item => {
-                    html += `<div class="list-item"><div class="list-item-content"><div class="list-item-name">${item.name}</div></div><div class="store-actions"><button class="icon-btn" onclick="editItem(${item.id})">${icons.edit}</button><button class="icon-btn danger" onclick="deleteItem(${item.id})">${icons.trash}</button></div></div>`;
-                });
-                html += `</div>`;
-            }
-            container.innerHTML = html;
-        };
+        },
+        update: (storeName, data) => {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.put(data);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        },
+        delete: (storeName, id) => {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.delete(id);
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        },
+        getByIndex: (storeName, indexName, value) => {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readonly');
+                const store = transaction.objectStore(storeName);
+                const index = store.index(indexName);
+                const request = index.getAll(value);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+    };
 
-        const renderShopping = async (container) => {
-            const list = await dbOps.get('lists', currentList);
+    const DEFAULT_STORE_CATEGORIES = ['Grocery Store', 'Hardware Store', 'Pharmacy', 'Electronics Store', 'Pet Store', 'Department Store', 'Other'];
+    const DEFAULT_ITEM_CATEGORIES = ['Produce', 'Dairy', 'Meat', 'Bakery', 'Frozen', 'Pantry', 'Beverages', 'Snacks', 'Household', 'Personal Care', 'Other'];
+
+    let currentPage = 'home';
+    let currentStore = null;
+    let currentList = null;
+
+    const initCategories = async () => {
+        const categories = await dbOps.getAll('categories');
+        if (categories.length === 0) {
+            for (const cat of DEFAULT_ITEM_CATEGORIES) {
+                await dbOps.add('categories', { name: cat, type: 'item' });
+            }
+        }
+    };
+
+    const navigate = (page) => {
+        currentPage = page;
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.toggle('active', item.dataset.page === page);
+        });
+        renderPage();
+    };
+
+    const renderPage = async () => {
+        const container = document.getElementById('mainContainer');
+        const fab = document.getElementById('fab');
+        const headerTitle = document.getElementById('headerTitle');
+        const headerAction = document.getElementById('headerAction');
+        headerAction.classList.add('hidden');
+        fab.classList.add('hidden');
+
+        switch(currentPage) {
+            case 'home':
+                headerTitle.innerHTML = `${icons.cart} Shop Smart`;
+                await renderHome(container);
+                fab.classList.remove('hidden');
+                fab.innerHTML = icons.plus;
+                fab.onclick = () => showCreateListModal();
+                break;
+            case 'stores':
+                headerTitle.innerHTML = `${icons.store} Stores`;
+                await renderStores(container);
+                fab.classList.remove('hidden');
+                fab.innerHTML = icons.plus;
+                fab.onclick = () => showCreateStoreModal();
+                break;
+            case 'history':
+                headerTitle.innerHTML = `${icons.list} History`;
+                await renderHistory(container);
+                break;
+            case 'store-items':
+                const store = await dbOps.get('stores', currentStore);
+                headerTitle.innerHTML = `${icons.package} ${store.name}`;
+                headerAction.classList.remove('hidden');
+                headerAction.innerHTML = `${icons.arrowLeft} Back`;
+                headerAction.onclick = () => navigate('stores');
+                await renderStoreItems(container);
+                fab.classList.remove('hidden');
+                fab.innerHTML = icons.plus;
+                fab.onclick = () => showAddItemModal();
+                break;
+            case 'shopping':
+                headerTitle.innerHTML = `${icons.cart} Shopping`;
+                headerAction.classList.remove('hidden');
+                headerAction.innerHTML = `${icons.arrowLeft} Back`;
+                headerAction.onclick = () => navigate('home');
+                await renderShopping(container);
+                break;
+        }
+    };
+
+    const renderHome = async (container) => {
+        const lists = await dbOps.getAll('lists');
+        const openLists = lists.filter(l => l.status === 'open');
+        if (openLists.length === 0) {
+            container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">No active shopping lists<br>Tap + to create one</div></div>`;
+            return;
+        }
+        let html = '';
+        for (const list of openLists) {
             const store = await dbOps.get('stores', list.storeId);
-            const listItems = await dbOps.getByIndex('listItems', 'listId', currentList);
-            const storeItems = await dbOps.getByIndex('items', 'storeId', store.id);
-            const itemsWithDetails = await Promise.all(listItems.map(async li => {
-                const item = await dbOps.get('items', li.itemId);
-                return { ...li, itemName: item.name, category: item.category };
-            }));
-            const checkedCount = itemsWithDetails.filter(i => i.checked).length;
-            const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
-            const existingItemIds = listItems.map(li => li.itemId);
-            const availableItems = storeItems.filter(item => !existingItemIds.includes(item.id));
+            const items = await dbOps.getByIndex('listItems', 'listId', list.id);
+            const checkedCount = items.filter(i => i.checked).length;
+            html += `<div class="card" onclick="openList(${list.id})"><div class="card-header"><div><div class="card-title">${store.name}</div><div class="card-subtitle">${icons.tag} ${store.category}</div></div><span class="badge badge-primary">${icons.checkCircle} ${checkedCount}/${items.length}</span></div><div class="card-subtitle" style="margin-top: 8px;">${icons.clock} ${formatDate(list.createdAt)}</div></div>`;
+        }
+        container.innerHTML = html;
+    };
 
-            let html = `<div class="shopping-header"><div class="shopping-store-name">${icons.store} ${store.name}</div><div class="shopping-stats"><span class="shopping-stat">${icons.checkCircle} ${checkedCount}/${itemsWithDetails.length}</span>${total > 0 ? `<span class="shopping-stat">${icons.dollarSign} ${total.toFixed(2)}</span>` : ''}</div></div><div class="quick-add-form"><form onsubmit="return quickAddItem(event)" style="margin: 0;"><div class="quick-add-input"><input type="text" class="form-input" id="quickAddItem" list="quickItemsList" placeholder="Add item..." autocomplete="off" style="margin: 0;"><datalist id="quickItemsList">${availableItems.map(item => `<option value="${item.name}">${item.name} (${item.category})</option>`).join('')}</datalist><button type="submit" class="quick-add-btn">${icons.plus} Add</button></div></form></div>`;
+    const renderStores = async (container) => {
+        const stores = await dbOps.getAll('stores');
+        if (stores.length === 0) {
+            container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.store}</div><div class="empty-state-text">No stores yet<br>Tap + to add one</div></div>`;
+            return;
+        }
+        let html = '';
+        for (const store of stores) {
+            const items = await dbOps.getByIndex('items', 'storeId', store.id);
+            html += `<div class="store-item"><div class="store-info" onclick="viewStoreItems(${store.id})"><div class="store-name">${store.name}</div><div class="store-category">${icons.tag} ${store.category} • ${items.length} items</div></div><div class="store-actions"><button class="icon-btn" onclick="editStore(${store.id})">${icons.edit}</button><button class="icon-btn danger" onclick="deleteStore(${store.id})">${icons.trash}</button></div></div>`;
+        }
+        container.innerHTML = html;
+    };
 
-            if (itemsWithDetails.length === 0) {
-                html += `<div class="empty-state" style="padding: 40px 20px;"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">Your list is empty<br>Add items above to get started</div></div>`;
-            } else {
-                const itemsByCategory = {};
-                itemsWithDetails.forEach(item => {
-                    if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
-                    itemsByCategory[item.category].push(item);
-                });
-                for (const category in itemsByCategory) {
-                    html += `<div class="category-section"><div class="category-header">${category}</div>`;
-                    itemsByCategory[category].forEach(item => {
-                        html += `<div class="list-item ${item.checked ? 'checked' : ''}" onclick="toggleItem(${item.id})"><div class="checkbox ${item.checked ? 'checked' : ''}">${item.checked ? icons.check : ''}</div><div class="list-item-content"><div class="list-item-name">${item.itemName}</div>${item.price ? `<div class="list-item-category">${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}</div>` : ''}</div><button class="icon-btn" onclick="event.stopPropagation(); editListItemPrice(${item.id})">${icons.dollarSign}</button></div>`;
-                    });
-                    html += `</div>`;
-                }
-            }
-            html += `<div style="margin-top: 24px;"><button class="btn btn-success" onclick="completeList()">${icons.check} Complete Shopping</button></div>`;
-            container.innerHTML = html;
-        };
-
-        const showModal = (title, content) => {
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modalContent');
-            modalContent.innerHTML = `<div class="modal-header"><div class="modal-title">${title}</div><button class="close-btn" onclick="closeModal()">×</button></div>${content}`;
-            modal.classList.add('active');
-        };
-
-        const closeModal = () => {
-            document.getElementById('modal').classList.remove('active');
-        };
-
-        const showCreateStoreModal = () => {
-            const content = `<form onsubmit="createStore(event)"><div class="form-group"><label class="form-label">Store Name</label><input type="text" class="form-input" id="storeName" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="storeCategory" required>${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}">${cat}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Create Store</button></form>`;
-            showModal('New Store', content);
-        };
-
-        const showCreateListModal = async () => {
-            const stores = await dbOps.getAll('stores');
-            const lists = await dbOps.getAll('lists');
-            const openLists = lists.filter(l => l.status === 'open');
-            const availableStores = stores.filter(store => !openLists.some(list => list.storeId === store.id));
-            if (availableStores.length === 0) {
-                showModal('No Stores Available', `<p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p><button class="btn btn-secondary" onclick="closeModal()">OK</button>`);
-                return;
-            }
-            const content = `<form onsubmit="createList(event)"><div class="form-group"><label class="form-label">Select Store</label><select class="form-select" id="listStore" required><option value="">Choose a store...</option>${availableStores.map(store => `<option value="${store.id}">${store.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Create List</button></form>`;
-            showModal('New Shopping List', content);
-        };
-
-        const showAddItemModal = async () => {
-            const categories = await dbOps.getAll('categories');
-            const content = `<form onsubmit="addItemToStore(event)"><div class="form-group"><label class="form-label">Item Name</label><input type="text" class="form-input" id="itemName" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="itemCategory" required>${categories.map(cat => `<option value="${cat.name}">${cat.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Add Item</button></form>`;
-            showModal('Add Item', content);
-        };
-
-        window.quickAddItem = async (e) => {
-            e.preventDefault();
-            const searchValue = document.getElementById('quickAddItem').value.trim();
-            if (!searchValue) return false;
-            const list = await dbOps.get('lists', currentList);
-            const items = await dbOps.getByIndex('items', 'storeId', list.storeId);
-            const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
-            let itemId;
-            if (existingItem) {
-                itemId = existingItem.id;
-            } else {
-                const categories = await dbOps.getAll('categories');
-                itemId = await dbOps.add('items', { storeId: list.storeId, name: searchValue, category: categories[0].name });
-            }
-            const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
-            const alreadyInList = existingListItems.some(li => li.itemId === itemId);
-            if (!alreadyInList) {
-                await dbOps.add('listItems', { listId: currentList, itemId: itemId, checked: false, price: null });
-            }
-            document.getElementById('quickAddItem').value = '';
-            renderPage();
-            return false;
-        };
-
-        window.editListItemPrice = async (listItemId) => {
-            const listItem = await dbOps.get('listItems', listItemId);
-            const item = await dbOps.get('items', listItem.itemId);
-            const content = `<form onsubmit="updateListItemPrice(event, ${listItemId})"><div class="form-group"><label class="form-label">${item.name}</label><input type="number" step="0.01" class="form-input" id="itemPrice" value="${listItem.price || ''}" placeholder="0.00"></div><div class="btn-row"><button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">${icons.trash} Delete</button><button type="submit" class="btn btn-primary">${icons.check} Save</button></div></form>`;
-            showModal('Update Price', content);
-        };
-
-        window.viewCompletedList = async (listId) => {
-            const list = await dbOps.get('lists', listId);
+    const renderHistory = async (container) => {
+        const lists = await dbOps.getAll('lists');
+        const completedLists = lists.filter(l => l.status === 'completed').sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
+        if (completedLists.length === 0) {
+            container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.list}</div><div class="empty-state-text">No completed lists yet</div></div>`;
+            return;
+        }
+        let html = '';
+        for (const list of completedLists) {
             const store = await dbOps.get('stores', list.storeId);
-            const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
-            const itemsWithDetails = await Promise.all(listItems.map(async li => {
-                const item = await dbOps.get('items', li.itemId);
-                return { ...li, itemName: item.name, category: item.category };
-            }));
-            const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+            const items = await dbOps.getByIndex('listItems', 'listId', list.id);
+            const total = items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+            html += `<div class="card" onclick="viewCompletedList(${list.id})"><div class="card-header"><div><div class="card-title">${store.name}</div><div class="card-subtitle">${icons.clock} ${formatDateTime(list.completedAt)}</div></div><span class="badge badge-success">${icons.check} ${items.length}</span></div>${total > 0 ? `<div class="card-subtitle" style="margin-top: 8px; font-weight: 700; color: var(--primary);">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}</div>`;
+        }
+        container.innerHTML = html;
+    };
+
+    const renderStoreItems = async (container) => {
+        const items = await dbOps.getByIndex('items', 'storeId', currentStore);
+        if (items.length === 0) {
+            container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.box}</div><div class="empty-state-text">No items in this store<br>Tap + to add items</div></div>`;
+            return;
+        }
+        const itemsByCategory = {};
+        items.forEach(item => {
+            if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
+            itemsByCategory[item.category].push(item);
+        });
+        let html = '';
+        for (const category in itemsByCategory) {
+            html += `<div class="category-section"><div class="category-header">${category}</div>`;
+            itemsByCategory[category].forEach(item => {
+                html += `<div class="list-item"><div class="list-item-content"><div class="list-item-name">${item.name}</div></div><div class="store-actions"><button class="icon-btn" onclick="editItem(${item.id})">${icons.edit}</button><button class="icon-btn danger" onclick="deleteItem(${item.id})">${icons.trash}</button></div></div>`;
+            });
+            html += `</div>`;
+        }
+        container.innerHTML = html;
+    };
+
+    const renderShopping = async (container) => {
+        const list = await dbOps.get('lists', currentList);
+        const store = await dbOps.get('stores', list.storeId);
+        const listItems = await dbOps.getByIndex('listItems', 'listId', currentList);
+        const storeItems = await dbOps.getByIndex('items', 'storeId', store.id);
+        const itemsWithDetails = await Promise.all(listItems.map(async li => {
+            const item = await dbOps.get('items', li.itemId);
+            return { ...li, itemName: item.name, category: item.category };
+        }));
+        const checkedCount = itemsWithDetails.filter(i => i.checked).length;
+        const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+        const existingItemIds = listItems.map(li => li.itemId);
+        const availableItems = storeItems.filter(item => !existingItemIds.includes(item.id));
+
+        let html = `<div class="shopping-header"><div class="shopping-store-name">${icons.store} ${store.name}</div><div class="shopping-stats"><span class="shopping-stat">${icons.checkCircle} ${checkedCount}/${itemsWithDetails.length}</span>${total > 0 ? `<span class="shopping-stat">${icons.dollarSign} ${total.toFixed(2)}</span>` : ''}</div></div><div class="quick-add-form"><div class="quick-add-input"><input type="text" class="form-input" id="quickAddItem" list="quickItemsList" placeholder="Add item..." autocomplete="off" style="margin: 0;"><datalist id="quickItemsList">${availableItems.map(item => `<option value="${item.name}">${item.name} (${item.category})</option>`).join('')}</datalist><button type="button" class="quick-add-btn" onclick="quickAddItem()">${icons.plus} Add</button></div></div>`;
+
+        if (itemsWithDetails.length === 0) {
+            html += `<div class="empty-state" style="padding: 40px 20px;"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">Your list is empty<br>Add items above to get started</div></div>`;
+        } else {
             const itemsByCategory = {};
             itemsWithDetails.forEach(item => {
                 if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
                 itemsByCategory[item.category].push(item);
             });
-            let itemsHtml = '';
             for (const category in itemsByCategory) {
-                itemsHtml += `<div class="category-header">${category}</div>`;
+                html += `<div class="category-section"><div class="category-header">${category}</div>`;
                 itemsByCategory[category].forEach(item => {
-                    itemsHtml += `<div class="list-item"><div class="list-item-content"><div class="list-item-name">${item.itemName}</div></div>${item.price ? `<div class="list-item-price">${parseFloat(item.price).toFixed(2)}</div>` : ''}</div>`;
+                    html += `<div class="list-item ${item.checked ? 'checked' : ''}" onclick="toggleItem(${item.id})"><div class="checkbox ${item.checked ? 'checked' : ''}">${item.checked ? icons.check : ''}</div><div class="list-item-content"><div class="list-item-name">${item.itemName}</div>${item.price ? `<div class="list-item-category">${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}</div>` : ''}</div><button class="icon-btn" onclick="event.stopPropagation(); editListItemPrice(${item.id})">${icons.dollarSign}</button></div>`;
                 });
+                html += `</div>`;
             }
-            const content = `<div style="margin-bottom: 20px;"><div style="font-weight: 600; color: var(--gray-700); margin-bottom: 4px;">${icons.store} ${store.name}</div><div style="font-size: 14px; color: var(--gray-600); display: flex; align-items: center; gap: 4px;">${icons.clock} ${formatDateTime(list.completedAt)}</div>${total > 0 ? `<div style="font-size: 20px; font-weight: 700; color: var(--primary); margin-top: 12px; display: flex; align-items: center; gap: 6px;">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}</div>${itemsHtml}<div class="btn-row" style="margin-top: 24px;"><button class="btn btn-danger" onclick="deleteList(${listId})">${icons.trash} Delete List</button><button class="btn btn-secondary" onclick="closeModal()">Close</button></div>`;
-            showModal('Shopping List', content);
-        };
+        }
+        html += `<div style="margin-top: 24px;"><button class="btn btn-success" onclick="completeList()">${icons.check} Complete Shopping</button></div>`;
+        container.innerHTML = html;
+    };
 
-        window.createStore = async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('storeName').value;
-            const category = document.getElementById('storeCategory').value;
-            await dbOps.add('stores', { name, category });
+    const showModal = (title, content) => {
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = `<div class="modal-header"><div class="modal-title">${title}</div><button class="close-btn" onclick="closeModal()">×</button></div>${content}`;
+        modal.classList.add('active');
+    };
+
+    const closeModal = () => {
+        document.getElementById('modal').classList.remove('active');
+    };
+
+    const showCreateStoreModal = () => {
+        const content = `<form onsubmit="createStore(event)"><div class="form-group"><label class="form-label">Store Name</label><input type="text" class="form-input" id="storeName" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="storeCategory" required>${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}">${cat}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Create Store</button></form>`;
+        showModal('New Store', content);
+    };
+
+    const showCreateListModal = async () => {
+        const stores = await dbOps.getAll('stores');
+        const lists = await dbOps.getAll('lists');
+        const openLists = lists.filter(l => l.status === 'open');
+        const availableStores = stores.filter(store => !openLists.some(list => list.storeId === store.id));
+        if (availableStores.length === 0) {
+            showModal('No Stores Available', `<p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p><button class="btn btn-secondary" onclick="closeModal()">OK</button>`);
+            return;
+        }
+        const content = `<form onsubmit="createList(event)"><div class="form-group"><label class="form-label">Select Store</label><select class="form-select" id="listStore" required><option value="">Choose a store...</option>${availableStores.map(store => `<option value="${store.id}">${store.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Create List</button></form>`;
+        showModal('New Shopping List', content);
+    };
+
+    const showAddItemModal = async () => {
+        const categories = await dbOps.getAll('categories');
+        const content = `<form onsubmit="addItemToStore(event)"><div class="form-group"><label class="form-label">Item Name</label><input type="text" class="form-input" id="itemName" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="itemCategory" required>${categories.map(cat => `<option value="${cat.name}">${cat.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Add Item</button></form>`;
+        showModal('Add Item', content);
+    };
+
+    window.quickAddItem = async () => {
+        const searchValue = document.getElementById('quickAddItem').value.trim();
+        if (!searchValue) return;
+        const list = await dbOps.get('lists', currentList);
+        const items = await dbOps.getByIndex('items', 'storeId', list.storeId);
+        const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
+        let itemId;
+        if (existingItem) {
+            itemId = existingItem.id;
+        } else {
+            const categories = await dbOps.getAll('categories');
+            itemId = await dbOps.add('items', { storeId: list.storeId, name: searchValue, category: categories[0].name });
+        }
+        const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
+        const alreadyInList = existingListItems.some(li => li.itemId === itemId);
+        if (!alreadyInList) {
+            await dbOps.add('listItems', { listId: currentList, itemId: itemId, checked: false, price: null });
+        }
+        document.getElementById('quickAddItem').value = '';
+        renderPage();
+    };
+
+    window.editListItemPrice = async (listItemId) => {
+        const listItem = await dbOps.get('listItems', listItemId);
+        const item = await dbOps.get('items', listItem.itemId);
+        const content = `<form onsubmit="updateListItemPrice(event, ${listItemId})"><div class="form-group"><label class="form-label">${item.name}</label><input type="number" step="0.01" class="form-input" id="itemPrice" value="${listItem.price || ''}" placeholder="0.00"></div><div class="btn-row"><button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">${icons.trash} Delete</button><button type="submit" class="btn btn-primary">${icons.check} Save</button></div></form>`;
+        showModal('Update Price', content);
+    };
+
+    window.viewCompletedList = async (listId) => {
+        const list = await dbOps.get('lists', listId);
+        const store = await dbOps.get('stores', list.storeId);
+        const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
+        const itemsWithDetails = await Promise.all(listItems.map(async li => {
+            const item = await dbOps.get('items', li.itemId);
+            return { ...li, itemName: item.name, category: item.category };
+        }));
+        const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+        const itemsByCategory = {};
+        itemsWithDetails.forEach(item => {
+            if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
+            itemsByCategory[item.category].push(item);
+        });
+        let itemsHtml = '';
+        for (const category in itemsByCategory) {
+            itemsHtml += `<div class="category-header">${category}</div>`;
+            itemsByCategory[category].forEach(item => {
+                itemsHtml += `<div class="list-item"><div class="list-item-content"><div class="list-item-name">${item.itemName}</div></div>${item.price ? `<div class="list-item-price">${parseFloat(item.price).toFixed(2)}</div>` : ''}</div>`;
+            });
+        }
+        const content = `<div style="margin-bottom: 20px;"><div style="font-weight: 600; color: var(--gray-700); margin-bottom: 4px;">${icons.store} ${store.name}</div><div style="font-size: 14px; color: var(--gray-600); display: flex; align-items: center; gap: 4px;">${icons.clock} ${formatDateTime(list.completedAt)}</div>${total > 0 ? `<div style="font-size: 20px; font-weight: 700; color: var(--primary); margin-top: 12px; display: flex; align-items: center; gap: 6px;">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}</div>${itemsHtml}<div class="btn-row" style="margin-top: 24px;"><button class="btn btn-danger" onclick="deleteList(${listId})">${icons.trash} Delete List</button><button class="btn btn-secondary" onclick="closeModal()">Close</button></div>`;
+        showModal('Shopping List', content);
+    };
+
+    window.createStore = async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('storeName').value;
+        const category = document.getElementById('storeCategory').value;
+        await dbOps.add('stores', { name, category });
+        closeModal();
+        renderPage();
+    };
+
+    window.editStore = async (storeId) => {
+        const store = await dbOps.get('stores', storeId);
+        const content = `<form onsubmit="updateStore(event, ${storeId})"><div class="form-group"><label class="form-label">Store Name</label><input type="text" class="form-input" id="storeName" value="${store.name}" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="storeCategory" required>${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}" ${cat === store.category ? 'selected' : ''}>${cat}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Update Store</button></form>`;
+        showModal('Edit Store', content);
+    };
+
+    window.updateStore = async (e, storeId) => {
+        e.preventDefault();
+        const name = document.getElementById('storeName').value;
+        const category = document.getElementById('storeCategory').value;
+        await dbOps.update('stores', { id: storeId, name, category });
+        closeModal();
+        renderPage();
+    };
+
+    window.deleteStore = async (storeId) => {
+        if (confirm('Delete this store? All items and lists will be removed.')) {
+            const items = await dbOps.getByIndex('items', 'storeId', storeId);
+            for (const item of items) await dbOps.delete('items', item.id);
+            const lists = await dbOps.getByIndex('lists', 'storeId', storeId);
+            for (const list of lists) {
+                const listItems = await dbOps.getByIndex('listItems', 'listId', list.id);
+                for (const li of listItems) await dbOps.delete('listItems', li.id);
+                await dbOps.delete('lists', list.id);
+            }
+            await dbOps.delete('stores', storeId);
+            renderPage();
+        }
+    };
+
+    window.createList = async (e) => {
+        e.preventDefault();
+        const storeId = parseInt(document.getElementById('listStore').value);
+        const listId = await dbOps.add('lists', { storeId, status: 'open', createdAt: new Date().toISOString(), completedAt: null });
+        closeModal();
+        currentList = listId;
+        currentStore = storeId;
+        currentPage = 'shopping';
+        renderPage();
+    };
+
+    window.addItemToStore = async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('itemName').value;
+        const category = document.getElementById('itemCategory').value;
+        await dbOps.add('items', { storeId: currentStore, name, category });
+        closeModal();
+        renderPage();
+    };
+
+    window.editItem = async (itemId) => {
+        const item = await dbOps.get('items', itemId);
+        const categories = await dbOps.getAll('categories');
+        const content = `<form onsubmit="updateItem(event, ${itemId})"><div class="form-group"><label class="form-label">Item Name</label><input type="text" class="form-input" id="itemName" value="${item.name}" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="itemCategory" required>${categories.map(cat => `<option value="${cat.name}" ${cat.name === item.category ? 'selected' : ''}>${cat.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Update Item</button></form>`;
+        showModal('Edit Item', content);
+    };
+
+    window.updateItem = async (e, itemId) => {
+        e.preventDefault();
+        const item = await dbOps.get('items', itemId);
+        const name = document.getElementById('itemName').value;
+        const category = document.getElementById('itemCategory').value;
+        await dbOps.update('items', { ...item, name, category });
+        closeModal();
+        renderPage();
+    };
+
+    window.deleteItem = async (itemId) => {
+        if (confirm('Delete this item?')) {
+            await dbOps.delete('items', itemId);
+            renderPage();
+        }
+    };
+
+    window.toggleItem = async (listItemId) => {
+        const listItem = await dbOps.get('listItems', listItemId);
+        listItem.checked = !listItem.checked;
+        await dbOps.update('listItems', listItem);
+        renderPage();
+    };
+
+    window.updateListItemPrice = async (e, listItemId) => {
+        e.preventDefault();
+        const price = document.getElementById('itemPrice').value;
+        const listItem = await dbOps.get('listItems', listItemId);
+        listItem.price = price;
+        await dbOps.update('listItems', listItem);
+        closeModal();
+        renderPage();
+    };
+
+    window.deleteListItem = async (listItemId) => {
+        if (confirm('Remove this item from the list?')) {
+            await dbOps.delete('listItems', listItemId);
             closeModal();
             renderPage();
-        };
+        }
+    };
 
-        window.editStore = async (storeId) => {
-            const store = await dbOps.get('stores', storeId);
-            const content = `<form onsubmit="updateStore(event, ${storeId})"><div class="form-group"><label class="form-label">Store Name</label><input type="text" class="form-input" id="storeName" value="${store.name}" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="storeCategory" required>${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}" ${cat === store.category ? 'selected' : ''}>${cat}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Update Store</button></form>`;
-            showModal('Edit Store', content);
-        };
-
-        window.updateStore = async (e, storeId) => {
-            e.preventDefault();
-            const name = document.getElementById('storeName').value;
-            const category = document.getElementById('storeCategory').value;
-            await dbOps.update('stores', { id: storeId, name, category });
-            closeModal();
+    window.completeList = async () => {
+        if (confirm('Mark this shopping trip as complete?')) {
+            const list = await dbOps.get('lists', currentList);
+            list.status = 'completed';
+            list.completedAt = new Date().toISOString();
+            await dbOps.update('lists', list);
+            currentPage = 'home';
             renderPage();
-        };
+        }
+    };
 
-        window.deleteStore = async (storeId) => {
-            if (confirm('Delete this store? All items and lists will be removed.')) {
-                const items = await dbOps.getByIndex('items', 'storeId', storeId);
-                for (const item of items) await dbOps.delete('items', item.id);
-                const lists = await dbOps.getByIndex('lists', 'storeId', storeId);
-                for (const list of lists) {
-                    const listItems = await dbOps.getByIndex('listItems', 'listId', list.id);
-                    for (const li of listItems) await dbOps.delete('listItems', li.id);
-                    await dbOps.delete('lists', list.id);
-                }
-                await dbOps.delete('stores', storeId);
-                renderPage();
-            }
-        };
-
-        window.createList = async (e) => {
-            e.preventDefault();
-            const storeId = parseInt(document.getElementById('listStore').value);
-            const listId = await dbOps.add('lists', { storeId, status: 'open', createdAt: new Date().toISOString(), completedAt: null });
+    window.deleteList = async (listId) => {
+        if (confirm('Delete this list permanently?')) {
+            const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
+            for (const li of listItems) await dbOps.delete('listItems', li.id);
+            await dbOps.delete('lists', listId);
             closeModal();
+            navigate('history');
+        }
+    };
+
+    window.openList = (listId) => {
+        dbOps.get('lists', listId).then(list => {
             currentList = listId;
-            currentStore = storeId;
+            currentStore = list.storeId;
             currentPage = 'shopping';
             renderPage();
-        };
-
-        window.addItemToStore = async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('itemName').value;
-            const category = document.getElementById('itemCategory').value;
-            await dbOps.add('items', { storeId: currentStore, name, category });
-            closeModal();
-            renderPage();
-        };
-
-        window.editItem = async (itemId) => {
-            const item = await dbOps.get('items', itemId);
-            const categories = await dbOps.getAll('categories');
-            const content = `<form onsubmit="updateItem(event, ${itemId})"><div class="form-group"><label class="form-label">Item Name</label><input type="text" class="form-input" id="itemName" value="${item.name}" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="itemCategory" required>${categories.map(cat => `<option value="${cat.name}" ${cat.name === item.category ? 'selected' : ''}>${cat.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Update Item</button></form>`;
-            showModal('Edit Item', content);
-        };
-
-        window.updateItem = async (e, itemId) => {
-            e.preventDefault();
-            const item = await dbOps.get('items', itemId);
-            const name = document.getElementById('itemName').value;
-            const category = document.getElementById('itemCategory').value;
-            await dbOps.update('items', { ...item, name, category });
-            closeModal();
-            renderPage();
-        };
-
-        window.deleteItem = async (itemId) => {
-            if (confirm('Delete this item?')) {
-                await dbOps.delete('items', itemId);
-                renderPage();
-            }
-        };
-
-        window.toggleItem = async (listItemId) => {
-            const listItem = await dbOps.get('listItems', listItemId);
-            listItem.checked = !listItem.checked;
-            await dbOps.update('listItems', listItem);
-            renderPage();
-        };
-
-        window.updateListItemPrice = async (e, listItemId) => {
-            e.preventDefault();
-            const price = document.getElementById('itemPrice').value;
-            const listItem = await dbOps.get('listItems', listItemId);
-            listItem.price = price;
-            await dbOps.update('listItems', listItem);
-            closeModal();
-            renderPage();
-        };
-
-        window.deleteListItem = async (listItemId) => {
-            if (confirm('Remove this item from the list?')) {
-                await dbOps.delete('listItems', listItemId);
-                closeModal();
-                renderPage();
-            }
-        };
-
-        window.completeList = async () => {
-            if (confirm('Mark this shopping trip as complete?')) {
-                const list = await dbOps.get('lists', currentList);
-                list.status = 'completed';
-                list.completedAt = new Date().toISOString();
-                await dbOps.update('lists', list);
-                currentPage = 'home';
-                renderPage();
-            }
-        };
-
-        window.deleteList = async (listId) => {
-            if (confirm('Delete this list permanently?')) {
-                const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
-                for (const li of listItems) await dbOps.delete('listItems', li.id);
-                await dbOps.delete('lists', listId);
-                closeModal();
-                navigate('history');
-            }
-        };
-
-        window.openList = (listId) => {
-            dbOps.get('lists', listId).then(list => {
-                currentList = listId;
-                currentStore = list.storeId;
-                currentPage = 'shopping';
-                renderPage();
-            });
-        };
-
-        window.viewStoreItems = (storeId) => {
-            currentStore = storeId;
-            currentPage = 'store-items';
-            renderPage();
-        };
-
-        const formatDate = (dateStr) => {
-            const date = new Date(dateStr);
-            const today = new Date();
-            const diffDays = Math.floor((today - date) / (1000 * 60 * 60 * 24));
-            if (diffDays === 0) return 'Today';
-            if (diffDays === 1) return 'Yesterday';
-            if (diffDays < 7) return `${diffDays} days ago`;
-            return date.toLocaleDateString();
-        };
-
-        const formatDateTime = (dateStr) => {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        };
-
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => navigate(item.dataset.page));
         });
+    };
 
-        document.getElementById('modal').addEventListener('click', (e) => {
-            if (e.target.id === 'modal') closeModal();
-        });
+    window.viewStoreItems = (storeId) => {
+        currentStore = storeId;
+        currentPage = 'store-items';
+        renderPage();
+    };
 
-        initDB().then(async () => {
-            await initCategories();
-            renderPage();
-        });
-    </script>
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const today = new Date();
+        const diffDays = Math.floor((today - date) / (1000 * 60 * 60 * 24));
+        if (diffDays === 0) return 'Today';
+        if (diffDays === 1) return 'Yesterday';
+        if (diffDays < 7) return `${diffDays} days ago`;
+        return date.toLocaleDateString();
+    };
+
+    const formatDateTime = (dateStr) => {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => navigate(item.dataset.page));
+    });
+
+    document.getElementById('modal').addEventListener('click', (e) => {
+        if (e.target.id === 'modal') closeModal();
+    });
+
+    initDB().then(async () => {
+        await initCategories();
+        renderPage();
+    });
+</script>
+```
+
 </body>
 </html>
