@@ -991,25 +991,59 @@
     };
 
     window.quickAddItem = async () => {
-        const searchValue = document.getElementById('quickAddItem').value.trim();
-        if (!searchValue) return;
-        const list = await dbOps.get('lists', currentList);
-        const items = await dbOps.getByIndex('items', 'storeId', list.storeId);
-        const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
-        let itemId;
-        if (existingItem) {
-            itemId = existingItem.id;
-        } else {
-            const categories = await dbOps.getAll('categories');
-            itemId = await dbOps.add('items', { storeId: list.storeId, name: searchValue, category: categories[0].name });
+        console.log('quickAddItem called');
+        console.log('currentList:', currentList);
+        console.log('currentStore:', currentStore);
+        
+        const inputEl = document.getElementById('quickAddItem');
+        if (!inputEl) {
+            console.error('Input element not found');
+            return;
         }
-        const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
-        const alreadyInList = existingListItems.some(li => li.itemId === itemId);
-        if (!alreadyInList) {
-            await dbOps.add('listItems', { listId: currentList, itemId: itemId, checked: false, price: null });
+        
+        const searchValue = inputEl.value.trim();
+        console.log('searchValue:', searchValue);
+        
+        if (!searchValue) {
+            console.log('Empty search value');
+            return;
         }
-        document.getElementById('quickAddItem').value = '';
-        renderPage();
+        
+        try {
+            const list = await dbOps.get('lists', currentList);
+            console.log('Got list:', list);
+            
+            const items = await dbOps.getByIndex('items', 'storeId', list.storeId);
+            console.log('Store items:', items);
+            
+            const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
+            console.log('Existing item:', existingItem);
+            
+            let itemId;
+            if (existingItem) {
+                itemId = existingItem.id;
+                console.log('Using existing item ID:', itemId);
+            } else {
+                const categories = await dbOps.getAll('categories');
+                itemId = await dbOps.add('items', { storeId: list.storeId, name: searchValue, category: categories[0].name });
+                console.log('Created new item with ID:', itemId);
+            }
+            
+            const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
+            const alreadyInList = existingListItems.some(li => li.itemId === itemId);
+            console.log('Already in list?', alreadyInList);
+            
+            if (!alreadyInList) {
+                await dbOps.add('listItems', { listId: currentList, itemId: itemId, checked: false, price: null });
+                console.log('Added to list');
+            }
+            
+            inputEl.value = '';
+            await renderPage();
+            console.log('Page re-rendered');
+        } catch (error) {
+            console.error('Error in quickAddItem:', error);
+        }
     };
 
     window.editListItemPrice = async (listItemId) => {
