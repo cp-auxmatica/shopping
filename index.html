@@ -383,6 +383,50 @@
             transform: scale(0.96);
         }
 
+        .suggestions-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .suggestions-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .suggestion-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .suggestion-chip {
+            background: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .suggestion-chip:active {
+            transform: scale(0.95);
+            background: var(--gray-50);
+        }
+
         .list-item {
             display: flex;
             align-items: center;
@@ -490,6 +534,25 @@
             height: 14px;
             background: var(--primary);
             border-radius: 2px;
+        }
+
+        .completed-section {
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--gray-200);
+        }
+
+        .completed-header {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            padding: 8px 0;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .empty-state {
@@ -618,15 +681,6 @@
             gap: 6px;
         }
 
-        .quantity-input {
-            width: 60px;
-            padding: 4px 8px;
-            border: 2px solid var(--gray-200);
-            border-radius: 6px;
-            font-size: 14px;
-            text-align: center;
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -695,7 +749,8 @@
             list: '<svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>',
             package: '<svg class="icon" viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
             arrowLeft: '<svg class="icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
-            hash: '<svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>'
+            hash: '<svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>',
+            lightbulb: '<svg class="icon" viewBox="0 0 24 24"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path></svg>'
         };
 
         let db;
@@ -808,6 +863,41 @@
             }
         };
 
+        const getFrequentItems = async (storeId, currentListId) => {
+            const allLists = await dbOps.getAll('lists');
+            const completedStoreListsDesc = allLists
+                .filter(l => l.storeId === storeId && l.status === 'completed')
+                .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt))
+                .slice(0, 5);
+            
+            if (completedStoreListsDesc.length === 0) return [];
+
+            const itemFrequency = {};
+            for (const list of completedStoreListsDesc) {
+                const listItems = await dbOps.getByIndex('listItems', 'listId', list.id);
+                for (const li of listItems) {
+                    itemFrequency[li.itemId] = (itemFrequency[li.itemId] || 0) + 1;
+                }
+            }
+
+            const currentListItems = await dbOps.getByIndex('listItems', 'listId', currentListId);
+            const currentItemIds = currentListItems.map(li => li.itemId);
+
+            const frequentItemIds = Object.entries(itemFrequency)
+                .filter(([itemId]) => !currentItemIds.includes(parseInt(itemId)))
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6)
+                .map(([itemId]) => parseInt(itemId));
+
+            const frequentItems = [];
+            for (const itemId of frequentItemIds) {
+                const item = await dbOps.get('items', itemId);
+                if (item) frequentItems.push(item);
+            }
+
+            return frequentItems;
+        };
+
         const navigate = (page) => {
             currentPage = page;
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -906,7 +996,7 @@
             for (const list of completedLists) {
                 const store = await dbOps.get('stores', list.storeId);
                 const items = await dbOps.getByIndex('listItems', 'listId', list.id);
-                const total = items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+                const total = items.reduce((sum, item) => sum + ((parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1)), 0);
                 html += `<div class="card" onclick="viewCompletedList(${list.id})"><div class="card-header"><div><div class="card-title">${store.name}</div><div class="card-subtitle">${icons.clock} ${formatDateTime(list.completedAt)}</div></div><span class="badge badge-success">${icons.check} ${items.length}</span></div>${total > 0 ? `<div class="card-subtitle" style="margin-top: 8px; font-weight: 700; color: var(--primary);">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}</div>`;
             }
             container.innerHTML = html;
@@ -943,27 +1033,53 @@
                 const item = await dbOps.get('items', li.itemId);
                 return { ...li, itemName: item.name, category: item.category };
             }));
-            const checkedCount = itemsWithDetails.filter(i => i.checked).length;
+            
+            const uncheckedItems = itemsWithDetails.filter(i => !i.checked);
+            const checkedItems = itemsWithDetails.filter(i => i.checked);
+            const checkedCount = checkedItems.length;
             const total = itemsWithDetails.reduce((sum, item) => sum + ((parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1)), 0);
             const existingItemIds = listItems.map(li => li.itemId);
             const availableItems = storeItems.filter(item => !existingItemIds.includes(item.id));
 
-            let html = `<div class="shopping-header"><div class="shopping-store-name">${icons.store} ${store.name}</div><div class="shopping-stats"><span class="shopping-stat">${icons.checkCircle} ${checkedCount}/${itemsWithDetails.length}</span>${total > 0 ? `<span class="shopping-stat">${icons.dollarSign} ${total.toFixed(2)}</span>` : ''}</div></div><div class="quick-add-form"><form onsubmit="return quickAddItem(event)" style="margin: 0;"><div class="quick-add-input"><input type="text" class="form-input" id="quickAddItem" list="quickItemsList" placeholder="Add item..." autocomplete="off" style="margin: 0;"><datalist id="quickItemsList">${availableItems.map(item => `<option value="${item.name}">${item.name} (${item.category})</option>`).join('')}</datalist><button type="submit" class="quick-add-btn">${icons.plus} Add</button></div></form></div>`;
+            const frequentItems = await getFrequentItems(store.id, currentList);
+
+            let html = `<div class="shopping-header"><div class="shopping-store-name">${icons.store} ${store.name}</div><div class="shopping-stats"><span class="shopping-stat">${icons.checkCircle} ${checkedCount}/${itemsWithDetails.length}</span>${total > 0 ? `<span class="shopping-stat">${icons.dollarSign} ${total.toFixed(2)}</span>` : ''}</div></div>`;
+
+            if (frequentItems.length > 0) {
+                html += `<div class="suggestions-section"><div class="suggestions-header">${icons.lightbulb} Frequently bought here</div><div class="suggestion-chips">`;
+                frequentItems.forEach(item => {
+                    html += `<button class="suggestion-chip" onclick="addSuggestedItem(${item.id})">${icons.plus} ${item.name}</button>`;
+                });
+                html += `</div></div>`;
+            }
+
+            html += `<div class="quick-add-form"><form onsubmit="return quickAddItem(event)" style="margin: 0;"><div class="quick-add-input"><input type="text" class="form-input" id="quickAddItem" list="quickItemsList" placeholder="Add item..." autocomplete="off" style="margin: 0;"><datalist id="quickItemsList">${availableItems.map(item => `<option value="${item.name}">${item.name} (${item.category})</option>`).join('')}</datalist><button type="submit" class="quick-add-btn">${icons.plus} Add</button></div></form></div>`;
 
             if (itemsWithDetails.length === 0) {
                 html += `<div class="empty-state" style="padding: 40px 20px;"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">Your list is empty<br>Add items above to get started</div></div>`;
             } else {
-                const itemsByCategory = {};
-                itemsWithDetails.forEach(item => {
-                    if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
-                    itemsByCategory[item.category].push(item);
+                const uncheckedByCategory = {};
+                uncheckedItems.forEach(item => {
+                    if (!uncheckedByCategory[item.category]) uncheckedByCategory[item.category] = [];
+                    uncheckedByCategory[item.category].push(item);
                 });
-                for (const category in itemsByCategory) {
+                
+                for (const category in uncheckedByCategory) {
                     html += `<div class="category-section"><div class="category-header">${category}</div>`;
-                    itemsByCategory[category].forEach(item => {
+                    uncheckedByCategory[category].forEach(item => {
                         const qty = parseInt(item.quantity) || 1;
                         const itemTotal = (parseFloat(item.price) || 0) * qty;
-                        html += `<div class="list-item ${item.checked ? 'checked' : ''}" onclick="toggleItem(${item.id})"><div class="checkbox ${item.checked ? 'checked' : ''}">${item.checked ? icons.check : ''}</div><div class="list-item-content"><div class="list-item-name">${item.itemName}</div><div class="list-item-meta">${qty > 1 ? `<span class="quantity-badge">${icons.hash} ${qty}</span>` : ''}${item.price ? `<span>${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}${qty > 1 ? ` each` : ''}</span>` : ''}</div></div>${itemTotal > 0 ? `<div class="list-item-price">${itemTotal.toFixed(2)}</div>` : ''}<button class="icon-btn" onclick="event.stopPropagation(); editListItem(${item.id})">${icons.edit}</button></div>`;
+                        html += `<div class="list-item" onclick="toggleItem(${item.id})"><div class="checkbox"></div><div class="list-item-content"><div class="list-item-name">${item.itemName}</div><div class="list-item-meta">${qty > 1 ? `<span class="quantity-badge">${icons.hash} ${qty}</span>` : ''}${item.price ? `<span>${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}${qty > 1 ? ` each` : ''}</span>` : ''}</div></div>${itemTotal > 0 ? `<div class="list-item-price">${itemTotal.toFixed(2)}</div>` : ''}<button class="icon-btn" onclick="event.stopPropagation(); editListItem(${item.id})">${icons.edit}</button></div>`;
+                    });
+                    html += `</div>`;
+                }
+
+                if (checkedItems.length > 0) {
+                    html += `<div class="completed-section"><div class="completed-header">${icons.check} Completed Items</div>`;
+                    checkedItems.forEach(item => {
+                        const qty = parseInt(item.quantity) || 1;
+                        const itemTotal = (parseFloat(item.price) || 0) * qty;
+                        html += `<div class="list-item checked" onclick="toggleItem(${item.id})"><div class="checkbox checked">${icons.check}</div><div class="list-item-content"><div class="list-item-name">${item.itemName}</div><div class="list-item-meta">${qty > 1 ? `<span class="quantity-badge">${icons.hash} ${qty}</span>` : ''}${item.price ? `<span>${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}${qty > 1 ? ` each` : ''}</span>` : ''}</div></div>${itemTotal > 0 ? `<div class="list-item-price">${itemTotal.toFixed(2)}</div>` : ''}<button class="icon-btn" onclick="event.stopPropagation(); editListItem(${item.id})">${icons.edit}</button></div>`;
                     });
                     html += `</div>`;
                 }
@@ -994,7 +1110,7 @@
             const openLists = lists.filter(l => l.status === 'open');
             const availableStores = stores.filter(store => !openLists.some(list => list.storeId === store.id));
             if (availableStores.length === 0) {
-                showModal('No Stores Available', `<p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p><button class="btn btn-secondary" onclick="closeModal()">OK</button>`);
+                showModal('No Stores Available', `<p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete existing lists first.</p><button class="btn btn-secondary" onclick="closeModal()">OK</button>`);
                 return;
             }
             const content = `<form onsubmit="createList(event)"><div class="form-group"><label class="form-label">Select Store</label><select class="form-select" id="listStore" required><option value="">Choose a store...</option>${availableStores.map(store => `<option value="${store.id}">${store.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Create List</button></form>`;
@@ -1029,6 +1145,15 @@
             document.getElementById('quickAddItem').value = '';
             renderPage();
             return false;
+        };
+
+        window.addSuggestedItem = async (itemId) => {
+            const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
+            const alreadyInList = existingListItems.some(li => li.itemId === itemId);
+            if (!alreadyInList) {
+                await dbOps.add('listItems', { listId: currentList, itemId: itemId, checked: false, price: null, quantity: 1 });
+                renderPage();
+            }
         };
 
         window.editListItem = async (listItemId) => {
