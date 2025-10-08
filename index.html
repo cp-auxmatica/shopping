@@ -349,7 +349,7 @@
             margin-bottom: 8px;
         }
 
-        .form-input, .form-select {
+        .form-input, .form-select, .form-textarea {
             width: 100%;
             padding: 12px 14px;
             border: 2px solid var(--gray-200);
@@ -358,8 +358,13 @@
             transition: all 0.2s;
             background: white;
         }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
 
-        .form-input:focus, .form-select:focus {
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
@@ -413,7 +418,6 @@
             border-radius: 10px;
             margin-bottom: 8px;
             border: 2px solid var(--gray-100);
-            cursor: pointer;
             transition: all 0.2s;
         }
 
@@ -431,6 +435,12 @@
             text-decoration: line-through;
             color: var(--gray-600);
         }
+        
+        .list-item .main-content {
+            flex: 1;
+            min-width: 0;
+            cursor: pointer;
+        }
 
         .checkbox {
             width: 24px;
@@ -442,6 +452,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            cursor: pointer;
         }
 
         .checkbox.checked {
@@ -451,8 +462,9 @@
         }
 
         .list-item-content {
-            flex: 1;
-            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .list-item-name {
@@ -461,21 +473,37 @@
             color: var(--gray-900);
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .list-item-category {
+        .list-item-quantity {
+            font-size: 13px;
+            font-weight: 700;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .list-item-details {
             font-size: 13px;
             color: var(--gray-600);
-            margin-top: 2px;
+            margin-top: 4px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 12px;
         }
 
         .list-item-price {
             font-size: 15px;
             font-weight: 700;
             color: var(--primary);
+        }
+        
+        .list-item-notes {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .category-section {
@@ -632,6 +660,26 @@
             align-items: center;
             gap: 6px;
         }
+        
+        .shopping-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
+        
+        .sort-btn {
+            background: var(--gray-100);
+            border: none;
+            color: var(--gray-700);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -700,18 +748,21 @@
             tag: '<svg class="icon" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>',
             list: '<svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>',
             package: '<svg class="icon" viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
-            arrowLeft: '<svg class="icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>'
+            arrowLeft: '<svg class="icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+            sort: '<svg class="icon-sm" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>',
+            messageSquare: '<svg class="icon-sm" viewBox="0 0 24 24" style="stroke-width: 2.5;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>',
+            repeat: '<svg class="icon" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>'
         };
 
         let db;
         const DB_NAME = 'ShopSmartDB';
-        const DB_VERSION = 2;
+        const DB_VERSION = 1;
 
         const initDB = () => {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-                request.onerror = (event) => reject(`Database error: ${event.target.errorCode}`);
+                request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
                     db = request.result;
                     resolve(db);
@@ -749,7 +800,7 @@
                     const store = transaction.objectStore(storeName);
                     const request = store.add(data);
                     request.onsuccess = () => resolve(request.result);
-                    request.onerror = (event) => reject(`Add error: ${event.target.error}`);
+                    request.onerror = () => reject(request.error);
                 });
             },
             getAll: (storeName) => {
@@ -758,7 +809,7 @@
                     const store = transaction.objectStore(storeName);
                     const request = store.getAll();
                     request.onsuccess = () => resolve(request.result);
-                    request.onerror = (event) => reject(`GetAll error: ${event.target.error}`);
+                    request.onerror = () => reject(request.error);
                 });
             },
             get: (storeName, id) => {
@@ -767,7 +818,7 @@
                     const store = transaction.objectStore(storeName);
                     const request = store.get(id);
                     request.onsuccess = () => resolve(request.result);
-                    request.onerror = (event) => reject(`Get error: ${event.target.error}`);
+                    request.onerror = () => reject(request.error);
                 });
             },
             update: (storeName, data) => {
@@ -776,7 +827,7 @@
                     const store = transaction.objectStore(storeName);
                     const request = store.put(data);
                     request.onsuccess = () => resolve(request.result);
-                    request.onerror = (event) => reject(`Update error: ${event.target.error}`);
+                    request.onerror = () => reject(request.error);
                 });
             },
             delete: (storeName, id) => {
@@ -785,7 +836,7 @@
                     const store = transaction.objectStore(storeName);
                     const request = store.delete(id);
                     request.onsuccess = () => resolve();
-                    request.onerror = (event) => reject(`Delete error: ${event.target.error}`);
+                    request.onerror = () => reject(request.error);
                 });
             },
             getByIndex: (storeName, indexName, value) => {
@@ -795,7 +846,7 @@
                     const index = store.index(indexName);
                     const request = index.getAll(value);
                     request.onsuccess = () => resolve(request.result);
-                    request.onerror = (event) => reject(`GetByIndex error: ${event.target.error}`);
+                    request.onerror = () => reject(request.error);
                 });
             }
         };
@@ -813,6 +864,7 @@
         let currentPage = 'home';
         let currentStore = null;
         let currentList = null;
+        let currentSort = 'category'; // 'category' or 'alpha'
 
         const initCategories = async () => {
             const categories = await dbOps.getAll('categories');
@@ -970,7 +1022,7 @@
             for (const list of completedLists) {
                 const store = await dbOps.get('stores', list.storeId);
                 const items = await dbOps.getByIndex('listItems', 'listId', list.id);
-                const total = items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+                const total = items.reduce((sum, item) => sum + (parseFloat(item.price) * (item.quantity || 1) || 0), 0);
 
                 html += `
                     <div class="card" onclick="viewCompletedList(${list.id})">
@@ -1019,7 +1071,7 @@
                 itemsByCategory[category].forEach(item => {
                     html += `
                         <div class="list-item">
-                            <div class="list-item-content">
+                            <div class="main-content">
                                 <div class="list-item-name">${item.name}</div>
                             </div>
                             <div class="store-actions">
@@ -1041,15 +1093,22 @@
             const listItems = await dbOps.getByIndex('listItems', 'listId', currentList);
             const storeItems = await dbOps.getByIndex('items', 'storeId', store.id);
             
-            const itemsWithDetails = await Promise.all(
+            let itemsWithDetails = await Promise.all(
                 listItems.map(async li => {
                     const item = await dbOps.get('items', li.itemId);
                     return { ...li, itemName: item.name, category: item.category };
                 })
             );
 
+            // Sorting logic
+            if (currentSort === 'alpha') {
+                itemsWithDetails.sort((a, b) => a.itemName.localeCompare(b.itemName));
+            } else { // Default to 'category'
+                itemsWithDetails.sort((a, b) => a.category.localeCompare(b.category) || a.itemName.localeCompare(b.itemName));
+            }
+
             const checkedCount = itemsWithDetails.filter(i => i.checked).length;
-            const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+            const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) * (item.quantity || 1) || 0), 0);
 
             const existingItemIds = listItems.map(li => li.itemId);
             const availableItems = storeItems.filter(item => !existingItemIds.includes(item.id));
@@ -1064,7 +1123,7 @@
                 </div>
 
                 <div class="quick-add-form">
-                    <form id="quickAddForm" style="margin: 0;">
+                    <form onsubmit="quickAddItem(event)" style="margin: 0;">
                         <div class="quick-add-input">
                             <input 
                                 type="text" 
@@ -1091,12 +1150,21 @@
                     </div>
                 `;
             } else {
+                html += `
+                    <div class="shopping-controls">
+                        <button class="sort-btn" onclick="toggleSort()">
+                            ${icons.sort} Sort by ${currentSort === 'category' ? 'Name' : 'Category'}
+                        </button>
+                    </div>
+                `;
+
                 const itemsByCategory = {};
                 itemsWithDetails.forEach(item => {
-                    if (!itemsByCategory[item.category]) {
-                        itemsByCategory[item.category] = [];
+                    const key = currentSort === 'category' ? item.category : 'All Items';
+                    if (!itemsByCategory[key]) {
+                        itemsByCategory[key] = [];
                     }
-                    itemsByCategory[item.category].push(item);
+                    itemsByCategory[key].push(item);
                 });
 
                 for (const category in itemsByCategory) {
@@ -1106,15 +1174,20 @@
                     `;
                     itemsByCategory[category].forEach(item => {
                         html += `
-                            <div class="list-item ${item.checked ? 'checked' : ''}" onclick="toggleItem(${item.id})">
-                                <div class="checkbox ${item.checked ? 'checked' : ''}">
+                            <div class="list-item ${item.checked ? 'checked' : ''}">
+                                <div class="checkbox ${item.checked ? 'checked' : ''}" onclick="toggleItem(${item.id})">
                                     ${item.checked ? icons.check : ''}
                                 </div>
-                                <div class="list-item-content">
-                                    <div class="list-item-name">${item.itemName}</div>
-                                    ${item.price ? `<div class="list-item-category">${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}</div>` : ''}
+                                <div class="main-content" onclick="editListItem(${item.id})">
+                                    <div class="list-item-content">
+                                        <div class="list-item-name">${item.itemName}</div>
+                                        ${item.quantity && item.quantity != 1 ? `<div class="list-item-quantity">x${item.quantity}</div>` : ''}
+                                    </div>
+                                    <div class="list-item-details">
+                                        ${item.price ? `<span>${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}</span>` : ''}
+                                        ${item.notes ? `<span class="list-item-notes">${icons.messageSquare} ${item.notes}</span>` : ''}
+                                    </div>
                                 </div>
-                                <button class="icon-btn" onclick="event.stopPropagation(); editListItemPrice(${item.id})">${icons.dollarSign}</button>
                             </div>
                         `;
                     });
@@ -1129,11 +1202,11 @@
             `;
 
             container.innerHTML = html;
-
-            const quickAddForm = document.getElementById('quickAddForm');
-            if (quickAddForm) {
-                quickAddForm.addEventListener('submit', quickAddItem);
-            }
+        };
+        
+        const toggleSort = () => {
+            currentSort = currentSort === 'category' ? 'alpha' : 'category';
+            renderPage();
         };
 
         const showModal = (title, content) => {
@@ -1154,8 +1227,6 @@
         const closeModal = () => {
             document.getElementById('modal').classList.remove('active');
         };
-        window.closeModal = closeModal;
-
 
         const showCreateStoreModal = () => {
             const content = `
@@ -1185,16 +1256,17 @@
                 !openLists.some(list => list.storeId === store.id)
             );
 
-            if (stores.length > 0 && availableStores.length === 0) {
-                showModal('No Stores Available', `
-                    <p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p>
-                    <button class="btn btn-secondary" onclick="closeModal()">OK</button>
+            if (stores.length === 0) {
+                 showModal('No Stores Available', `
+                    <p style="margin-bottom: 20px; color: var(--gray-600);">You need to create a store first before you can make a shopping list.</p>
+                    <button class="btn btn-primary" onclick="navigate('stores'); closeModal();">Go to Stores</button>
                 `);
                 return;
             }
-             if (stores.length === 0) {
+
+            if (availableStores.length === 0) {
                 showModal('No Stores Available', `
-                    <p style="margin-bottom: 20px; color: var(--gray-600);">Please add a store first before creating a list.</p>
+                    <p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p>
                     <button class="btn btn-secondary" onclick="closeModal()">OK</button>
                 `);
                 return;
@@ -1244,17 +1316,14 @@
             const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
             
             let itemId;
-            let lastPrice = null; 
             if (existingItem) {
                 itemId = existingItem.id;
-                lastPrice = existingItem.price || null; 
             } else {
-                
                 const categories = await dbOps.getAll('categories');
                 itemId = await dbOps.add('items', {
                     storeId: currentStore,
                     name: searchValue,
-                    category: 'Other' 
+                    category: 'Other'
                 });
             }
             
@@ -1262,32 +1331,52 @@
                 listId: currentList,
                 itemId: itemId,
                 checked: false,
-                price: lastPrice 
+                price: null,
+                quantity: 1,
+                notes: ''
             });
             
             document.getElementById('quickAddItem').value = '';
             renderPage();
         };
 
-        const editListItemPrice = async (listItemId) => {
+        const editListItem = async (listItemId) => {
             const listItem = await dbOps.get('listItems', listItemId);
             const item = await dbOps.get('items', listItem.itemId);
             
             const content = `
-                <form onsubmit="updateListItemPrice(event, ${listItemId})">
+                <form onsubmit="updateListItem(event, ${listItemId})">
                     <div class="form-group">
-                        <label class="form-label">${item.name}</label>
+                        <label class="form-label">Quantity</label>
+                        <input type="text" class="form-input" id="itemQuantity" value="${listItem.quantity || '1'}" placeholder="e.g., 1, 2.5, 1kg">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Price (per item)</label>
                         <input type="number" step="0.01" class="form-input" id="itemPrice" value="${listItem.price || ''}" placeholder="0.00">
                     </div>
+                    <div class="form-group">
+                        <label class="form-label">Notes</label>
+                        <textarea class="form-textarea" id="itemNotes" placeholder="e.g., brand preference, low-fat...">${listItem.notes || ''}</textarea>
+                    </div>
                     <div class="btn-row">
-                        <button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">${icons.trash} Remove from List</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">${icons.trash} Remove</button>
                         <button type="submit" class="btn btn-primary">${icons.check} Save</button>
                     </div>
                 </form>
             `;
-            showModal('Update Price', content);
+            showModal(`Edit: ${item.name}`, content);
         };
-        window.editListItemPrice = editListItemPrice;
+        
+        const updateListItem = async (e, listItemId) => {
+            e.preventDefault();
+            const listItem = await dbOps.get('listItems', listItemId);
+            listItem.price = document.getElementById('itemPrice').value;
+            listItem.quantity = document.getElementById('itemQuantity').value || '1';
+            listItem.notes = document.getElementById('itemNotes').value;
+            await dbOps.update('listItems', listItem);
+            closeModal();
+            renderPage();
+        };
 
         const viewCompletedList = async (listId) => {
             const list = await dbOps.get('lists', listId);
@@ -1301,7 +1390,7 @@
                 })
             );
 
-            const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+            const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) * (item.quantity || 1) || 0), 0);
 
             const itemsByCategory = {};
             itemsWithDetails.forEach(item => {
@@ -1315,12 +1404,17 @@
             for (const category in itemsByCategory) {
                 itemsHtml += `<div class="category-header">${category}</div>`;
                 itemsByCategory[category].forEach(item => {
+                    const displayPrice = item.price ? (parseFloat(item.price) * (item.quantity || 1)).toFixed(2) : '';
                     itemsHtml += `
                         <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-name">${item.itemName}</div>
+                            <div class="main-content">
+                                <div class="list-item-content">
+                                    <div class="list-item-name">${item.itemName}</div>
+                                    ${item.quantity && item.quantity != 1 ? `<div class="list-item-quantity">x${item.quantity}</div>` : ''}
+                                </div>
+                                ${item.notes ? `<div class="list-item-details" style="margin-top: 4px; opacity: 0.8;">${item.notes}</div>` : ''}
                             </div>
-                            ${item.price ? `<div class="list-item-price">${parseFloat(item.price).toFixed(2)}</div>` : ''}
+                            ${displayPrice ? `<div class="list-item-price">${displayPrice}</div>` : ''}
                         </div>
                     `;
                 });
@@ -1334,13 +1428,46 @@
                 </div>
                 ${itemsHtml}
                 <div class="btn-row" style="margin-top: 24px;">
-                    <button class="btn btn-danger" onclick="deleteList(${listId})">${icons.trash} Delete List</button>
-                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                    <button class="btn btn-secondary" onclick="reuseList(${list.id})">${icons.repeat} Re-use List</button>
+                    <button class="btn btn-danger" onclick="deleteList(${listId})">${icons.trash} Delete</button>
                 </div>
             `;
             showModal('Shopping List', content);
         };
-        window.viewCompletedList = viewCompletedList;
+        
+        const reuseList = async (listId) => {
+            const oldList = await dbOps.get('lists', listId);
+            const oldListItems = await dbOps.getByIndex('listItems', 'listId', listId);
+            
+            // Check if there's already an open list for this store
+            const allLists = await dbOps.getAll('lists');
+            const isOpenList = allLists.some(l => l.storeId === oldList.storeId && l.status === 'open');
+            if (isOpenList) {
+                alert('An active list already exists for this store. Please complete it before re-using this one.');
+                return;
+            }
+
+            const newListId = await dbOps.add('lists', {
+                storeId: oldList.storeId,
+                status: 'open',
+                createdAt: new Date().toISOString(),
+                completedAt: null
+            });
+            
+            for (const item of oldListItems) {
+                await dbOps.add('listItems', {
+                    listId: newListId,
+                    itemId: item.itemId,
+                    checked: false,
+                    price: null, // Reset price
+                    quantity: item.quantity,
+                    notes: item.notes
+                });
+            }
+            
+            closeModal();
+            openList(newListId);
+        };
 
         const createStore = async (e) => {
             e.preventDefault();
@@ -1351,7 +1478,6 @@
             closeModal();
             renderPage();
         };
-        window.createStore = createStore;
 
         const editStore = async (storeId) => {
             const store = await dbOps.get('stores', storeId);
@@ -1374,7 +1500,6 @@
             `;
             showModal('Edit Store', content);
         };
-        window.editStore = editStore;
 
         const updateStore = async (e, storeId) => {
             e.preventDefault();
@@ -1385,7 +1510,6 @@
             closeModal();
             renderPage();
         };
-        window.updateStore = updateStore;
 
         const deleteStore = async (storeId) => {
             if (confirm('Delete this store? All items and lists will be removed.')) {
@@ -1407,14 +1531,11 @@
                 renderPage();
             }
         };
-        window.deleteStore = deleteStore;
 
         const createList = async (e) => {
             e.preventDefault();
             const storeId = parseInt(document.getElementById('listStore').value);
             
-            if (!storeId) return;
-
             const listId = await dbOps.add('lists', {
                 storeId,
                 status: 'open',
@@ -1423,12 +1544,8 @@
             });
             
             closeModal();
-            currentList = listId;
-            currentStore = storeId;
-            currentPage = 'shopping';
-            renderPage();
+            openList(listId);
         };
-        window.createList = createList;
 
         const addItemToStore = async (e) => {
             e.preventDefault();
@@ -1439,7 +1556,6 @@
             closeModal();
             renderPage();
         };
-        window.addItemToStore = addItemToStore;
 
         const editItem = async (itemId) => {
             const item = await dbOps.get('items', itemId);
@@ -1464,7 +1580,6 @@
             `;
             showModal('Edit Item', content);
         };
-        window.editItem = editItem;
 
         const updateItem = async (e, itemId) => {
             e.preventDefault();
@@ -1476,15 +1591,13 @@
             closeModal();
             renderPage();
         };
-        window.updateItem = updateItem;
 
         const deleteItem = async (itemId) => {
-            if (confirm('Delete this item permanently? This cannot be undone.')) {
+            if (confirm('Delete this item?')) {
                 await dbOps.delete('items', itemId);
                 renderPage();
             }
         };
-        window.deleteItem = deleteItem;
 
         const toggleItem = async (listItemId) => {
             const listItem = await dbOps.get('listItems', listItemId);
@@ -1492,25 +1605,6 @@
             await dbOps.update('listItems', listItem);
             renderPage();
         };
-        window.toggleItem = toggleItem;
-
-        const updateListItemPrice = async (e, listItemId) => {
-            e.preventDefault();
-            const price = document.getElementById('itemPrice').value;
-            const listItem = await dbOps.get('listItems', listItemId);
-            listItem.price = price;
-            await dbOps.update('listItems', listItem);
-
-            if (price && !isNaN(parseFloat(price))) {
-                const masterItem = await dbOps.get('items', listItem.itemId);
-                masterItem.price = price;
-                await dbOps.update('items', masterItem);
-            }
-            
-            closeModal();
-            renderPage();
-        };
-        window.updateListItemPrice = updateListItemPrice;
 
         const deleteListItem = async (listItemId) => {
             if (confirm('Remove this item from the list?')) {
@@ -1519,7 +1613,6 @@
                 renderPage();
             }
         };
-        window.deleteListItem = deleteListItem;
 
         const completeList = async () => {
             if (confirm('Mark this shopping trip as complete?')) {
@@ -1532,7 +1625,6 @@
                 renderPage();
             }
         };
-        window.completeList = completeList;
 
         const deleteList = async (listId) => {
             if (confirm('Delete this list permanently?')) {
@@ -1545,7 +1637,6 @@
                 navigate('history');
             }
         };
-        window.deleteList = deleteList;
 
         const openList = (listId) => {
             dbOps.get('lists', listId).then(list => {
@@ -1555,14 +1646,12 @@
                 renderPage();
             });
         };
-        window.openList = openList;
 
         const viewStoreItems = (storeId) => {
             currentStore = storeId;
             currentPage = 'store-items';
             renderPage();
         };
-        window.viewStoreItems = viewStoreItems;
 
         const formatDate = (dateStr) => {
             const date = new Date(dateStr);
@@ -1591,9 +1680,6 @@
         initDB().then(async () => {
             await initCategories();
             renderPage();
-        }).catch(err => {
-            console.error("Failed to initialize the database:", err);
-            document.getElementById('mainContainer').innerHTML = `<div class="empty-state"><div class="empty-state-text">Error: Could not load database. Please clear your site data and try again.</div></div>`;
         });
     </script>
 </body>
