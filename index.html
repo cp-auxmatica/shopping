@@ -909,6 +909,7 @@
                             </div>
                             <span class="badge badge-primary">${icons.checkCircle} ${checkedCount}/${items.length}</span>
                         </div>
+                        <div class="card-subtitle" style="margin-top: 8px;">${icons.clock} ${formatDate(list.createdAt)}</div>
                     </div>
                 `;
             }
@@ -936,7 +937,7 @@
                     <div class="store-item">
                         <div class="store-info" onclick="viewStoreItems(${store.id})">
                             <div class="store-name">${store.name}</div>
-                            <div class="store-category">${icons.tag} ${store.category} - ${items.length} items</div>
+                            <div class="store-category">${icons.tag} ${store.category} • ${items.length} items</div>
                         </div>
                         <div class="store-actions">
                             <button class="icon-btn" onclick="editStore(${store.id})">${icons.edit}</button>
@@ -1145,7 +1146,7 @@
             modal.classList.add('active');
         };
 
-        const closeModal = () => {
+        window.closeModal = () => {
             document.getElementById('modal').classList.remove('active');
         };
 
@@ -1177,9 +1178,16 @@
                 !openLists.some(list => list.storeId === store.id)
             );
 
-            if (availableStores.length === 0) {
+            if (stores.length > 0 && availableStores.length === 0) {
                 showModal('No Stores Available', `
                     <p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p>
+                    <button class="btn btn-secondary" onclick="closeModal()">OK</button>
+                `);
+                return;
+            }
+             if (stores.length === 0) {
+                showModal('No Stores Available', `
+                    <p style="margin-bottom: 20px; color: var(--gray-600);">Please add a store first before creating a list.</p>
                     <button class="btn btn-secondary" onclick="closeModal()">OK</button>
                 `);
                 return;
@@ -1220,46 +1228,45 @@
             showModal('Add Item', content);
         };
 
-        // CHANGED THIS ONE LINE - added window.
+        // --- START OF FIX ---
+        // FIX #1: Retrieve the last known price when adding an item.
         window.quickAddItem = async (e) => {
             e.preventDefault();
             const searchValue = document.getElementById('quickAddItem').value.trim();
-            if (!searchValue) return false;
+            if (!searchValue) return;
             
-            const list = await dbOps.get('lists', currentList);
-            const items = await dbOps.getByIndex('items', 'storeId', list.storeId);
+            const items = await dbOps.getByIndex('items', 'storeId', currentStore);
             const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
             
             let itemId;
+            let lastPrice = null; // Variable to hold the last known price
             if (existingItem) {
                 itemId = existingItem.id;
+                lastPrice = existingItem.price || null; // Get the price from the master item
             } else {
+                // If item is new, create it in the database
                 const categories = await dbOps.getAll('categories');
                 itemId = await dbOps.add('items', {
-                    storeId: list.storeId,
+                    storeId: currentStore,
                     name: searchValue,
-                    category: categories[0].name
+                    category: 'Other' // Default category
                 });
             }
             
-            const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
-            const alreadyInList = existingListItems.some(li => li.itemId === itemId);
-            
-            if (!alreadyInList) {
-                await dbOps.add('listItems', {
-                    listId: currentList,
-                    itemId: itemId,
-                    checked: false,
-                    price: null
-                });
-            }
+            // Add the item to the current shopping list
+            await dbOps.add('listItems', {
+                listId: currentList,
+                itemId: itemId,
+                checked: false,
+                price: lastPrice // Use the last known price when adding to list
+            });
             
             document.getElementById('quickAddItem').value = '';
             renderPage();
-            return false;
         };
+        // --- END OF FIX ---
 
-        const editListItemPrice = async (listItemId) => {
+        window.editListItemPrice = async (listItemId) => {
             const listItem = await dbOps.get('listItems', listItemId);
             const item = await dbOps.get('items', listItem.itemId);
             
@@ -1270,7 +1277,7 @@
                         <input type="number" step="0.01" class="form-input" id="itemPrice" value="${listItem.price || ''}" placeholder="0.00">
                     </div>
                     <div class="btn-row">
-                        <button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">${icons.trash} Delete</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">${icons.trash} Remove from List</button>
                         <button type="submit" class="btn btn-primary">${icons.check} Save</button>
                     </div>
                 </form>
@@ -1278,7 +1285,7 @@
             showModal('Update Price', content);
         };
 
-        const viewCompletedList = async (listId) => {
+        window.viewCompletedList = async (listId) => {
             const list = await dbOps.get('lists', listId);
             const store = await dbOps.get('stores', list.storeId);
             const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
@@ -1330,7 +1337,7 @@
             showModal('Shopping List', content);
         };
 
-        const createStore = async (e) => {
+        window.createStore = async (e) => {
             e.preventDefault();
             const name = document.getElementById('storeName').value;
             const category = document.getElementById('storeCategory').value;
@@ -1340,7 +1347,7 @@
             renderPage();
         };
 
-        const editStore = async (storeId) => {
+        window.editStore = async (storeId) => {
             const store = await dbOps.get('stores', storeId);
             const content = `
                 <form onsubmit="updateStore(event, ${storeId})">
@@ -1362,7 +1369,7 @@
             showModal('Edit Store', content);
         };
 
-        const updateStore = async (e, storeId) => {
+        window.updateStore = async (e, storeId) => {
             e.preventDefault();
             const name = document.getElementById('storeName').value;
             const category = document.getElementById('storeCategory').value;
@@ -1372,7 +1379,7 @@
             renderPage();
         };
 
-        const deleteStore = async (storeId) => {
+        window.deleteStore = async (storeId) => {
             if (confirm('Delete this store? All items and lists will be removed.')) {
                 const items = await dbOps.getByIndex('items', 'storeId', storeId);
                 for (const item of items) {
@@ -1393,10 +1400,12 @@
             }
         };
 
-        const createList = async (e) => {
+        window.createList = async (e) => {
             e.preventDefault();
             const storeId = parseInt(document.getElementById('listStore').value);
             
+            if (!storeId) return;
+
             const listId = await dbOps.add('lists', {
                 storeId,
                 status: 'open',
@@ -1411,7 +1420,7 @@
             renderPage();
         };
 
-        const addItemToStore = async (e) => {
+        window.addItemToStore = async (e) => {
             e.preventDefault();
             const name = document.getElementById('itemName').value;
             const category = document.getElementById('itemCategory').value;
@@ -1421,7 +1430,7 @@
             renderPage();
         };
 
-        const editItem = async (itemId) => {
+        window.editItem = async (itemId) => {
             const item = await dbOps.get('items', itemId);
             const categories = await dbOps.getAll('categories');
             
@@ -1445,7 +1454,7 @@
             showModal('Edit Item', content);
         };
 
-        const updateItem = async (e, itemId) => {
+        window.updateItem = async (e, itemId) => {
             e.preventDefault();
             const item = await dbOps.get('items', itemId);
             const name = document.getElementById('itemName').value;
@@ -1456,31 +1465,43 @@
             renderPage();
         };
 
-        const deleteItem = async (itemId) => {
-            if (confirm('Delete this item?')) {
+        window.deleteItem = async (itemId) => {
+            if (confirm('Delete this item permanently? This cannot be undone.')) {
                 await dbOps.delete('items', itemId);
                 renderPage();
             }
         };
 
-        const toggleItem = async (listItemId) => {
+        window.toggleItem = async (listItemId) => {
             const listItem = await dbOps.get('listItems', listItemId);
             listItem.checked = !listItem.checked;
             await dbOps.update('listItems', listItem);
             renderPage();
         };
 
-        const updateListItemPrice = async (e, listItemId) => {
+        // --- START OF FIX ---
+        // FIX #2: Update the master item's price when a price is saved on a list item.
+        window.updateListItemPrice = async (e, listItemId) => {
             e.preventDefault();
             const price = document.getElementById('itemPrice').value;
             const listItem = await dbOps.get('listItems', listItemId);
             listItem.price = price;
             await dbOps.update('listItems', listItem);
+
+            // Also update the master item's price for future use
+            if (price && !isNaN(parseFloat(price))) {
+                const masterItem = await dbOps.get('items', listItem.itemId);
+                masterItem.price = price;
+                await dbOps.update('items', masterItem);
+            }
+            
             closeModal();
             renderPage();
         };
+        // --- END OF FIX ---
 
-        const deleteListItem = async (listItemId) => {
+
+        window.deleteListItem = async (listItemId) => {
             if (confirm('Remove this item from the list?')) {
                 await dbOps.delete('listItems', listItemId);
                 closeModal();
@@ -1488,7 +1509,7 @@
             }
         };
 
-        const completeList = async () => {
+        window.completeList = async () => {
             if (confirm('Mark this shopping trip as complete?')) {
                 const list = await dbOps.get('lists', currentList);
                 list.status = 'completed';
@@ -1500,7 +1521,7 @@
             }
         };
 
-        const deleteList = async (listId) => {
+        window.deleteList = async (listId) => {
             if (confirm('Delete this list permanently?')) {
                 const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
                 for (const li of listItems) {
@@ -1512,7 +1533,7 @@
             }
         };
 
-        const openList = (listId) => {
+        window.openList = (listId) => {
             dbOps.get('lists', listId).then(list => {
                 currentList = listId;
                 currentStore = list.storeId;
@@ -1521,7 +1542,7 @@
             });
         };
 
-        const viewStoreItems = (storeId) => {
+        window.viewStoreItems = (storeId) => {
             currentStore = storeId;
             currentPage = 'store-items';
             renderPage();
