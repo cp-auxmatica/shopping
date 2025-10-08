@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#6366f1">
     <title>Shop Smart</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU2hvcCBTbWFydCIsInNob3J0X25hbWUiOiJTaG9wU21hcnQiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2ZmZmZmZiIsInRoZW1lX2NvbG9yIjoiIzYzNjZmMSJ9">
     <style>
         * {
             margin: 0;
@@ -16,7 +17,6 @@
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
             --secondary: #ec4899;
             --success: #10b981;
             --warning: #f59e0b;
@@ -31,34 +31,23 @@
             --gray-900: #111827;
         }
 
-        .icon {
-            width: 24px;
-            height: 24px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: var(--gray-50);
             color: var(--gray-900);
             padding-bottom: 80px;
             overflow-x: hidden;
-            line-height: 1.5;
         }
 
+        /* Header */
         .header {
-            background: white;
-            color: var(--gray-900);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
             padding: 16px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-bottom: 1px solid var(--gray-200);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .header-content {
@@ -69,33 +58,23 @@
         }
 
         .header h1 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .header-btn {
-            background: var(--gray-100);
+            background: rgba(255,255,255,0.2);
             border: none;
-            color: var(--gray-700);
-            padding: 8px 12px;
+            color: white;
+            padding: 8px 16px;
             border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
+            backdrop-filter: blur(10px);
         }
 
-        .header-btn:active {
-            background: var(--gray-200);
-            transform: scale(0.96);
-        }
-
+        /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -121,48 +100,39 @@
             background: none;
             color: var(--gray-600);
             cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 500;
             transition: all 0.2s;
-            position: relative;
         }
 
         .nav-item.active {
             color: var(--primary);
         }
 
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 32px;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 0 0 3px 3px;
+        .nav-icon {
+            font-size: 24px;
         }
 
+        /* Main Content */
         .container {
             padding: 20px;
             max-width: 100%;
             min-height: calc(100vh - 140px);
         }
 
+        /* Cards */
         .card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 20px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            border: 1px solid var(--gray-200);
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .card:active {
-            transform: translateY(1px);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            transform: scale(0.98);
         }
 
         .card-header {
@@ -173,40 +143,36 @@
         }
 
         .card-title {
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--gray-900);
-            margin-bottom: 4px;
         }
 
         .card-subtitle {
             font-size: 14px;
             color: var(--gray-600);
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            margin-top: 4px;
         }
 
         .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
             font-weight: 600;
         }
 
         .badge-primary {
-            background: var(--primary);
-            color: white;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
         }
 
         .badge-success {
-            background: var(--success);
-            color: white;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
         }
 
+        /* Buttons */
         .btn {
             width: 100%;
             padding: 16px;
@@ -250,26 +216,24 @@
             position: fixed;
             bottom: 90px;
             right: 20px;
-            width: 56px;
-            height: 56px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
+            font-size: 28px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
             z-index: 90;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: transform 0.2s;
         }
 
         .fab:active {
             transform: scale(0.95);
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
         }
 
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -320,6 +284,7 @@
             color: var(--gray-600);
         }
 
+        /* Form */
         .form-group {
             margin-bottom: 20px;
         }
@@ -328,127 +293,45 @@
             display: block;
             font-size: 14px;
             font-weight: 600;
-            color: var(--gray-900);
+            color: var(--gray-700);
             margin-bottom: 8px;
         }
 
         .form-input, .form-select {
             width: 100%;
-            padding: 12px 14px;
+            padding: 14px;
             border: 2px solid var(--gray-200);
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
-            transition: all 0.2s;
-            background: white;
+            transition: border-color 0.2s;
         }
 
         .form-input:focus, .form-select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
-        .quick-add-form {
-            background: white;
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 2px solid var(--gray-200);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .quick-add-input {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .quick-add-btn {
-            padding: 12px 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .quick-add-btn:active {
-            background: var(--primary-dark);
-            transform: scale(0.96);
-        }
-
-        .suggestions-section {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-
-        .suggestions-header {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--gray-700);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .suggestion-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .suggestion-chip {
-            background: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--gray-700);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .suggestion-chip:active {
-            transform: scale(0.95);
-            background: var(--gray-50);
-        }
-
+        /* List Items */
         .list-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 16px 0;
+            padding: 16px;
             background: white;
-            border-bottom: 1px solid var(--gray-100);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 2px solid var(--gray-100);
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .list-item:last-child {
-            border-bottom: none;
+        .list-item:active {
+            transform: scale(0.98);
         }
 
         .list-item.checked {
+            background: var(--gray-50);
             opacity: 0.6;
-        }
-
-        .list-item.checked .list-item-name {
-            text-decoration: line-through;
-            color: var(--gray-600);
         }
 
         .checkbox {
@@ -456,11 +339,11 @@
             height: 24px;
             min-width: 24px;
             border: 2px solid var(--gray-300);
-            border-radius: 6px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
+            font-size: 14px;
         }
 
         .checkbox.checked {
@@ -471,216 +354,57 @@
 
         .list-item-content {
             flex: 1;
-            min-width: 0;
         }
 
         .list-item-name {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--gray-900);
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        .list-item-meta {
+        .list-item-category {
             font-size: 13px;
             color: var(--gray-600);
             margin-top: 2px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .list-item-price {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--primary);
-            white-space: nowrap;
-        }
-
-        .quantity-badge {
-            background: var(--gray-100);
-            color: var(--gray-700);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
         }
 
         .category-section {
             margin-bottom: 24px;
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .category-header {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             color: var(--gray-600);
-            padding: 8px 0;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .category-header::before {
-            content: '';
-            width: 3px;
-            height: 14px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-
-        .completed-section {
-            margin-top: 32px;
-            padding-top: 20px;
-            border-top: 2px dashed var(--gray-200);
-        }
-
-        .completed-header {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--gray-500);
-            padding: 8px 0;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 8px 4px;
+            margin-bottom: 8px;
+            border-bottom: 2px solid var(--gray-200);
         }
 
         .empty-state {
             text-align: center;
-            padding: 80px 20px;
+            padding: 60px 20px;
             color: var(--gray-600);
         }
 
         .empty-state-icon {
+            font-size: 64px;
             margin-bottom: 16px;
-            opacity: 0.3;
-            display: flex;
-            justify-content: center;
-        }
-
-        .empty-state-icon svg {
-            width: 80px;
-            height: 80px;
-            stroke-width: 1.5;
+            opacity: 0.5;
         }
 
         .empty-state-text {
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .store-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            background: white;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            border: 1px solid var(--gray-200);
-            transition: all 0.2s;
-        }
-
-        .store-info {
-            flex: 1;
-            cursor: pointer;
-            min-width: 0;
-        }
-
-        .store-name {
             font-size: 16px;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 4px;
         }
 
-        .store-category {
-            font-size: 13px;
-            color: var(--gray-600);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .store-actions {
-            display: flex;
-            gap: 6px;
-        }
-
-        .icon-btn {
-            width: 38px;
-            height: 38px;
-            border: none;
-            border-radius: 8px;
-            background: var(--gray-100);
-            color: var(--gray-600);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .icon-btn:active {
-            background: var(--gray-200);
-            transform: scale(0.95);
-        }
-
-        .icon-btn.danger:active {
-            background: #fee;
-            color: var(--danger);
-        }
-
-        .btn-row {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        .btn-row .btn {
-            flex: 1;
-        }
-
-        .shopping-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            padding: 24px 20px;
-            margin: -20px -20px 20px -20px;
-            border-radius: 0 0 20px 20px;
-        }
-
-        .shopping-store-name {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .shopping-stats {
-            display: flex;
-            gap: 20px;
-            font-size: 14px;
-            opacity: 0.95;
-        }
-
-        .shopping-stat {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
+        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -694,9 +418,124 @@
         .hidden {
             display: none !important;
         }
+
+        /* Store list */
+        .store-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 2px solid var(--gray-100);
+        }
+
+        .store-info {
+            flex: 1;
+        }
+
+        .store-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .store-category {
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-top: 2px;
+        }
+
+        .store-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            background: var(--gray-100);
+            color: var(--gray-600);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:active {
+            background: var(--gray-200);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .btn-row .btn {
+            flex: 1;
+        }
+
+        .shopping-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            margin: -20px -20px 20px -20px;
+        }
+
+        .shopping-store-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .shopping-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .price-input-inline {
+            width: 80px;
+            padding: 6px 10px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .datalist-wrapper {
+            position: relative;
+        }
+
+        .autocomplete-input {
+            width: 100%;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .small-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <div class="header">
         <div class="header-content">
             <h1 id="headerTitle">Shop Smart</h1>
@@ -704,69 +543,52 @@
         </div>
     </div>
 
+    <!-- Main Container -->
     <div class="container" id="mainContainer"></div>
 
-    <button class="fab hidden" id="fab"></button>
+    <!-- FAB -->
+    <button class="fab hidden" id="fab">+</button>
 
+    <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <button class="nav-item active" data-page="home">
-            <div class="nav-icon">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            </div>
+            <div class="nav-icon">🏠</div>
             <div>Home</div>
         </button>
         <button class="nav-item" data-page="stores">
-            <div class="nav-icon">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>
-            </div>
+            <div class="nav-icon">🏪</div>
             <div>Stores</div>
         </button>
         <button class="nav-item" data-page="history">
-            <div class="nav-icon">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-            </div>
+            <div class="nav-icon">📋</div>
             <div>History</div>
         </button>
     </div>
 
+    <!-- Modals -->
     <div class="modal" id="modal">
         <div class="modal-content" id="modalContent"></div>
     </div>
 
     <script>
-        const icons = {
-            plus: '<svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>',
-            cart: '<svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>',
-            store: '<svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>',
-            box: '<svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
-            edit: '<svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>',
-            trash: '<svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>',
-            check: '<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>',
-            dollarSign: '<svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>',
-            clock: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
-            checkCircle: '<svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
-            tag: '<svg class="icon" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>',
-            list: '<svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>',
-            package: '<svg class="icon" viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
-            arrowLeft: '<svg class="icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
-            hash: '<svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>',
-            lightbulb: '<svg class="icon" viewBox="0 0 24 24"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path></svg>'
-        };
-
+        // IndexedDB Setup
         let db;
         const DB_NAME = 'ShopSmartDB';
-        const DB_VERSION = 2;
+        const DB_VERSION = 1;
 
         const initDB = () => {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open(DB_NAME, DB_VERSION);
+
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
                     db = request.result;
                     resolve(db);
                 };
+
                 request.onupgradeneeded = (e) => {
                     db = e.target.result;
+
                     if (!db.objectStoreNames.contains('stores')) {
                         db.createObjectStore('stores', { keyPath: 'id', autoIncrement: true });
                     }
@@ -789,6 +611,7 @@
             });
         };
 
+        // DB Operations
         const dbOps = {
             add: (storeName, data) => {
                 return new Promise((resolve, reject) => {
@@ -847,13 +670,23 @@
             }
         };
 
-        const DEFAULT_STORE_CATEGORIES = ['Grocery Store', 'Hardware Store', 'Pharmacy', 'Electronics Store', 'Pet Store', 'Department Store', 'Other'];
-        const DEFAULT_ITEM_CATEGORIES = ['Produce', 'Dairy', 'Meat', 'Bakery', 'Frozen', 'Pantry', 'Beverages', 'Snacks', 'Household', 'Personal Care', 'Other'];
+        // Default categories
+        const DEFAULT_STORE_CATEGORIES = [
+            'Grocery Store', 'Hardware Store', 'Pharmacy', 'Electronics Store', 
+            'Pet Store', 'Department Store', 'Other'
+        ];
 
+        const DEFAULT_ITEM_CATEGORIES = [
+            'Produce', 'Dairy', 'Meat', 'Bakery', 'Frozen', 'Pantry', 
+            'Beverages', 'Snacks', 'Household', 'Personal Care', 'Other'
+        ];
+
+        // State
         let currentPage = 'home';
         let currentStore = null;
         let currentList = null;
 
+        // Initialize default categories
         const initCategories = async () => {
             const categories = await dbOps.getAll('categories');
             if (categories.length === 0) {
@@ -863,41 +696,7 @@
             }
         };
 
-        const getFrequentItems = async (storeId, currentListId) => {
-            const allLists = await dbOps.getAll('lists');
-            const completedStoreListsDesc = allLists
-                .filter(l => l.storeId === storeId && l.status === 'completed')
-                .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt))
-                .slice(0, 5);
-            
-            if (completedStoreListsDesc.length === 0) return [];
-
-            const itemFrequency = {};
-            for (const list of completedStoreListsDesc) {
-                const listItems = await dbOps.getByIndex('listItems', 'listId', list.id);
-                for (const li of listItems) {
-                    itemFrequency[li.itemId] = (itemFrequency[li.itemId] || 0) + 1;
-                }
-            }
-
-            const currentListItems = await dbOps.getByIndex('listItems', 'listId', currentListId);
-            const currentItemIds = currentListItems.map(li => li.itemId);
-
-            const frequentItemIds = Object.entries(itemFrequency)
-                .filter(([itemId]) => !currentItemIds.includes(parseInt(itemId)))
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 6)
-                .map(([itemId]) => parseInt(itemId));
-
-            const frequentItems = [];
-            for (const itemId of frequentItemIds) {
-                const item = await dbOps.get('items', itemId);
-                if (item) frequentItems.push(item);
-            }
-
-            return frequentItems;
-        };
-
+        // Navigation
         const navigate = (page) => {
             currentPage = page;
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -906,49 +705,42 @@
             renderPage();
         };
 
+        // Render functions
         const renderPage = async () => {
             const container = document.getElementById('mainContainer');
             const fab = document.getElementById('fab');
             const headerTitle = document.getElementById('headerTitle');
             const headerAction = document.getElementById('headerAction');
+
             headerAction.classList.add('hidden');
             fab.classList.add('hidden');
 
             switch(currentPage) {
                 case 'home':
-                    headerTitle.innerHTML = `${icons.cart} Shop Smart`;
+                    headerTitle.textContent = 'Shop Smart';
                     await renderHome(container);
                     fab.classList.remove('hidden');
-                    fab.innerHTML = icons.plus;
                     fab.onclick = () => showCreateListModal();
                     break;
                 case 'stores':
-                    headerTitle.innerHTML = `${icons.store} Stores`;
+                    headerTitle.textContent = 'Stores';
                     await renderStores(container);
                     fab.classList.remove('hidden');
-                    fab.innerHTML = icons.plus;
                     fab.onclick = () => showCreateStoreModal();
                     break;
                 case 'history':
-                    headerTitle.innerHTML = `${icons.list} History`;
+                    headerTitle.textContent = 'List History';
                     await renderHistory(container);
                     break;
                 case 'store-items':
                     const store = await dbOps.get('stores', currentStore);
-                    headerTitle.innerHTML = `${icons.package} ${store.name}`;
-                    headerAction.classList.remove('hidden');
-                    headerAction.innerHTML = `${icons.arrowLeft} Back`;
-                    headerAction.onclick = () => navigate('stores');
+                    headerTitle.textContent = store.name;
                     await renderStoreItems(container);
                     fab.classList.remove('hidden');
-                    fab.innerHTML = icons.plus;
                     fab.onclick = () => showAddItemModal();
                     break;
                 case 'shopping':
-                    headerTitle.innerHTML = `${icons.cart} Shopping`;
-                    headerAction.classList.remove('hidden');
-                    headerAction.innerHTML = `${icons.arrowLeft} Back`;
-                    headerAction.onclick = () => navigate('home');
+                    headerTitle.textContent = 'Shopping';
                     await renderShopping(container);
                     break;
             }
@@ -957,70 +749,155 @@
         const renderHome = async (container) => {
             const lists = await dbOps.getAll('lists');
             const openLists = lists.filter(l => l.status === 'open');
+
             if (openLists.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">No active shopping lists<br>Tap + to create one</div></div>`;
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🛒</div>
+                        <div class="empty-state-text">No active shopping lists<br>Tap + to create one</div>
+                    </div>
+                `;
                 return;
             }
+
             let html = '';
             for (const list of openLists) {
                 const store = await dbOps.get('stores', list.storeId);
                 const items = await dbOps.getByIndex('listItems', 'listId', list.id);
                 const checkedCount = items.filter(i => i.checked).length;
-                html += `<div class="card" onclick="openList(${list.id})"><div class="card-header"><div><div class="card-title">${store.name}</div><div class="card-subtitle">${icons.tag} ${store.category}</div></div><span class="badge badge-primary">${icons.checkCircle} ${checkedCount}/${items.length}</span></div></div>`;
+
+                html += `
+                    <div class="card" onclick="openList(${list.id})">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">${store.name}</div>
+                                <div class="card-subtitle">${store.category}</div>
+                            </div>
+                            <span class="badge badge-primary">${checkedCount}/${items.length}</span>
+                        </div>
+                        <div class="card-subtitle">Started ${formatDate(list.createdAt)}</div>
+                    </div>
+                `;
             }
+
             container.innerHTML = html;
         };
 
         const renderStores = async (container) => {
             const stores = await dbOps.getAll('stores');
+
             if (stores.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.store}</div><div class="empty-state-text">No stores yet<br>Tap + to add one</div></div>`;
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏪</div>
+                        <div class="empty-state-text">No stores yet<br>Tap + to add one</div>
+                    </div>
+                `;
                 return;
             }
+
             let html = '';
             for (const store of stores) {
-                const items = await dbOps.getByIndex('items', 'storeId', store.id);
-                html += `<div class="store-item"><div class="store-info" onclick="viewStoreItems(${store.id})"><div class="store-name">${store.name}</div><div class="store-category">${icons.tag} ${store.category} - ${items.length} items</div></div><div class="store-actions"><button class="icon-btn" onclick="editStore(${store.id})">${icons.edit}</button><button class="icon-btn danger" onclick="deleteStore(${store.id})">${icons.trash}</button></div></div>`;
+                html += `
+                    <div class="store-item">
+                        <div class="store-info" onclick="viewStoreItems(${store.id})">
+                            <div class="store-name">${store.name}</div>
+                            <div class="store-category">${store.category}</div>
+                        </div>
+                        <div class="store-actions">
+                            <button class="icon-btn" onclick="editStore(${store.id})">✏️</button>
+                            <button class="icon-btn" onclick="deleteStore(${store.id})">🗑️</button>
+                        </div>
+                    </div>
+                `;
             }
+
             container.innerHTML = html;
         };
 
         const renderHistory = async (container) => {
             const lists = await dbOps.getAll('lists');
-            const completedLists = lists.filter(l => l.status === 'completed').sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
+            const completedLists = lists.filter(l => l.status === 'completed').sort((a, b) => 
+                new Date(b.completedAt) - new Date(a.completedAt)
+            );
+
             if (completedLists.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.list}</div><div class="empty-state-text">No completed lists yet</div></div>`;
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <div class="empty-state-text">No completed lists yet</div>
+                    </div>
+                `;
                 return;
             }
+
             let html = '';
             for (const list of completedLists) {
                 const store = await dbOps.get('stores', list.storeId);
                 const items = await dbOps.getByIndex('listItems', 'listId', list.id);
-                const total = items.reduce((sum, item) => sum + ((parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1)), 0);
-                html += `<div class="card" onclick="viewCompletedList(${list.id})"><div class="card-header"><div><div class="card-title">${store.name}</div><div class="card-subtitle">${icons.clock} ${formatDateTime(list.completedAt)}</div></div><span class="badge badge-success">${icons.check} ${items.length}</span></div>${total > 0 ? `<div class="card-subtitle" style="margin-top: 8px; font-weight: 700; color: var(--primary);">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}</div>`;
+                const total = items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+
+                html += `
+                    <div class="card" onclick="viewCompletedList(${list.id})">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">${store.name}</div>
+                                <div class="card-subtitle">${formatDateTime(list.completedAt)}</div>
+                            </div>
+                            <span class="badge badge-success">${items.length} items</span>
+                        </div>
+                        ${total > 0 ? `<div class="card-subtitle" style="margin-top: 8px; font-weight: 600; color: var(--primary);">Total: $${total.toFixed(2)}</div>` : ''}
+                    </div>
+                `;
             }
+
             container.innerHTML = html;
         };
 
         const renderStoreItems = async (container) => {
             const items = await dbOps.getByIndex('items', 'storeId', currentStore);
+            const categories = await dbOps.getAll('categories');
+
             if (items.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.box}</div><div class="empty-state-text">No items in this store<br>Tap + to add items</div></div>`;
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📦</div>
+                        <div class="empty-state-text">No items in this store<br>Tap + to add items</div>
+                    </div>
+                `;
                 return;
             }
+
             const itemsByCategory = {};
             items.forEach(item => {
-                if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
+                if (!itemsByCategory[item.category]) {
+                    itemsByCategory[item.category] = [];
+                }
                 itemsByCategory[item.category].push(item);
             });
+
             let html = '';
             for (const category in itemsByCategory) {
-                html += `<div class="category-section"><div class="category-header">${category}</div>`;
+                html += `
+                    <div class="category-section">
+                        <div class="category-header">${category}</div>
+                `;
                 itemsByCategory[category].forEach(item => {
-                    html += `<div class="list-item"><div class="list-item-content"><div class="list-item-name">${item.name}</div></div><div class="store-actions"><button class="icon-btn" onclick="editItem(${item.id})">${icons.edit}</button><button class="icon-btn danger" onclick="deleteItem(${item.id})">${icons.trash}</button></div></div>`;
+                    html += `
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-name">${item.name}</div>
+                            </div>
+                            <div class="store-actions">
+                                <button class="icon-btn" onclick="editItem(${item.id})">✏️</button>
+                                <button class="icon-btn" onclick="deleteItem(${item.id})">🗑️</button>
+                            </div>
+                        </div>
+                    `;
                 });
                 html += `</div>`;
             }
+
             container.innerHTML = html;
         };
 
@@ -1028,70 +905,89 @@
             const list = await dbOps.get('lists', currentList);
             const store = await dbOps.get('stores', list.storeId);
             const listItems = await dbOps.getByIndex('listItems', 'listId', currentList);
-            const storeItems = await dbOps.getByIndex('items', 'storeId', store.id);
-            const itemsWithDetails = await Promise.all(listItems.map(async li => {
-                const item = await dbOps.get('items', li.itemId);
-                return { ...li, itemName: item.name, category: item.category };
-            }));
             
-            const uncheckedItems = itemsWithDetails.filter(i => !i.checked);
-            const checkedItems = itemsWithDetails.filter(i => i.checked);
-            const checkedCount = checkedItems.length;
-            const total = itemsWithDetails.reduce((sum, item) => sum + ((parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1)), 0);
-            const existingItemIds = listItems.map(li => li.itemId);
-            const availableItems = storeItems.filter(item => !existingItemIds.includes(item.id));
+            const itemsWithDetails = await Promise.all(
+                listItems.map(async li => {
+                    const item = await dbOps.get('items', li.itemId);
+                    return { ...li, itemName: item.name, category: item.category };
+                })
+            );
 
-            const frequentItems = await getFrequentItems(store.id, currentList);
+            const checkedCount = itemsWithDetails.filter(i => i.checked).length;
+            const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
 
-            let html = `<div class="shopping-header"><div class="shopping-store-name">${icons.store} ${store.name}</div><div class="shopping-stats"><span class="shopping-stat">${icons.checkCircle} ${checkedCount}/${itemsWithDetails.length}</span>${total > 0 ? `<span class="shopping-stat">${icons.dollarSign} ${total.toFixed(2)}</span>` : ''}</div></div>`;
+            const itemsByCategory = {};
+            itemsWithDetails.forEach(item => {
+                if (!itemsByCategory[item.category]) {
+                    itemsByCategory[item.category] = [];
+                }
+                itemsByCategory[item.category].push(item);
+            });
 
-            if (frequentItems.length > 0) {
-                html += `<div class="suggestions-section"><div class="suggestions-header">${icons.lightbulb} Frequently bought here</div><div class="suggestion-chips">`;
-                frequentItems.forEach(item => {
-                    html += `<button class="suggestion-chip" onclick="addSuggestedItem(event, ${item.id})">${icons.plus} ${item.name}</button>`;
-                });
-                html += `</div></div>`;
-            }
-
-            html += `<div class="quick-add-form"><form onsubmit="return quickAddItem(event)" style="margin: 0;"><div class="quick-add-input"><input type="text" class="form-input" id="quickAddItem" list="quickItemsList" placeholder="Add item..." autocomplete="off" style="margin: 0;"><datalist id="quickItemsList">${availableItems.map(item => `<option value="${item.name}">${item.name} (${item.category})</option>`).join('')}</datalist><button type="submit" class="quick-add-btn">${icons.plus} Add</button></div></form></div>`;
+            let html = `
+                <div class="shopping-header">
+                    <div class="shopping-store-name">${store.name}</div>
+                    <div class="shopping-stats">
+                        <span>✓ ${checkedCount}/${itemsWithDetails.length}</span>
+                        ${total > 0 ? `<span>💰 ${total.toFixed(2)}</span>` : ''}
+                    </div>
+                </div>
+            `;
 
             if (itemsWithDetails.length === 0) {
-                html += `<div class="empty-state" style="padding: 40px 20px;"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">Your list is empty<br>Add items above to get started</div></div>`;
+                html += `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🛒</div>
+                        <div class="empty-state-text">Add items to your list</div>
+                    </div>
+                `;
             } else {
-                const uncheckedByCategory = {};
-                uncheckedItems.forEach(item => {
-                    if (!uncheckedByCategory[item.category]) uncheckedByCategory[item.category] = [];
-                    uncheckedByCategory[item.category].push(item);
-                });
-                
-                for (const category in uncheckedByCategory) {
-                    html += `<div class="category-section"><div class="category-header">${category}</div>`;
-                    uncheckedByCategory[category].forEach(item => {
-                        const qty = parseInt(item.quantity) || 1;
-                        const itemTotal = (parseFloat(item.price) || 0) * qty;
-                        html += `<div class="list-item" onclick="toggleItem(${item.id})"><div class="checkbox"></div><div class="list-item-content"><div class="list-item-name">${item.itemName}</div><div class="list-item-meta">${qty > 1 ? `<span class="quantity-badge">${icons.hash} ${qty}</span>` : ''}${item.price ? `<span>${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}${qty > 1 ? ` each` : ''}</span>` : ''}</div></div>${itemTotal > 0 ? `<div class="list-item-price">${itemTotal.toFixed(2)}</div>` : ''}<button class="icon-btn" onclick="event.stopPropagation(); editListItem(${item.id})">${icons.edit}</button></div>`;
-                    });
-                    html += `</div>`;
-                }
-
-                if (checkedItems.length > 0) {
-                    html += `<div class="completed-section"><div class="completed-header">${icons.check} Completed Items</div>`;
-                    checkedItems.forEach(item => {
-                        const qty = parseInt(item.quantity) || 1;
-                        const itemTotal = (parseFloat(item.price) || 0) * qty;
-                        html += `<div class="list-item checked" onclick="toggleItem(${item.id})"><div class="checkbox checked">${icons.check}</div><div class="list-item-content"><div class="list-item-name">${item.itemName}</div><div class="list-item-meta">${qty > 1 ? `<span class="quantity-badge">${icons.hash} ${qty}</span>` : ''}${item.price ? `<span>${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}${qty > 1 ? ` each` : ''}</span>` : ''}</div></div>${itemTotal > 0 ? `<div class="list-item-price">${itemTotal.toFixed(2)}</div>` : ''}<button class="icon-btn" onclick="event.stopPropagation(); editListItem(${item.id})">${icons.edit}</button></div>`;
+                for (const category in itemsByCategory) {
+                    html += `
+                        <div class="category-section">
+                            <div class="category-header">${category}</div>
+                    `;
+                    itemsByCategory[category].forEach(item => {
+                        html += `
+                            <div class="list-item ${item.checked ? 'checked' : ''}" onclick="toggleItem(${item.id})">
+                                <div class="checkbox ${item.checked ? 'checked' : ''}">
+                                    ${item.checked ? '✓' : ''}
+                                </div>
+                                <div class="list-item-content">
+                                    <div class="list-item-name">${item.itemName}</div>
+                                    ${item.price ? `<div class="list-item-category">${parseFloat(item.price).toFixed(2)}</div>` : ''}
+                                </div>
+                                <button class="icon-btn" onclick="event.stopPropagation(); editListItemPrice(${item.id})">💲</button>
+                            </div>
+                        `;
                     });
                     html += `</div>`;
                 }
             }
-            html += `<div style="margin-top: 24px;"><button class="btn btn-success" onclick="completeList()">${icons.check} Complete Shopping</button></div>`;
+
+            html += `
+                <div style="margin-top: 24px;">
+                    <button class="btn btn-secondary" onclick="showAddToListModal()">+ Add Item</button>
+                    <button class="btn btn-success" onclick="completeList()" style="margin-top: 12px;">✓ Complete Shopping</button>
+                </div>
+            `;
+
             container.innerHTML = html;
         };
 
+        // Modal functions
         const showModal = (title, content) => {
             const modal = document.getElementById('modal');
             const modalContent = document.getElementById('modalContent');
-            modalContent.innerHTML = `<div class="modal-header"><div class="modal-title">${title}</div><button class="close-btn" onclick="closeModal()">×</button></div>${content}`;
+            
+            modalContent.innerHTML = `
+                <div class="modal-header">
+                    <div class="modal-title">${title}</div>
+                    <button class="close-btn" onclick="closeModal()">×</button>
+                </div>
+                ${content}
+            `;
+            
             modal.classList.add('active');
         };
 
@@ -1100,7 +996,21 @@
         };
 
         const showCreateStoreModal = () => {
-            const content = `<form onsubmit="createStore(event)"><div class="form-group"><label class="form-label">Store Name</label><input type="text" class="form-input" id="storeName" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="storeCategory" required>${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}">${cat}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Create Store</button></form>`;
+            const content = `
+                <form onsubmit="createStore(event)">
+                    <div class="form-group">
+                        <label class="form-label">Store Name</label>
+                        <input type="text" class="form-input" id="storeName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" id="storeCategory" required>
+                            ${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Store</button>
+                </form>
+            `;
             showModal('New Store', content);
         };
 
@@ -1108,133 +1018,221 @@
             const stores = await dbOps.getAll('stores');
             const lists = await dbOps.getAll('lists');
             const openLists = lists.filter(l => l.status === 'open');
-            const availableStores = stores.filter(store => !openLists.some(list => list.storeId === store.id));
+            
+            const availableStores = stores.filter(store => 
+                !openLists.some(list => list.storeId === store.id)
+            );
+
             if (availableStores.length === 0) {
-                showModal('No Stores Available', `<p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete existing lists first.</p><button class="btn btn-secondary" onclick="closeModal()">OK</button>`);
+                showModal('No Stores Available', `
+                    <p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p>
+                    <button class="btn btn-secondary" onclick="closeModal()">OK</button>
+                `);
                 return;
             }
-            const content = `<form onsubmit="createList(event)"><div class="form-group"><label class="form-label">Select Store</label><select class="form-select" id="listStore" required><option value="">Choose a store...</option>${availableStores.map(store => `<option value="${store.id}">${store.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Create List</button></form>`;
+
+            const content = `
+                <form onsubmit="createList(event)">
+                    <div class="form-group">
+                        <label class="form-label">Select Store</label>
+                        <select class="form-select" id="listStore" required>
+                            <option value="">Choose a store...</option>
+                            ${availableStores.map(store => `<option value="${store.id}">${store.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create List</button>
+                </form>
+            `;
             showModal('New Shopping List', content);
         };
 
         const showAddItemModal = async () => {
             const categories = await dbOps.getAll('categories');
-            const content = `<form onsubmit="addItemToStore(event)"><div class="form-group"><label class="form-label">Item Name</label><input type="text" class="form-input" id="itemName" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="itemCategory" required>${categories.map(cat => `<option value="${cat.name}">${cat.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Add Item</button></form>`;
+            const content = `
+                <form onsubmit="addItemToStore(event)">
+                    <div class="form-group">
+                        <label class="form-label">Item Name</label>
+                        <input type="text" class="form-input" id="itemName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" id="itemCategory" required>
+                            ${categories.map(cat => `<option value="${cat.name}">${cat.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Item</button>
+                </form>
+            `;
             showModal('Add Item', content);
         };
 
-        window.quickAddItem = async (e) => {
-            e.preventDefault();
-            const searchValue = document.getElementById('quickAddItem').value.trim();
-            if (!searchValue) return false;
-            const list = await dbOps.get('lists', currentList);
-            const items = await dbOps.getByIndex('items', 'storeId', list.storeId);
-            const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
-            let itemId;
-            if (existingItem) {
-                itemId = existingItem.id;
-            } else {
-                const categories = await dbOps.getAll('categories');
-                itemId = await dbOps.add('items', { storeId: list.storeId, name: searchValue, category: categories[0].name });
-            }
-            const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
-            const alreadyInList = existingListItems.some(li => li.itemId === itemId);
-            if (!alreadyInList) {
-                await dbOps.add('listItems', { listId: currentList, itemId: itemId, checked: false, price: null, quantity: 1 });
-            }
-            document.getElementById('quickAddItem').value = '';
-            renderPage();
-            return false;
+        const showAddToListModal = async () => {
+            const items = await dbOps.getByIndex('items', 'storeId', currentStore);
+            const listItems = await dbOps.getByIndex('listItems', 'listId', currentList);
+            const existingItemIds = listItems.map(li => li.itemId);
+            const availableItems = items.filter(item => !existingItemIds.includes(item.id));
+
+            const content = `
+                <form onsubmit="addItemToList(event)">
+                    <div class="form-group">
+                        <label class="form-label">Search or Add Item</label>
+                        <input type="text" class="form-input" id="searchItem" list="itemsList" placeholder="Type to search or add new...">
+                        <datalist id="itemsList">
+                            ${availableItems.map(item => `<option value="${item.name}" data-id="${item.id}">${item.name} (${item.category})</option>`).join('')}
+                        </datalist>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add to List</button>
+                </form>
+            `;
+            showModal('Add Item to List', content);
         };
 
-        window.addSuggestedItem = async (event, itemId) => {
-            event.stopPropagation();
-            event.preventDefault();
-            const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
-            const alreadyInList = existingListItems.some(li => li.itemId === itemId);
-            if (!alreadyInList) {
-                await dbOps.add('listItems', { listId: currentList, itemId: itemId, checked: false, price: null, quantity: 1 });
-                renderPage();
-            }
-        };
-
-        window.editListItem = async (listItemId) => {
+        const editListItemPrice = async (listItemId) => {
             const listItem = await dbOps.get('listItems', listItemId);
             const item = await dbOps.get('items', listItem.itemId);
-            const content = `<form onsubmit="updateListItem(event, ${listItemId})"><div class="form-group"><label class="form-label">${item.name}</label></div><div class="form-group"><label class="form-label">Quantity</label><input type="number" min="1" class="form-input" id="itemQuantity" value="${listItem.quantity || 1}" required></div><div class="form-group"><label class="form-label">Price (each)</label><input type="number" step="0.01" class="form-input" id="itemPrice" value="${listItem.price || ''}" placeholder="0.00"></div><div class="btn-row"><button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">${icons.trash} Remove</button><button type="submit" class="btn btn-primary">${icons.check} Save</button></div></form>`;
-            showModal('Edit Item', content);
+            
+            const content = `
+                <form onsubmit="updateListItemPrice(event, ${listItemId})">
+                    <div class="form-group">
+                        <label class="form-label">${item.name}</label>
+                        <input type="number" step="0.01" class="form-input" id="itemPrice" value="${listItem.price || ''}" placeholder="0.00">
+                    </div>
+                    <div class="btn-row">
+                        <button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">Delete</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            `;
+            showModal('Update Price', content);
         };
 
-        window.viewCompletedList = async (listId) => {
+        const viewCompletedList = async (listId) => {
             const list = await dbOps.get('lists', listId);
             const store = await dbOps.get('stores', list.storeId);
             const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
-            const itemsWithDetails = await Promise.all(listItems.map(async li => {
-                const item = await dbOps.get('items', li.itemId);
-                return { ...li, itemName: item.name, category: item.category };
-            }));
-            const total = itemsWithDetails.reduce((sum, item) => sum + ((parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1)), 0);
+            
+            const itemsWithDetails = await Promise.all(
+                listItems.map(async li => {
+                    const item = await dbOps.get('items', li.itemId);
+                    return { ...li, itemName: item.name, category: item.category };
+                })
+            );
+
+            const total = itemsWithDetails.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+
             const itemsByCategory = {};
             itemsWithDetails.forEach(item => {
-                if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
+                if (!itemsByCategory[item.category]) {
+                    itemsByCategory[item.category] = [];
+                }
                 itemsByCategory[item.category].push(item);
             });
+
             let itemsHtml = '';
             for (const category in itemsByCategory) {
                 itemsHtml += `<div class="category-header">${category}</div>`;
                 itemsByCategory[category].forEach(item => {
-                    const qty = parseInt(item.quantity) || 1;
-                    const itemTotal = (parseFloat(item.price) || 0) * qty;
-                    itemsHtml += `<div class="list-item"><div class="list-item-content"><div class="list-item-name">${item.itemName}</div>${qty > 1 || item.price ? `<div class="list-item-meta">${qty > 1 ? `<span class="quantity-badge">${icons.hash} ${qty}</span>` : ''}${item.price ? `<span>${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}${qty > 1 ? ` each` : ''}</span>` : ''}</div>` : ''}</div>${itemTotal > 0 ? `<div class="list-item-price">${itemTotal.toFixed(2)}</div>` : ''}</div>`;
+                    itemsHtml += `
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-name">${item.itemName}</div>
+                            </div>
+                            ${item.price ? `<div class="list-item-price">${parseFloat(item.price).toFixed(2)}</div>` : '<button class="icon-btn" onclick="editListItemPrice(${item.id})">💲</button>'}
+                        </div>
+                    `;
                 });
             }
-            const content = `<div style="margin-bottom: 20px;"><div style="font-weight: 600; color: var(--gray-700); margin-bottom: 4px;">${icons.store} ${store.name}</div><div style="font-size: 14px; color: var(--gray-600); display: flex; align-items: center; gap: 4px;">${icons.clock} ${formatDateTime(list.completedAt)}</div>${total > 0 ? `<div style="font-size: 20px; font-weight: 700; color: var(--primary); margin-top: 12px; display: flex; align-items: center; gap: 6px;">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}</div>${itemsHtml}<div class="btn-row" style="margin-top: 24px;"><button class="btn btn-danger" onclick="deleteList(${listId})">${icons.trash} Delete List</button><button class="btn btn-secondary" onclick="closeModal()">Close</button></div>`;
+
+            const content = `
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: 600; color: var(--gray-700); margin-bottom: 4px;">${store.name}</div>
+                    <div style="font-size: 14px; color: var(--gray-600);">${formatDateTime(list.completedAt)}</div>
+                    ${total > 0 ? `<div style="font-size: 20px; font-weight: 700; color: var(--primary); margin-top: 12px;">Total: ${total.toFixed(2)}</div>` : ''}
+                </div>
+                ${itemsHtml}
+                <div class="btn-row" style="margin-top: 24px;">
+                    <button class="btn btn-danger" onclick="deleteList(${listId})">Delete List</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                </div>
+            `;
             showModal('Shopping List', content);
         };
 
-        window.createStore = async (e) => {
+        // CRUD Operations
+        const createStore = async (e) => {
             e.preventDefault();
             const name = document.getElementById('storeName').value;
             const category = document.getElementById('storeCategory').value;
+            
             await dbOps.add('stores', { name, category });
             closeModal();
             renderPage();
         };
 
-        window.editStore = async (storeId) => {
+        const editStore = async (storeId) => {
             const store = await dbOps.get('stores', storeId);
-            const content = `<form onsubmit="updateStore(event, ${storeId})"><div class="form-group"><label class="form-label">Store Name</label><input type="text" class="form-input" id="storeName" value="${store.name}" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="storeCategory" required>${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}" ${cat === store.category ? 'selected' : ''}>${cat}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Update Store</button></form>`;
+            const content = `
+                <form onsubmit="updateStore(event, ${storeId})">
+                    <div class="form-group">
+                        <label class="form-label">Store Name</label>
+                        <input type="text" class="form-input" id="storeName" value="${store.name}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" id="storeCategory" required>
+                            ${DEFAULT_STORE_CATEGORIES.map(cat => 
+                                `<option value="${cat}" ${cat === store.category ? 'selected' : ''}>${cat}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Store</button>
+                </form>
+            `;
             showModal('Edit Store', content);
         };
 
-        window.updateStore = async (e, storeId) => {
+        const updateStore = async (e, storeId) => {
             e.preventDefault();
             const name = document.getElementById('storeName').value;
             const category = document.getElementById('storeCategory').value;
+            
             await dbOps.update('stores', { id: storeId, name, category });
             closeModal();
             renderPage();
         };
 
-        window.deleteStore = async (storeId) => {
+        const deleteStore = async (storeId) => {
             if (confirm('Delete this store? All items and lists will be removed.')) {
                 const items = await dbOps.getByIndex('items', 'storeId', storeId);
-                for (const item of items) await dbOps.delete('items', item.id);
+                for (const item of items) {
+                    await dbOps.delete('items', item.id);
+                }
+                
                 const lists = await dbOps.getByIndex('lists', 'storeId', storeId);
                 for (const list of lists) {
                     const listItems = await dbOps.getByIndex('listItems', 'listId', list.id);
-                    for (const li of listItems) await dbOps.delete('listItems', li.id);
+                    for (const li of listItems) {
+                        await dbOps.delete('listItems', li.id);
+                    }
                     await dbOps.delete('lists', list.id);
                 }
+                
                 await dbOps.delete('stores', storeId);
                 renderPage();
             }
         };
 
-        window.createList = async (e) => {
+        const createList = async (e) => {
             e.preventDefault();
             const storeId = parseInt(document.getElementById('listStore').value);
-            const listId = await dbOps.add('lists', { storeId, status: 'open', createdAt: new Date().toISOString(), completedAt: null });
+            
+            const listId = await dbOps.add('lists', {
+                storeId,
+                status: 'open',
+                createdAt: new Date().toISOString(),
+                completedAt: null
+            });
+            
             closeModal();
             currentList = listId;
             currentStore = storeId;
@@ -1242,59 +1240,105 @@
             renderPage();
         };
 
-        window.addItemToStore = async (e) => {
+        const addItemToStore = async (e) => {
             e.preventDefault();
             const name = document.getElementById('itemName').value;
             const category = document.getElementById('itemCategory').value;
+            
             await dbOps.add('items', { storeId: currentStore, name, category });
             closeModal();
             renderPage();
         };
 
-        window.editItem = async (itemId) => {
+        const editItem = async (itemId) => {
             const item = await dbOps.get('items', itemId);
             const categories = await dbOps.getAll('categories');
-            const content = `<form onsubmit="updateItem(event, ${itemId})"><div class="form-group"><label class="form-label">Item Name</label><input type="text" class="form-input" id="itemName" value="${item.name}" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="itemCategory" required>${categories.map(cat => `<option value="${cat.name}" ${cat.name === item.category ? 'selected' : ''}>${cat.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Update Item</button></form>`;
+            
+            const content = `
+                <form onsubmit="updateItem(event, ${itemId})">
+                    <div class="form-group">
+                        <label class="form-label">Item Name</label>
+                        <input type="text" class="form-input" id="itemName" value="${item.name}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" id="itemCategory" required>
+                            ${categories.map(cat => 
+                                `<option value="${cat.name}" ${cat.name === item.category ? 'selected' : ''}>${cat.name}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Item</button>
+                </form>
+            `;
             showModal('Edit Item', content);
         };
 
-        window.updateItem = async (e, itemId) => {
+        const updateItem = async (e, itemId) => {
             e.preventDefault();
             const item = await dbOps.get('items', itemId);
             const name = document.getElementById('itemName').value;
             const category = document.getElementById('itemCategory').value;
+            
             await dbOps.update('items', { ...item, name, category });
             closeModal();
             renderPage();
         };
 
-        window.deleteItem = async (itemId) => {
+        const deleteItem = async (itemId) => {
             if (confirm('Delete this item?')) {
                 await dbOps.delete('items', itemId);
                 renderPage();
             }
         };
 
-        window.toggleItem = async (listItemId) => {
+        const addItemToList = async (e) => {
+            e.preventDefault();
+            const searchValue = document.getElementById('searchItem').value;
+            const items = await dbOps.getByIndex('items', 'storeId', currentStore);
+            const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
+            
+            let itemId;
+            if (existingItem) {
+                itemId = existingItem.id;
+            } else {
+                const categories = await dbOps.getAll('categories');
+                itemId = await dbOps.add('items', {
+                    storeId: currentStore,
+                    name: searchValue,
+                    category: categories[0].name
+                });
+            }
+            
+            await dbOps.add('listItems', {
+                listId: currentList,
+                itemId: itemId,
+                checked: false,
+                price: null
+            });
+            
+            closeModal();
+            renderPage();
+        };
+
+        const toggleItem = async (listItemId) => {
             const listItem = await dbOps.get('listItems', listItemId);
             listItem.checked = !listItem.checked;
             await dbOps.update('listItems', listItem);
             renderPage();
         };
 
-        window.updateListItem = async (e, listItemId) => {
+        const updateListItemPrice = async (e, listItemId) => {
             e.preventDefault();
             const price = document.getElementById('itemPrice').value;
-            const quantity = document.getElementById('itemQuantity').value;
             const listItem = await dbOps.get('listItems', listItemId);
             listItem.price = price;
-            listItem.quantity = quantity;
             await dbOps.update('listItems', listItem);
             closeModal();
             renderPage();
         };
 
-        window.deleteListItem = async (listItemId) => {
+        const deleteListItem = async (listItemId) => {
             if (confirm('Remove this item from the list?')) {
                 await dbOps.delete('listItems', listItemId);
                 closeModal();
@@ -1302,53 +1346,31 @@
             }
         };
 
-        window.completeList = async () => {
-            const listItems = await dbOps.getByIndex('listItems', 'listId', currentList);
-            const uncheckedItems = listItems.filter(i => !i.checked);
-            
-            if (uncheckedItems.length > 0) {
-                const content = `<p style="margin-bottom: 20px; color: var(--gray-600);">You have ${uncheckedItems.length} unchecked item${uncheckedItems.length > 1 ? 's' : ''}. What would you like to do?</p><button class="btn btn-danger" onclick="completeAndDeleteUnchecked()" style="margin-bottom: 12px;">${icons.trash} Complete & Delete Unchecked</button><button class="btn btn-primary" onclick="completeWithUnchecked()" style="margin-bottom: 12px;">${icons.check} Complete As Is</button><button class="btn btn-secondary" onclick="closeModal()">Cancel</button>`;
-                showModal('Unchecked Items', content);
-            } else {
-                await finalizeList();
+        const completeList = async () => {
+            if (confirm('Mark this shopping trip as complete?')) {
+                const list = await dbOps.get('lists', currentList);
+                list.status = 'completed';
+                list.completedAt = new Date().toISOString();
+                await dbOps.update('lists', list);
+                
+                currentPage = 'home';
+                renderPage();
             }
         };
 
-        window.completeAndDeleteUnchecked = async () => {
-            const listItems = await dbOps.getByIndex('listItems', 'listId', currentList);
-            const uncheckedItems = listItems.filter(i => !i.checked);
-            for (const item of uncheckedItems) {
-                await dbOps.delete('listItems', item.id);
-            }
-            closeModal();
-            await finalizeList();
-        };
-
-        window.completeWithUnchecked = async () => {
-            closeModal();
-            await finalizeList();
-        };
-
-        const finalizeList = async () => {
-            const list = await dbOps.get('lists', currentList);
-            list.status = 'completed';
-            list.completedAt = new Date().toISOString();
-            await dbOps.update('lists', list);
-            currentPage = 'home';
-            renderPage();
-        };
-
-        window.deleteList = async (listId) => {
+        const deleteList = async (listId) => {
             if (confirm('Delete this list permanently?')) {
                 const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
-                for (const li of listItems) await dbOps.delete('listItems', li.id);
+                for (const li of listItems) {
+                    await dbOps.delete('listItems', li.id);
+                }
                 await dbOps.delete('lists', listId);
                 closeModal();
                 navigate('history');
             }
         };
 
-        window.openList = (listId) => {
+        const openList = (listId) => {
             dbOps.get('lists', listId).then(list => {
                 currentList = listId;
                 currentStore = list.storeId;
@@ -1357,10 +1379,22 @@
             });
         };
 
-        window.viewStoreItems = (storeId) => {
+        const viewStoreItems = (storeId) => {
             currentStore = storeId;
             currentPage = 'store-items';
             renderPage();
+        };
+
+        // Utility functions
+        const formatDate = (dateStr) => {
+            const date = new Date(dateStr);
+            const today = new Date();
+            const diffDays = Math.floor((today - date) / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return 'Today';
+            if (diffDays === 1) return 'Yesterday';
+            if (diffDays < 7) return `${diffDays} days ago`;
+            return date.toLocaleDateString();
         };
 
         const formatDateTime = (dateStr) => {
@@ -1368,6 +1402,7 @@
             return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         };
 
+        // Event listeners
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => navigate(item.dataset.page));
         });
@@ -1376,6 +1411,7 @@
             if (e.target.id === 'modal') closeModal();
         });
 
+        // Initialize app
         initDB().then(async () => {
             await initCategories();
             renderPage();
