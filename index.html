@@ -854,6 +854,237 @@
         let currentStore = null;
         let currentList = null;
 
+        window.quickAddItem = async (e) => {
+            e.preventDefault();
+            const searchValue = document.getElementById('quickAddItem').value.trim();
+            if (!searchValue) return false;
+            const list = await dbOps.get('lists', currentList);
+            const items = await dbOps.getByIndex('items', 'storeId', list.storeId);
+            const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
+            let itemId;
+            if (existingItem) {
+                itemId = existingItem.id;
+            } else {
+                const categories = await dbOps.getAll('categories');
+                itemId = await dbOps.add('items', { storeId: list.storeId, name: searchValue, category: categories[0].name });
+            }
+            const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
+            const alreadyInList = existingListItems.some(li => li.itemId === itemId);
+            if (!alreadyInList) {
+                await dbOps.add('listItems', { listId: currentList, itemId: itemId, checked: false, price: null, quantity: 1 });
+            }
+            document.getElementById('quickAddItem').value = '';
+            renderPage();
+            return false;
+        };
+
+        window.addSuggestedItem = async (event, itemId) => {
+            event.stopPropagation();
+            event.preventDefault();
+            const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
+            const alreadyInList = existingListItems.some(li => li.itemId === itemId);
+            if (!alreadyInList) {
+                await dbOps.add('listItems', { listId: currentList, itemId: itemId, checked: false, price: null, quantity: 1 });
+                renderPage();
+            }
+        };
+
+        window.editListItem = async (listItemId) => {
+            const listItem = await dbOps.get('listItems', listItemId);
+            const item = await dbOps.get('items', listItem.itemId);
+            const content = `<form onsubmit="updateListItem(event, ${listItemId})"><div class="form-group"><label class="form-label">${item.name}</label></div><div class="form-group"><label class="form-label">Quantity</label><input type="number" min="1" class="form-input" id="itemQuantity" value="${listItem.quantity || 1}" required></div><div class="form-group"><label class="form-label">Price (each)</label><input type="number" step="0.01" class="form-input" id="itemPrice" value="${listItem.price || ''}" placeholder="0.00"></div><div class="btn-row"><button type="button" class="btn btn-danger" onclick="deleteListItem(${listItemId})">${icons.trash} Remove</button><button type="submit" class="btn btn-primary">${icons.check} Save</button></div></form>`;
+            showModal('Edit Item', content);
+        };
+
+        window.toggleItem = async (listItemId) => {
+            const listItem = await dbOps.get('listItems', listItemId);
+            listItem.checked = !listItem.checked;
+            await dbOps.update('listItems', listItem);
+            renderPage();
+        };
+
+        window.updateListItem = async (e, listItemId) => {
+            e.preventDefault();
+            const price = document.getElementById('itemPrice').value;
+            const quantity = document.getElementById('itemQuantity').value;
+            const listItem = await dbOps.get('listItems', listItemId);
+            listItem.price = price;
+            listItem.quantity = quantity;
+            await dbOps.update('listItems', listItem);
+            closeModal();
+            renderPage();
+        };
+
+        window.deleteListItem = async (listItemId) => {
+            if (confirm('Remove this item from the list?')) {
+                await dbOps.delete('listItems', listItemId);
+                closeModal();
+                renderPage();
+            }
+        };
+
+        window.completeList = async () => {
+            const listItems = await dbOps.getByIndex('listItems', 'listId', currentList);
+            const uncheckedItems = listItems.filter(i => !i.checked);
+            
+            if (uncheckedItems.length > 0) {
+                const content = `<p style="margin-bottom: 20px; color: var(--gray-600);">You have ${uncheckedItems.length} unchecked item${uncheckedItems.length > 1 ? 's' : ''}. What would you like to do?</p><button class="btn btn-danger" onclick="completeAndDeleteUnchecked()" style="margin-bottom: 12px;">${icons.trash} Complete & Delete Unchecked</button><button class="btn btn-primary" onclick="completeWithUnchecked()" style="margin-bottom: 12px;">${icons.check} Complete As Is</button><button class="btn btn-secondary" onclick="closeModal()">Cancel</button>`;
+                showModal('Unchecked Items', content);
+            } else {
+                await finalizeList();
+            }
+        };
+
+        window.completeAndDeleteUnchecked = async () => {
+            const listItems = await dbOps.getByIndex('listItems', 'listId', currentList);
+            const uncheckedItems = listItems.filter(i => !i.checked);
+            for (const item of uncheckedItems) {
+                await dbOps.delete('listItems', item.id);
+            }
+            closeModal();
+            await finalizeList();
+        };
+
+        window.completeWithUnchecked = async () => {
+            closeModal();
+            await finalizeList();
+        };
+
+        window.openList = (listId) => {
+            dbOps.get('lists', listId).then(list => {
+                currentList = listId;
+                currentStore = list.storeId;
+                currentPage = 'shopping';
+                renderPage();
+            });
+        };
+
+        window.viewStoreItems = (storeId) => {
+            currentStore = storeId;
+            currentPage = 'store-items';
+            renderPage();
+        };
+
+        window.createStore = async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('storeName').value;
+            const category = document.getElementById('storeCategory').value;
+            await dbOps.add('stores', { name, category });
+            closeModal();
+            renderPage();
+        };
+
+        window.editStore = async (storeId) => {
+            const store = await dbOps.get('stores', storeId);
+            const content = `<form onsubmit="updateStore(event, ${storeId})"><div class="form-group"><label class="form-label">Store Name</label><input type="text" class="form-input" id="storeName" value="${store.name}" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="storeCategory" required>${DEFAULT_STORE_CATEGORIES.map(cat => `<option value="${cat}" ${cat === store.category ? 'selected' : ''}>${cat}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Update Store</button></form>`;
+            showModal('Edit Store', content);
+        };
+
+        window.updateStore = async (e, storeId) => {
+            e.preventDefault();
+            const name = document.getElementById('storeName').value;
+            const category = document.getElementById('storeCategory').value;
+            await dbOps.update('stores', { id: storeId, name, category });
+            closeModal();
+            renderPage();
+        };
+
+        window.deleteStore = async (storeId) => {
+            if (confirm('Delete this store? All items and lists will be removed.')) {
+                const items = await dbOps.getByIndex('items', 'storeId', storeId);
+                for (const item of items) await dbOps.delete('items', item.id);
+                const lists = await dbOps.getByIndex('lists', 'storeId', storeId);
+                for (const list of lists) {
+                    const listItems = await dbOps.getByIndex('listItems', 'listId', list.id);
+                    for (const li of listItems) await dbOps.delete('listItems', li.id);
+                    await dbOps.delete('lists', list.id);
+                }
+                await dbOps.delete('stores', storeId);
+                renderPage();
+            }
+        };
+
+        window.createList = async (e) => {
+            e.preventDefault();
+            const storeId = parseInt(document.getElementById('listStore').value);
+            const listId = await dbOps.add('lists', { storeId, status: 'open', createdAt: new Date().toISOString(), completedAt: null });
+            closeModal();
+            currentList = listId;
+            currentStore = storeId;
+            currentPage = 'shopping';
+            renderPage();
+        };
+
+        window.addItemToStore = async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('itemName').value;
+            const category = document.getElementById('itemCategory').value;
+            await dbOps.add('items', { storeId: currentStore, name, category });
+            closeModal();
+            renderPage();
+        };
+
+        window.editItem = async (itemId) => {
+            const item = await dbOps.get('items', itemId);
+            const categories = await dbOps.getAll('categories');
+            const content = `<form onsubmit="updateItem(event, ${itemId})"><div class="form-group"><label class="form-label">Item Name</label><input type="text" class="form-input" id="itemName" value="${item.name}" required></div><div class="form-group"><label class="form-label">Category</label><select class="form-select" id="itemCategory" required>${categories.map(cat => `<option value="${cat.name}" ${cat.name === item.category ? 'selected' : ''}>${cat.name}</option>`).join('')}</select></div><button type="submit" class="btn btn-primary">Update Item</button></form>`;
+            showModal('Edit Item', content);
+        };
+
+        window.updateItem = async (e, itemId) => {
+            e.preventDefault();
+            const item = await dbOps.get('items', itemId);
+            const name = document.getElementById('itemName').value;
+            const category = document.getElementById('itemCategory').value;
+            await dbOps.update('items', { ...item, name, category });
+            closeModal();
+            renderPage();
+        };
+
+        window.deleteItem = async (itemId) => {
+            if (confirm('Delete this item?')) {
+                await dbOps.delete('items', itemId);
+                renderPage();
+            }
+        };
+
+        window.viewCompletedList = async (listId) => {
+            const list = await dbOps.get('lists', listId);
+            const store = await dbOps.get('stores', list.storeId);
+            const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
+            const itemsWithDetails = await Promise.all(listItems.map(async li => {
+                const item = await dbOps.get('items', li.itemId);
+                return { ...li, itemName: item.name, category: item.category };
+            }));
+            const total = itemsWithDetails.reduce((sum, item) => sum + ((parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1)), 0);
+            const itemsByCategory = {};
+            itemsWithDetails.forEach(item => {
+                if (!itemsByCategory[item.category]) itemsByCategory[item.category] = [];
+                itemsByCategory[item.category].push(item);
+            });
+            let itemsHtml = '';
+            for (const category in itemsByCategory) {
+                itemsHtml += `<div class="category-header">${category}</div>`;
+                itemsByCategory[category].forEach(item => {
+                    const qty = parseInt(item.quantity) || 1;
+                    const itemTotal = (parseFloat(item.price) || 0) * qty;
+                    itemsHtml += `<div class="list-item"><div class="list-item-content"><div class="list-item-name">${item.itemName}</div>${qty > 1 || item.price ? `<div class="list-item-meta">${qty > 1 ? `<span class="quantity-badge">${icons.hash} ${qty}</span>` : ''}${item.price ? `<span>${icons.dollarSign} ${parseFloat(item.price).toFixed(2)}${qty > 1 ? ` each` : ''}</span>` : ''}</div>` : ''}</div>${itemTotal > 0 ? `<div class="list-item-price">${itemTotal.toFixed(2)}</div>` : ''}</div>`;
+                });
+            }
+            const content = `<div style="margin-bottom: 20px;"><div style="font-weight: 600; color: var(--gray-700); margin-bottom: 4px;">${icons.store} ${store.name}</div><div style="font-size: 14px; color: var(--gray-600); display: flex; align-items: center; gap: 4px;">${icons.clock} ${formatDateTime(list.completedAt)}</div>${total > 0 ? `<div style="font-size: 20px; font-weight: 700; color: var(--primary); margin-top: 12px; display: flex; align-items: center; gap: 6px;">${icons.dollarSign} ${total.toFixed(2)}</div>` : ''}</div>${itemsHtml}<div class="btn-row" style="margin-top: 24px;"><button class="btn btn-danger" onclick="deleteList(${listId})">${icons.trash} Delete List</button><button class="btn btn-secondary" onclick="closeModal()">Close</button></div>`;
+            showModal('Shopping List', content);
+        };
+
+        window.deleteList = async (listId) => {
+            if (confirm('Delete this list permanently?')) {
+                const listItems = await dbOps.getByIndex('listItems', 'listId', listId);
+                for (const li of listItems) await dbOps.delete('listItems', li.id);
+                await dbOps.delete('lists', listId);
+                closeModal();
+                navigate('history');
+            }
+        };
+
         const initCategories = async () => {
             const categories = await dbOps.getAll('categories');
             if (categories.length === 0) {
