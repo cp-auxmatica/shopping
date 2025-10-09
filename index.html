@@ -756,7 +756,7 @@
 
         let db;
         const DB_NAME = 'ShopSmartDB';
-        const DB_VERSION = 2; // <-- BUG FIX: Incremented DB version to force schema update.
+        const DB_VERSION = 2;
 
         const initDB = () => {
             return new Promise((resolve, reject) => {
@@ -768,22 +768,17 @@
                     resolve(db);
                 };
 
-                // This function now handles creating and updating the database schema robustly.
                 request.onupgradeneeded = (e) => {
                     db = e.target.result;
                     const transaction = e.target.transaction;
 
-                    // Create stores object store if it doesn't exist
                     if (!db.objectStoreNames.contains('stores')) {
                         db.createObjectStore('stores', { keyPath: 'id', autoIncrement: true });
                     }
-
-                    // Create categories object store if it doesn't exist
                     if (!db.objectStoreNames.contains('categories')) {
                         db.createObjectStore('categories', { keyPath: 'id', autoIncrement: true });
                     }
                     
-                    // Create/update items store and its index
                     let itemStore;
                     if (!db.objectStoreNames.contains('items')) {
                         itemStore = db.createObjectStore('items', { keyPath: 'id', autoIncrement: true });
@@ -794,7 +789,6 @@
                         itemStore.createIndex('storeId', 'storeId', { unique: false });
                     }
 
-                    // Create/update lists store and its index
                     let listStore;
                     if (!db.objectStoreNames.contains('lists')) {
                         listStore = db.createObjectStore('lists', { keyPath: 'id', autoIncrement: true });
@@ -805,7 +799,6 @@
                         listStore.createIndex('storeId', 'storeId', { unique: false });
                     }
 
-                    // Create/update listItems store and its index
                     let listItemStore;
                     if (!db.objectStoreNames.contains('listItems')) {
                         listItemStore = db.createObjectStore('listItems', { keyPath: 'id', autoIncrement: true });
@@ -827,7 +820,7 @@
                         const store = transaction.objectStore(storeName);
                         const request = store.add(data);
                         request.onsuccess = () => resolve(request.result);
-                        request.onerror = () => reject(request.error);
+                        request.onerror = (e) => reject(e.target.error);
                     } catch(e) { reject(e); }
                 });
             },
@@ -838,7 +831,7 @@
                         const store = transaction.objectStore(storeName);
                         const request = store.getAll();
                         request.onsuccess = () => resolve(request.result);
-                        request.onerror = () => reject(request.error);
+                        request.onerror = (e) => reject(e.target.error);
                     } catch(e) { reject(e); }
                 });
             },
@@ -849,7 +842,7 @@
                         const store = transaction.objectStore(storeName);
                         const request = store.get(id);
                         request.onsuccess = () => resolve(request.result);
-                        request.onerror = () => reject(request.error);
+                        request.onerror = (e) => reject(e.target.error);
                     } catch(e) { reject(e); }
                 });
             },
@@ -860,7 +853,7 @@
                         const store = transaction.objectStore(storeName);
                         const request = store.put(data);
                         request.onsuccess = () => resolve(request.result);
-                        request.onerror = () => reject(request.error);
+                        request.onerror = (e) => reject(e.target.error);
                     } catch(e) { reject(e); }
                 });
             },
@@ -871,7 +864,7 @@
                         const store = transaction.objectStore(storeName);
                         const request = store.delete(id);
                         request.onsuccess = () => resolve();
-                        request.onerror = () => reject(request.error);
+                        request.onerror = (e) => reject(e.target.error);
                     } catch(e) { reject(e); }
                 });
             },
@@ -883,7 +876,7 @@
                         const index = store.index(indexName);
                         const request = index.getAll(value);
                         request.onsuccess = () => resolve(request.result);
-                        request.onerror = () => reject(request.error);
+                        request.onerror = (e) => reject(e.target.error);
                     } catch(e) { reject(e); }
                 });
             }
@@ -902,7 +895,7 @@
         let currentPage = 'home';
         let currentStore = null;
         let currentList = null;
-        let currentSort = 'category'; // 'category' or 'alpha'
+        let currentSort = 'category';
 
         const initCategories = async () => {
             const categories = await dbOps.getAll('categories');
@@ -929,7 +922,7 @@
 
             headerAction.classList.add('hidden');
             fab.classList.add('hidden');
-            container.innerHTML = ''; // Clear container before rendering
+            container.innerHTML = '';
 
             const showError = (pageName, error) => {
                 console.error(`Error rendering ${pageName}:`, error);
@@ -1164,10 +1157,9 @@
                 })
             );
 
-            // Sorting logic
             if (currentSort === 'alpha') {
                 itemsWithDetails.sort((a, b) => a.itemName.localeCompare(b.itemName));
-            } else { // Default to 'category'
+            } else {
                 itemsWithDetails.sort((a, b) => a.category.localeCompare(b.category) || a.itemName.localeCompare(b.itemName));
             }
 
@@ -1187,7 +1179,7 @@
                 </div>
 
                 <div class="quick-add-form">
-                    <form onsubmit="quickAddItem(event)" style="margin: 0;">
+                    <form id="quickAddForm" style="margin: 0;">
                         <div class="quick-add-input">
                             <input 
                                 type="text" 
@@ -1266,6 +1258,7 @@
             `;
 
             container.innerHTML = html;
+            document.getElementById('quickAddForm').addEventListener('submit', quickAddItem);
         };
         
         const toggleSort = () => {
@@ -1312,43 +1305,48 @@
         };
 
         const showCreateListModal = async () => {
-            const stores = await dbOps.getAll('stores');
-            const lists = await dbOps.getAll('lists');
-            const openLists = lists.filter(l => l.status === 'open');
-            
-            const availableStores = stores.filter(store => 
-                !openLists.some(list => list.storeId === store.id)
-            );
+            try {
+                const stores = await dbOps.getAll('stores');
+                const lists = await dbOps.getAll('lists');
+                const openLists = lists.filter(l => l.status === 'open');
+                
+                const availableStores = stores.filter(store => 
+                    !openLists.some(list => list.storeId === store.id)
+                );
 
-            if (stores.length === 0) {
-                 showModal('No Stores Available', `
-                    <p style="margin-bottom: 20px; color: var(--gray-600);">You need to create a store first before you can make a shopping list.</p>
-                    <button class="btn btn-primary" onclick="navigate('stores'); closeModal();">Go to Stores</button>
-                `);
-                return;
+                if (stores.length === 0) {
+                    showModal('No Stores Available', `
+                        <p style="margin-bottom: 20px; color: var(--gray-600);">You need to create a store first before you can make a shopping list.</p>
+                        <button class="btn btn-primary" onclick="navigate('stores'); closeModal();">Go to Stores</button>
+                    `);
+                    return;
+                }
+
+                if (availableStores.length === 0) {
+                    showModal('No Stores Available', `
+                        <p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p>
+                        <button class="btn btn-secondary" onclick="closeModal()">OK</button>
+                    `);
+                    return;
+                }
+
+                const content = `
+                    <form onsubmit="createList(event)">
+                        <div class="form-group">
+                            <label class="form-label">Select Store</label>
+                            <select class="form-select" id="listStore" required>
+                                <option value="">Choose a store...</option>
+                                ${availableStores.map(store => `<option value="${store.id}">${store.name}</option>`).join('')}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create List</button>
+                    </form>
+                `;
+                showModal('New Shopping List', content);
+            } catch (error) {
+                console.error("Error showing create list modal:", error);
+                alert("Could not load data to create a list.");
             }
-
-            if (availableStores.length === 0) {
-                showModal('No Stores Available', `
-                    <p style="margin-bottom: 20px; color: var(--gray-600);">All stores already have active shopping lists. Complete or close existing lists first.</p>
-                    <button class="btn btn-secondary" onclick="closeModal()">OK</button>
-                `);
-                return;
-            }
-
-            const content = `
-                <form onsubmit="createList(event)">
-                    <div class="form-group">
-                        <label class="form-label">Select Store</label>
-                        <select class="form-select" id="listStore" required>
-                            <option value="">Choose a store...</option>
-                            ${availableStores.map(store => `<option value="${store.id}">${store.name}</option>`).join('')}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create List</button>
-                </form>
-            `;
-            showModal('New Shopping List', content);
         };
 
         const showAddItemModal = async () => {
@@ -1376,31 +1374,43 @@
             const searchValue = document.getElementById('quickAddItem').value.trim();
             if (!searchValue) return;
             
-            const items = await dbOps.getByIndex('items', 'storeId', currentStore);
-            const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
-            
-            let itemId;
-            if (existingItem) {
-                itemId = existingItem.id;
-            } else {
-                itemId = await dbOps.add('items', {
-                    storeId: currentStore,
-                    name: searchValue,
-                    category: 'Other'
-                });
+            try {
+                const items = await dbOps.getByIndex('items', 'storeId', currentStore);
+                const existingItem = items.find(item => item.name.toLowerCase() === searchValue.toLowerCase());
+                
+                let itemId;
+                if (existingItem) {
+                    itemId = existingItem.id;
+                } else {
+                    itemId = await dbOps.add('items', {
+                        storeId: currentStore,
+                        name: searchValue,
+                        category: 'Other'
+                    });
+                }
+                
+                const existingListItems = await dbOps.getByIndex('listItems', 'listId', currentList);
+                const itemAlreadyOnList = existingListItems.find(li => li.itemId === itemId);
+
+                if (itemAlreadyOnList) {
+                    alert('This item is already on your list.');
+                } else {
+                    await dbOps.add('listItems', {
+                        listId: currentList,
+                        itemId: itemId,
+                        checked: false,
+                        price: null,
+                        quantity: 1,
+                        notes: ''
+                    });
+                }
+                
+                document.getElementById('quickAddItem').value = '';
+                await renderPage();
+            } catch (error) {
+                console.error('Failed to add item:', error);
+                alert('An error occurred while adding the item.');
             }
-            
-            await dbOps.add('listItems', {
-                listId: currentList,
-                itemId: itemId,
-                checked: false,
-                price: null,
-                quantity: 1,
-                notes: ''
-            });
-            
-            document.getElementById('quickAddItem').value = '';
-            renderPage();
         };
 
         const editListItem = async (listItemId) => {
