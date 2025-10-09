@@ -756,7 +756,7 @@
 
         let db;
         const DB_NAME = 'ShopSmartDB';
-        const DB_VERSION = 1;
+        const DB_VERSION = 2; // <-- BUG FIX: Incremented DB version to force schema update.
 
         const initDB = () => {
             return new Promise((resolve, reject) => {
@@ -768,25 +768,52 @@
                     resolve(db);
                 };
 
+                // This function now handles creating and updating the database schema robustly.
                 request.onupgradeneeded = (e) => {
                     db = e.target.result;
+                    const transaction = e.target.transaction;
+
+                    // Create stores object store if it doesn't exist
                     if (!db.objectStoreNames.contains('stores')) {
                         db.createObjectStore('stores', { keyPath: 'id', autoIncrement: true });
                     }
-                    if (!db.objectStoreNames.contains('items')) {
-                        const itemStore = db.createObjectStore('items', { keyPath: 'id', autoIncrement: true });
-                        itemStore.createIndex('storeId', 'storeId', { unique: false });
-                    }
-                    if (!db.objectStoreNames.contains('lists')) {
-                        const listStore = db.createObjectStore('lists', { keyPath: 'id', autoIncrement: true });
-                        listStore.createIndex('storeId', 'storeId', { unique: false });
-                    }
-                    if (!db.objectStoreNames.contains('listItems')) {
-                        const listItemStore = db.createObjectStore('listItems', { keyPath: 'id', autoIncrement: true });
-                        listItemStore.createIndex('listId', 'listId', { unique: false });
-                    }
+
+                    // Create categories object store if it doesn't exist
                     if (!db.objectStoreNames.contains('categories')) {
                         db.createObjectStore('categories', { keyPath: 'id', autoIncrement: true });
+                    }
+                    
+                    // Create/update items store and its index
+                    let itemStore;
+                    if (!db.objectStoreNames.contains('items')) {
+                        itemStore = db.createObjectStore('items', { keyPath: 'id', autoIncrement: true });
+                    } else {
+                        itemStore = transaction.objectStore('items');
+                    }
+                    if (!itemStore.indexNames.contains('storeId')) {
+                        itemStore.createIndex('storeId', 'storeId', { unique: false });
+                    }
+
+                    // Create/update lists store and its index
+                    let listStore;
+                    if (!db.objectStoreNames.contains('lists')) {
+                        listStore = db.createObjectStore('lists', { keyPath: 'id', autoIncrement: true });
+                    } else {
+                        listStore = transaction.objectStore('lists');
+                    }
+                    if (!listStore.indexNames.contains('storeId')) {
+                        listStore.createIndex('storeId', 'storeId', { unique: false });
+                    }
+
+                    // Create/update listItems store and its index
+                    let listItemStore;
+                    if (!db.objectStoreNames.contains('listItems')) {
+                        listItemStore = db.createObjectStore('listItems', { keyPath: 'id', autoIncrement: true });
+                    } else {
+                        listItemStore = transaction.objectStore('listItems');
+                    }
+                    if (!listItemStore.indexNames.contains('listId')) {
+                        listItemStore.createIndex('listId', 'listId', { unique: false });
                     }
                 };
             });
@@ -795,57 +822,69 @@
         const dbOps = {
             add: (storeName, data) => {
                 return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readwrite');
-                    const store = transaction.objectStore(storeName);
-                    const request = store.add(data);
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
+                    try {
+                        const transaction = db.transaction([storeName], 'readwrite');
+                        const store = transaction.objectStore(storeName);
+                        const request = store.add(data);
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = () => reject(request.error);
+                    } catch(e) { reject(e); }
                 });
             },
             getAll: (storeName) => {
                 return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readonly');
-                    const store = transaction.objectStore(storeName);
-                    const request = store.getAll();
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
+                    try {
+                        const transaction = db.transaction([storeName], 'readonly');
+                        const store = transaction.objectStore(storeName);
+                        const request = store.getAll();
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = () => reject(request.error);
+                    } catch(e) { reject(e); }
                 });
             },
             get: (storeName, id) => {
                 return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readonly');
-                    const store = transaction.objectStore(storeName);
-                    const request = store.get(id);
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
+                     try {
+                        const transaction = db.transaction([storeName], 'readonly');
+                        const store = transaction.objectStore(storeName);
+                        const request = store.get(id);
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = () => reject(request.error);
+                    } catch(e) { reject(e); }
                 });
             },
             update: (storeName, data) => {
                 return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readwrite');
-                    const store = transaction.objectStore(storeName);
-                    const request = store.put(data);
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
+                     try {
+                        const transaction = db.transaction([storeName], 'readwrite');
+                        const store = transaction.objectStore(storeName);
+                        const request = store.put(data);
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = () => reject(request.error);
+                    } catch(e) { reject(e); }
                 });
             },
             delete: (storeName, id) => {
                 return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readwrite');
-                    const store = transaction.objectStore(storeName);
-                    const request = store.delete(id);
-                    request.onsuccess = () => resolve();
-                    request.onerror = () => reject(request.error);
+                     try {
+                        const transaction = db.transaction([storeName], 'readwrite');
+                        const store = transaction.objectStore(storeName);
+                        const request = store.delete(id);
+                        request.onsuccess = () => resolve();
+                        request.onerror = () => reject(request.error);
+                    } catch(e) { reject(e); }
                 });
             },
             getByIndex: (storeName, indexName, value) => {
                 return new Promise((resolve, reject) => {
-                    const transaction = db.transaction([storeName], 'readonly');
-                    const store = transaction.objectStore(storeName);
-                    const index = store.index(indexName);
-                    const request = index.getAll(value);
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
+                     try {
+                        const transaction = db.transaction([storeName], 'readonly');
+                        const store = transaction.objectStore(storeName);
+                        const index = store.index(indexName);
+                        const request = index.getAll(value);
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = () => reject(request.error);
+                    } catch(e) { reject(e); }
                 });
             }
         };
