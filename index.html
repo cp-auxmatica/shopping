@@ -762,7 +762,7 @@
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-                request.onerror = () => reject(request.error);
+                request.onerror = (event) => reject(`Database error: ${event.target.errorCode}`);
                 request.onsuccess = () => {
                     db = request.result;
                     resolve(db);
@@ -770,7 +770,6 @@
 
                 request.onupgradeneeded = (e) => {
                     db = e.target.result;
-
                     if (!db.objectStoreNames.contains('stores')) {
                         db.createObjectStore('stores', { keyPath: 'id', autoIncrement: true });
                     }
@@ -891,43 +890,69 @@
 
             headerAction.classList.add('hidden');
             fab.classList.add('hidden');
+            container.innerHTML = ''; // Clear container before rendering
+
+            const showError = (pageName, error) => {
+                console.error(`Error rendering ${pageName}:`, error);
+                container.innerHTML = `<div class="empty-state"><div class="empty-state-text" style="color: var(--danger);">Could not load ${pageName}.</div></div>`;
+            };
 
             switch(currentPage) {
                 case 'home':
-                    headerTitle.innerHTML = `${icons.cart} Shop Smart`;
-                    await renderHome(container);
+                    try {
+                        headerTitle.innerHTML = `${icons.cart} Shop Smart`;
+                        await renderHome(container);
+                    } catch (error) {
+                        showError('home page', error);
+                    }
                     fab.classList.remove('hidden');
                     fab.innerHTML = icons.plus;
                     fab.onclick = () => showCreateListModal();
                     break;
                 case 'stores':
-                    headerTitle.innerHTML = `${icons.store} Stores`;
-                    await renderStores(container);
+                    try {
+                        headerTitle.innerHTML = `${icons.store} Stores`;
+                        await renderStores(container);
+                    } catch (error) {
+                        showError('stores', error);
+                    }
                     fab.classList.remove('hidden');
                     fab.innerHTML = icons.plus;
                     fab.onclick = () => showCreateStoreModal();
                     break;
                 case 'history':
-                    headerTitle.innerHTML = `${icons.list} History`;
-                    await renderHistory(container);
+                    try {
+                        headerTitle.innerHTML = `${icons.list} History`;
+                        await renderHistory(container);
+                    } catch(error) {
+                        showError('history', error);
+                    }
                     break;
                 case 'store-items':
-                    const store = await dbOps.get('stores', currentStore);
-                    headerTitle.innerHTML = `${icons.package} ${store.name}`;
-                    headerAction.classList.remove('hidden');
-                    headerAction.innerHTML = `${icons.arrowLeft} Back`;
-                    headerAction.onclick = () => navigate('stores');
-                    await renderStoreItems(container);
+                    try {
+                        const store = await dbOps.get('stores', currentStore);
+                        headerTitle.innerHTML = `${icons.package} ${store.name}`;
+                        headerAction.classList.remove('hidden');
+                        headerAction.innerHTML = `${icons.arrowLeft} Back`;
+                        headerAction.onclick = () => navigate('stores');
+                        await renderStoreItems(container);
+                    } catch(error) {
+                        showError('store items', error);
+                    }
                     fab.classList.remove('hidden');
                     fab.innerHTML = icons.plus;
                     fab.onclick = () => showAddItemModal();
                     break;
                 case 'shopping':
-                    headerTitle.innerHTML = `${icons.cart} Shopping`;
-                    headerAction.classList.remove('hidden');
-                    headerAction.innerHTML = `${icons.arrowLeft} Back`;
-                    headerAction.onclick = () => navigate('home');
-                    await renderShopping(container);
+                    try {
+                        headerTitle.innerHTML = `${icons.cart} Shopping`;
+                        headerAction.classList.remove('hidden');
+                        headerAction.innerHTML = `${icons.arrowLeft} Back`;
+                        headerAction.onclick = () => navigate('home');
+                        await renderShopping(container);
+                    } catch(error) {
+                        showError('shopping list', error);
+                    }
                     break;
             }
         };
@@ -1319,7 +1344,6 @@
             if (existingItem) {
                 itemId = existingItem.id;
             } else {
-                const categories = await dbOps.getAll('categories');
                 itemId = await dbOps.add('items', {
                     storeId: currentStore,
                     name: searchValue,
@@ -1439,7 +1463,6 @@
             const oldList = await dbOps.get('lists', listId);
             const oldListItems = await dbOps.getByIndex('listItems', 'listId', listId);
             
-            // Check if there's already an open list for this store
             const allLists = await dbOps.getAll('lists');
             const isOpenList = allLists.some(l => l.storeId === oldList.storeId && l.status === 'open');
             if (isOpenList) {
@@ -1459,7 +1482,7 @@
                     listId: newListId,
                     itemId: item.itemId,
                     checked: false,
-                    price: null, // Reset price
+                    price: null,
                     quantity: item.quantity,
                     notes: item.notes
                 });
@@ -1473,7 +1496,6 @@
             e.preventDefault();
             const name = document.getElementById('storeName').value;
             const category = document.getElementById('storeCategory').value;
-            
             await dbOps.add('stores', { name, category });
             closeModal();
             renderPage();
@@ -1505,7 +1527,6 @@
             e.preventDefault();
             const name = document.getElementById('storeName').value;
             const category = document.getElementById('storeCategory').value;
-            
             await dbOps.update('stores', { id: storeId, name, category });
             closeModal();
             renderPage();
@@ -1517,7 +1538,6 @@
                 for (const item of items) {
                     await dbOps.delete('items', item.id);
                 }
-                
                 const lists = await dbOps.getByIndex('lists', 'storeId', storeId);
                 for (const list of lists) {
                     const listItems = await dbOps.getByIndex('listItems', 'listId', list.id);
@@ -1526,7 +1546,6 @@
                     }
                     await dbOps.delete('lists', list.id);
                 }
-                
                 await dbOps.delete('stores', storeId);
                 renderPage();
             }
@@ -1535,14 +1554,12 @@
         const createList = async (e) => {
             e.preventDefault();
             const storeId = parseInt(document.getElementById('listStore').value);
-            
             const listId = await dbOps.add('lists', {
                 storeId,
                 status: 'open',
                 createdAt: new Date().toISOString(),
                 completedAt: null
             });
-            
             closeModal();
             openList(listId);
         };
@@ -1551,7 +1568,6 @@
             e.preventDefault();
             const name = document.getElementById('itemName').value;
             const category = document.getElementById('itemCategory').value;
-            
             await dbOps.add('items', { storeId: currentStore, name, category });
             closeModal();
             renderPage();
@@ -1560,7 +1576,6 @@
         const editItem = async (itemId) => {
             const item = await dbOps.get('items', itemId);
             const categories = await dbOps.getAll('categories');
-            
             const content = `
                 <form onsubmit="updateItem(event, ${itemId})">
                     <div class="form-group">
@@ -1586,7 +1601,6 @@
             const item = await dbOps.get('items', itemId);
             const name = document.getElementById('itemName').value;
             const category = document.getElementById('itemCategory').value;
-            
             await dbOps.update('items', { ...item, name, category });
             closeModal();
             renderPage();
@@ -1620,9 +1634,7 @@
                 list.status = 'completed';
                 list.completedAt = new Date().toISOString();
                 await dbOps.update('lists', list);
-                
-                currentPage = 'home';
-                renderPage();
+                navigate('home');
             }
         };
 
@@ -1642,15 +1654,13 @@
             dbOps.get('lists', listId).then(list => {
                 currentList = listId;
                 currentStore = list.storeId;
-                currentPage = 'shopping';
-                renderPage();
+                navigate('shopping');
             });
         };
 
         const viewStoreItems = (storeId) => {
             currentStore = storeId;
-            currentPage = 'store-items';
-            renderPage();
+            navigate('store-items');
         };
 
         const formatDate = (dateStr) => {
@@ -1677,10 +1687,14 @@
             if (e.target.id === 'modal') closeModal();
         });
 
-        initDB().then(async () => {
-            await initCategories();
-            renderPage();
-        });
+        // Initialize the app
+        initDB()
+            .then(() => initCategories())
+            .then(() => renderPage())
+            .catch(error => {
+                console.error("Fatal error during app initialization:", error);
+                document.getElementById('mainContainer').innerHTML = `<div class="empty-state"><div class="empty-state-text" style="color: var(--danger);">A critical error occurred. Please clear your browser cache and try again.</div></div>`;
+            });
     </script>
 </body>
 </html>
