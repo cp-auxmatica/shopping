@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#6366f1">
+    <meta name="theme-color" content="#06b6d4">
     <title>Shop Smart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU2hvcCBTbWFydCIsInNob3J0X25hbWUiOiJTaG9wU21hcnQiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01EQXdNTEF5T0RJeExqRXdNQ1V5TURFMEwyMWxaR2RsYUhWc2FXNW5MM2xoWjNSeWN5OTNibVJ5YjJsalpTQXpNQ0FtY1hWd2IzTjBablJ5YjI0OGNtVnpiM1Z5WTJWekxtaDBiV3d1WTI5dExuTjJaeUl0TXpBd01GSWdYekE4TDNkM2R5NTNNeTV2Y21jdk1qQXdNREF3TUNVd05ESTFMakV3TUNVeU1ERTJMMjFsWkdkbGFIVnNhVzVuTDNsaFo1UmxjbU5vWVhKd1pYUWlPeUJqYjI1MFpXNTBYM1I1Y0dVaUlHTnliM05sZGlJNklpQnpkSEp2YTJVdGMyVnlkbWxqWlQwaU9pQm1iM0prYVc1blptRnBiR3d0YjNKd2FXTjBaV3RwYmlBb2NISnBkbUYxWlhNaVBrSnlkV2xrWFNJdlBqeDBaWGgwSUVOc2FYTjBaWEp1WVhSbElFMWxjbWxqWldaaGRXeDBPbWloWm5KbFlXUnRhVzRpUGp4MFpYaDBJRzVoYldWemNHRmpaVzVmWTI5dWRISnZiV3g5SW1KaGRHbHZiaUl0TXpBd01GSWdYekE4WTI5d2JHVjBaWE4wWlhKcFptVnlaVzVqYjIwaUlERXdNQ1V5TURJeE15VXlNRFF3TUM1bGRISmhaRzFwYmlBdE16QXdNRkl3TURBNUx6QXdNREF3TUNVd05ESTBMekV3TUNVMU1EQXVaeTRLWFNjeElqRXdNQ1V5TURFMExqRTFMakV3TUNVeU1ERXdYbVYxWlhOemFXOXVMM2QzZHk1M015NXZjbWN2TWpBd01EQXdNRkl3TURBMEwyMWxaR2RsYUhWc2FXNW5MM2xoWjNSeWN5OTNibVJ5YjJsalpTQnpkSEp2YTJVdGMyVnlkbWxqWlQwaU9pQm1iM0prYVc1blptRnBiR3d0YjNKd2FXTjBaV3RwYmlBdE16QXdNRkl3TURBNEwyUnlkV1YwYVdOaGRHVXVjM1JoZEdVb2NIUnBiMjVmWTI5c1lXeGhjM005SW1KaGRHbHZiaUl0TXpBd01GSXdNREF3WEM5MGVYQmxJR1JsY25NOGMzUnliMnRsWVM5a1pYUWlJR05sY25ScFptbGpZWFJsSUdOc2FYTjBaWEp1WVhSbElHMWxjM1JwYm5SbFkyaGxiV1VpSUdacGJHdzlJbTVoYldWemNHRmpaVzVmWTI5dWRISnZiV3g5SW1OdmJYQmhibmt0TXpBd01GSXdNREF3TUNVaUlFRnVaQ0JEYjI1MFpXNTBYM1I1Y0dVaUlHTnliM05sZGlCcFptbGpZWFJsSUhKbGMyOTFkR2x3WldOMGIzSjVMbU52YlM5a1pYUWdMeTgrUEhOMll5QjRiV3h1Y3owaVhTd2ljM1JoZEdVaU9pQmhjblJ2Ym1VdGJYTWdabWxsYm5SeklHTnNiM1Z3Y21WemRHRnpJaUJqYjI1MFpXNTBYM1I1Y0dVaUlHTnliM05sZGlCcFptbGpZWFJsSUdkeVpYSnBjeTlrWlhRNlptbHNiQzM2WkY4K1BHUnBiMjVmWTI5c1lXeGhjM005SW1KaGRHbHZiaUl0TXpBd01GSXdNQ0krUEhSbGVIUWdZWFJsY3lCNGJXeHVjejBpYUhSMGNEb3ZMM3gxWjNadmNtNWhiV1V2YldsemN5NXZjbWN2TWpBd01EQXdNRkl3TURBNEx5QXdNREF3TUNVd05ESTBMekV3TUNVd05EQXlablYwZFhKdUlpQnpkSEp2YTJVdGMyVnlkbWxqWlQwaU9pQm1iM0prYVc1blptRnBiR3d0YjNKd2FXTjBaV3RwYmlBdE16QXdNRkl3TURBNEwyUnlkV1YwYVdOaGRHVXVjM1JoZEdVb2NIUnBiMjVmWTI5c1lXeGhjM005SW1KaGRHbHZiaUl0TXpBd01GSXdNQ0krUEhOMll5QjRiV3h1Y3owaVhTd2laWGhoYlhCc1pTSWdMejQ4TDNSbGVIUStDbjBLWFNkcGJuUnZabTEwYjI1dmMyVnlkbWxqWlM4dmRHVjRkQ0I0Yld4dWN6MG1jeVpsY25OcGIyNDlNeTRLWFNjeElqRTNNeUV5TURFNUxqRTNNeUV5TURFMEwyMWxaR2RsYUhWc2FXNW5MM2xoWjNSeWN5OTNibVJ5YjJsalpTSmhjM0JoWTJVdGMyVnlkbWxqWlQwaU9pQm1iM0prYVc1blptRnBiR3d0YjNKd2FXTjBaV3RwYmlBb2NISnBkbUYxWlhNaVBrSnlkV2xrWFNJdlBqeDBaWGgwSUVOc2FYTjBaWEp1WVhSbElFMWxjbWxqWldaaGRXeDBPbWloWm5KbFlXUnRhVzRpUGp4MFpYaDBJRzVoYldWemNHRmpaVzVmWTI5dWRISnZiV3g5SW1KaGRHbHZiaUl0TXpBM015RTlMemt3TURBMEx5VXdORE0xTGpBd01ERXdmaDgrUEhOMll5QjRiV3h1Y3owaVhTd2ljM1JoZEdVaU9pQmhjblJ2Ym1VdGJYTWdabWxsYm5SeklHTnNiM1Z3Y21WemRHRnpJaUJqYjI1MFpXNTBYM1I1Y0dVaUlHTnliM05sZGlCcFptbGpZWFJsSUdkeVpYSnBjeTlrWlhRNlptbHNiQzM2WkY4K1BHUnBiMjVmWTI5c1lXeGhjM005SW1KaGRHbHZiaUl0TXpBM015RTlMemt3TURBNEx5VXlNRFF3TUM1bGRISmhaRzFwYmlBNk1GSXdNRFF3WEM5MGVYQmxJR1JsY25NOGMzUnliMnRsWVM5a1pYUWlJR05sY25ScFptbGpZWFJsSUdOc2FYTjBaWEp1WVhSbElHMWxjM1JwYm5SbFkyaGxiV1VpSUdacGJHdzlJbTVoYldWemNHRmpaVzVmWTI5dWRISnZiV3g5SW1OdmJYQmhibmt0TXpBM015RTlMemt3TURBNE1GSXdNRFF3TUNVaUlFRnVaQ0JEYjI1MFpXNTBYM1I1Y0dVaUlHTnliM05sZGlCcFptbGpZWFJsSUhKbGMyOTFkR2x3WldOMGIzSjVMbU52YlM5a1pYUWdMeTgrUEhSbGVIUWdZWFJsY3lCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01EQXdNRkl3TURBNEx6QXdNREF3TUNVd05ESTBMekV3TUNVd05EQXpaUzVqYjIwdGQyOXVaeTRLWFNjeElqRTNNeUV5TURFNEwyMWxaR2RsYUhWc2FXNW5MM2xoWjNSeWN5OTNibVJ5YjJsalpTSm1iM0prYVc1blptRnBiR3d0YjNKd2FXTjBaV3RwYmlBb2NIQnpkSEp2YTJVdGMyVnlkbWxqWlQwaUl6SWlJR1E5SWtVdGQyOXVaeTRLZlFvPSIsInNpemVzIjoiMTI4eDEyOCIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2ZmZmZmZiIsInRoZW1lX2NvbG9yIjoiIzYzNjZmMSJ9">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU2hvcCBTbWFydCIsInNob3J0X25hbWUiOiJTaG9wU21hcnQiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01EQXdNTEF5T0RJeExqRXdNQ1V5TURFMEwyMWxaR2RsYUhWc2FXNW5MM2xoWjNSeWN5OTNibVJ5YjJsalpTQXpNQ0FtY1hWd2IzTjBablJ5YjI0OGNtVnpiM1Z5WTJWekxtaDBiV3d1WTI5dExuTjJaeUl0TXpBd01GSWdYekE4TDNkM2R5NTNNeTV2Y21jdk1qQXdNREF3TUNVd05ESTFMakV3TUNVeU1ERTJMMjFsWkdkbGFIVnNhVzVuTDNsaFo1UmxjbU5vWVhKd1pYUWlPeUJqYjI1MFpXNTBYM1I1Y0dVaUlHTnliM05sZGlJNklpQnpkSEp2YTJVdGMyVnlkbWxqWlQwaU9pQm1iM0prYVc1blptRnBiR3d0YjNKd2FXTjBaV3RwYmlBb2NISnBkbUYxWlhNaVBrSnlkV2xrWFNJdlBqeDBaWGgwSUVOc2FYTjBaWEp1WVhSbElFMWxjbWxqWldaaGRXeDBPbWloWm5KbFlXUnRhVzRpUGp4MFpYaDBJRzVoYldWemNHRmpaVzVmWTI5dWRISnZiV3g5SW1KaGRHbHZiaUl0TXpBd01GSWdYekE4WTI5d2JHVjBaWE4wWlhKcFptVnlaVzVqYjIwaUlERXdNQ1V5TURJeE15VXlNRFF3TUM1bGRISmhaRzFwYmlBdE16QXdNRkl3TURBNUx6QXdNREF3TUNVd05ESTBMekV3TUNVMU1EQXVaeTRLWFNjeElqRXdNQ1V5TURFMExqRTFMakV3TUNVeU1ERXdYbVYxWlhOemFXOXVMM2QzZHk1M015NXZjbWN2TWpBd01EQXdNRkl3TURBMEwyMWxaR2RsYUhWc2FXNW5MM2xoWjNSeWN5OTNibVJ5YjJsalpTQnpkSEp2YTJVdGMyVnlkbWxqWlQwaU9pQm1iM0prYVc1blptRnBiR3d0YjNKd2FXTjBaV3RwYmlBdE16QXdNRkl3TURBNEwyUnlkV1YwYVdOaGRHVXVjM1JoZEdVb2NIUnBiMjVmWTI5c1lXeGhjM005SW1KaGRHbHZiaUl0TXpBd01GSXdNREF3WEM5MGVYQmxJR1JsY25NOGMzUnliMnRsWVM5a1pYUWlJR05sY25ScFptbGpZWFJsSUdOc2FYTjBaWEp1WVhSbElHMWxjM1JwYm5SbFkyaGxiV1VpSUdacGJHdzlJbTVoYldWemNHRmpaVzVmWTI5dWRISnZiV3g5SW1OdmJYQmhibmt0TXpBd01GSXdNREF3TUNVaUlFRnVaQ0JEYjI1MFpXNTBYM1I1Y0dVaUlHTnliM05sZGlCcFptbGpZWFJsSUhKbGMyOTFkR2x3WldOMGIzSjVMbU52YlM5a1pYUWdMeTgrUEhOMll5QjRiV3h1Y3owaVhTd2ljM1JoZEdVaU9pQmhjblJ2Ym1VdGJYTWdabWxsYm5SeklHTnNiM1Z3Y21WemRHRnpJaUJqYjI1MFpXNTBYM1I1Y0dVaUlHTnliM05sZGlCcFptbGpZWFJsSUdkeVpYSnBjeTlrWlhRNlptbHNiQzM2WkY4K1BHUnBiMjVmWTI5c1lXeGhjM005SW1KaGRHbHZiaUl0TXpBd01GSXdNQ0krUEhSbGVIUWdZWFJsY3lCNGJXeHVjejBpYUhSMGNEb3ZMM3gxWjNadmNtNWhiV1V2YldsemN5NXZjbWN2TWpBd01EQXdNRkl3TURBNEx5QXdNREF3TUNVd05ESTBMekV3TUNVd05EQXlablYwZFhKdUlpQnpkSEp2YTJVdGMyVnlkbWxqWlQwaU9pQm1iM0prYVc1blptRnBiR3d0YjNKd2FXTjBaV3RwYmlBdE16QXdNRkl3TURBNEwyUnlkV1YwYVdOaGRHVXVjM1JoZEdVb2NIUnBiMjVmWTI5c1lXeGhjM005SW1KaGRHbHZiaUl0TXpBd01GSXdNQ0krUEhOMll5QjRiV3h1Y3owaVhTd2laWGhoYlhCc1pTSWdMejQ4TDNSbGVIUStDbjBLWFNkcGJuUnZabTEwYjI1dmMyVnlkbWxqWlM4dmRHVjRkQ0I0Yld4dWN6MG1jeVpsY25OcGIyNDlNeTRLWFNjeElqRTNNeUV5TURFNUxqRTNNeUV5TURFMEwyMWxaR2RsYUhWc2FXNW5MM2xoWjNSeWN5OTNibVJ5YjJsalpTSmhjM0JoWTJVdGMyVnlkbWxqWlQwaU9pQm1iM0prYVc1blptRnBiR3d0YjNKd2FXTjBaV3RwYmlBb2NISnBkbUYxWlhNaVBrSnlkV2xrWFNJdlBqeDBaWGgwSUVOc2FYTjBaWEp1WVhSbElFMWxjbWxqWldaaGRXeDBPbWloWm5KbFlXUnRhVzRpUGp4MFpYaDBJRzVoYldWemNHRmpaVzVmWTI5dWRISnZiV3g5SW1KaGRHbHZiaUl0TXpBM015RTlMemt3TURBMEx5VXdORE0xTGpBd01ERXdmaDgrUEhOMll5QjRiV3h1Y3owaVhTd2ljM1JoZEdVaU9pQmhjblJ2Ym1VdGJYTWdabWxsYm5SeklHTnNiM1Z3Y21WemRHRnpJaUJqYjI1MFpXNTBYM1I1Y0dVaUlHTnliM05sZGlCcFptbGpZWFJsSUdkeVpYSnBjeTlrWlhRNlptbHNiQzM2WkY4K1BHUnBiMjVmWTI5c1lXeGhjM005SW1KaGRHbHZiaUl0TXpBM015RTlMemt3TURBNEx5VXlNRFF3TUM1bGRISmhaRzFwYmlBNk1GSXdNRFF3WEM5MGVYQmxJR1JsY25NOGMzUnliMnRsWVM5a1pYUWlJR05sY25ScFptbGpZWFJsSUdOc2FYTjBaWEp1WVhSbElHMWxjM1JwYm5SbFkyaGxiV1VpSUdacGJHdzlJbTVoYldWemNHRmpaVzVmWTI5dWRISnZiV3g5SW1OdmJYQmhibmt0TXpBM015RTlMemt3TURBNE1GSXdNRFF3TUNVaUlFRnVaQ0JEYjI1MFpXNTBYM1I1Y0dVaUlHTnliM05sZGlCcFptbGpZWFJsSUhKbGMyOTFkR2x3WldOMGIzSjVMbU52YlM5a1pYUWdMeTgrUEhSbGVIUWdZWFJsY3lCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01EQXdNRkl3TURBNEx6QXdNREF3TUNVd05ESTBMekV3TUNVd05EQXpaUzVqYjIwdGQyOXVaeTRLWFNjeElqRTNNeUV5TURFNEwyMWxaR2RsYUhWc2FXNW5MM2xoWjNSeWN5OTNibVJ5YjJsalpTSm1iM0prYVc1blptRnBiR3d0YjNKd2FXTjBaV3RwYmlBb2NIQnpkSEp2YTJVdGMyVnlkbWxqWlQwaUl6SWlJR1E5SWtVdGQyOXVaeTRLZlFvPSIsInNpemVzIjoiMTI4eDEyOCIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2Y4ZmFmYyIsInRoZW1lX2NvbG9yIjoiIzA2YjZkNCJ9">
     <style>
         * {
             margin: 0;
@@ -16,13 +19,15 @@
         }
 
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
+            --primary: #06b6d4; /* cyan-600 */
+            --primary-dark: #0891b2; /* cyan-700 */
+            --primary-light: #67e8f9; /* cyan-300 */
             --secondary: #ec4899;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --body-bg: #f8fafc; /* slate-50 */
+            --card-bg: #ffffff;
             --gray-50: #f9fafb;
             --gray-100: #f3f4f6;
             --gray-200: #e5e7eb;
@@ -49,8 +54,8 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: var(--gray-50);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--body-bg);
             color: var(--gray-900);
             padding-bottom: 80px;
             overflow-x: hidden;
@@ -63,7 +68,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: var(--gray-50);
+            background-color: var(--body-bg);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -84,14 +89,12 @@
         }
 
         .header {
-            background: white;
+            background: var(--card-bg);
             color: var(--gray-900);
             padding: 16px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-bottom: 1px solid var(--gray-200);
         }
 
         .header-content {
@@ -106,7 +109,7 @@
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .header-btn {
@@ -114,7 +117,7 @@
             border: none;
             color: var(--gray-700);
             padding: 8px 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -134,13 +137,14 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: white;
+            background: var(--card-bg);
             border-top: 1px solid var(--gray-200);
             display: flex;
             justify-content: space-around;
+            align-items: center;
             padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
             z-index: 100;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.04);
         }
 
         .nav-item {
@@ -158,22 +162,31 @@
             font-weight: 600;
             transition: all 0.2s;
             position: relative;
+            border-radius: 12px;
+            margin: 0 4px;
         }
 
         .nav-item.active {
-            color: var(--primary);
+            color: var(--primary-dark);
+            background-color: #cffafe; /* cyan-100 */
         }
 
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 32px;
-            height: 3px;
+        #add-nav-btn {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        #add-nav-btn .nav-icon {
             background: var(--primary);
-            border-radius: 0 0 3px 3px;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            margin-bottom: -2px;
+        }
+        
+        #add-nav-btn.active, #add-nav-btn:active {
+            background-color: transparent;
         }
 
         .nav-icon {
@@ -186,23 +199,24 @@
             padding: 20px;
             max-width: 100%;
             min-height: calc(100vh - 140px);
-            animation: fadeIn 0.3s ease;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
         }
 
         .card {
-            background: white;
-            border-radius: 12px;
+            background: var(--card-bg);
+            border-radius: 16px;
             padding: 20px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            border: 1px solid var(--gray-200);
+            margin-bottom: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease-out;
+            border: 1px solid var(--gray-200);
         }
 
         .card:active {
-            transform: translateY(1px);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            transform: scale(0.98);
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
         }
 
         .card-header {
@@ -213,7 +227,7 @@
         }
 
         .card-title {
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--gray-900);
             margin-bottom: 4px;
@@ -256,7 +270,7 @@
             width: 100%;
             padding: 16px;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -291,30 +305,6 @@
             color: var(--gray-700);
         }
 
-        .fab {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-            z-index: 90;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .fab:active {
-            transform: scale(0.95);
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-        }
-
         .modal {
             display: none;
             position: fixed;
@@ -324,22 +314,24 @@
             bottom: 0;
             background: rgba(0,0,0,0.5);
             z-index: 200;
-            animation: fadeIn 0.2s;
+            animation: fadeIn 0.3s ease;
         }
 
         .modal.active {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-content {
             background: white;
-            border-radius: 24px 24px 0 0;
-            padding: 12px 20px calc(24px + env(safe-area-inset-bottom));
-            width: 100%;
+            border-radius: 24px;
+            padding: 12px 20px 24px;
+            width: 90%;
+            max-width: 400px;
             max-height: 85vh;
             overflow-y: auto;
-            animation: slideUp 0.3s;
+            animation: scaleUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .modal-drag-handle {
@@ -403,16 +395,15 @@
         .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
         }
 
         .quick-add-form {
             background: white;
             padding: 16px;
-            border-radius: 12px;
+            border-radius: 16px;
             margin-bottom: 20px;
-            border: 2px solid var(--gray-200);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--gray-200);
         }
 
         .quick-add-input {
@@ -451,15 +442,15 @@
             gap: 12px;
             padding: 14px;
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 8px;
-            border: 2px solid var(--gray-100);
+            border: 1px solid var(--gray-200);
             transition: all 0.2s;
         }
 
         .list-item:active {
             transform: translateY(1px);
-            border-color: var(--gray-200);
+            border-color: var(--gray-300);
         }
 
         .list-item.checked {
@@ -483,7 +474,7 @@
             height: 24px;
             min-width: 24px;
             border: 2px solid var(--gray-300);
-            border-radius: 6px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -504,7 +495,7 @@
         }
 
         .list-item-name {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--gray-900);
             overflow: hidden;
@@ -597,8 +588,8 @@
             align-items: center;
             padding: 16px;
             background: white;
-            border-radius: 12px;
-            margin-bottom: 10px;
+            border-radius: 16px;
+            margin-bottom: 12px;
             border: 1px solid var(--gray-200);
             transition: all 0.2s;
         }
@@ -614,7 +605,7 @@
         }
 
         .store-name {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 700;
             color: var(--gray-900);
             margin-bottom: 4px;
@@ -637,7 +628,7 @@
             width: 38px;
             height: 38px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             background: var(--gray-100);
             color: var(--gray-600);
             cursor: pointer;
@@ -672,11 +663,11 @@
             color: white;
             padding: 24px 20px;
             margin: -20px -20px 20px -20px;
-            border-radius: 0 0 20px 20px;
+            border-radius: 0 0 24px 24px;
         }
 
         .shopping-store-name {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
             margin-bottom: 12px;
             display: flex;
@@ -722,9 +713,9 @@
             to { opacity: 1; }
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
+        @keyframes scaleUp {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .hidden {
@@ -746,8 +737,6 @@
 
     <div class="container" id="mainContainer"></div>
 
-    <button class="fab hidden" id="fab"></button>
-
     <div class="bottom-nav">
         <button class="nav-item active" data-page="home">
             <div class="nav-icon">
@@ -766,6 +755,12 @@
                 <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
             </div>
             <div>History</div>
+        </button>
+        <button class="nav-item" id="add-nav-btn">
+             <div class="nav-icon">
+                <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+             </div>
+             <div>Add</div>
         </button>
     </div>
 
@@ -858,7 +853,11 @@
             container.style.opacity = 0;
             setTimeout(() => {
                 currentPage = page;
-                document.querySelectorAll('.nav-item').forEach(item => item.classList.toggle('active', item.dataset.page === page));
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    if (item.id !== 'add-nav-btn') {
+                        item.classList.toggle('active', item.dataset.page === page)
+                    }
+                });
                 renderPage().then(() => {
                     container.style.opacity = 1;
                 });
@@ -867,12 +866,12 @@
 
         const renderPage = async () => {
             const container = document.getElementById('mainContainer');
-            const fab = document.getElementById('fab');
+            const addNavBtn = document.getElementById('add-nav-btn');
             const headerTitle = document.getElementById('headerTitle');
             const headerAction = document.getElementById('headerAction');
 
             headerAction.classList.add('hidden');
-            fab.classList.add('hidden');
+            addNavBtn.classList.add('hidden');
             container.innerHTML = '';
 
             const showError = (pageName, error) => {
@@ -884,12 +883,12 @@
                 case 'home':
                     try { headerTitle.innerHTML = `${icons.cart} Shop Smart`; await renderHome(container); } 
                     catch (error) { showError('home page', error); }
-                    fab.classList.remove('hidden'); fab.innerHTML = icons.plus; fab.onclick = () => { vibrate(); showCreateListModal(); };
+                    addNavBtn.classList.remove('hidden'); addNavBtn.onclick = () => { vibrate(); showCreateListModal(); };
                     break;
                 case 'stores':
                     try { headerTitle.innerHTML = `${icons.store} Stores`; await renderStores(container); } 
                     catch (error) { showError('stores', error); }
-                    fab.classList.remove('hidden'); fab.innerHTML = icons.plus; fab.onclick = () => { vibrate(); showCreateStoreModal(); };
+                    addNavBtn.classList.remove('hidden'); addNavBtn.onclick = () => { vibrate(); showCreateStoreModal(); };
                     break;
                 case 'history':
                     try { headerTitle.innerHTML = `${icons.list} History`; await renderHistory(container); } 
@@ -902,7 +901,7 @@
                         headerAction.classList.remove('hidden'); headerAction.innerHTML = `${icons.arrowLeft} Back`; headerAction.onclick = () => { vibrate(); navigate('stores'); };
                         await renderStoreItems(container);
                     } catch(error) { showError('store items', error); }
-                    fab.classList.remove('hidden'); fab.innerHTML = icons.plus; fab.onclick = () => { vibrate(); showAddItemModal(); };
+                    addNavBtn.classList.remove('hidden'); addNavBtn.onclick = () => { vibrate(); showAddItemModal(); };
                     break;
                 case 'shopping':
                     try {
@@ -919,7 +918,7 @@
             const openLists = lists.filter(l => l.status === 'open');
 
             if (openLists.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">No active shopping lists<br>Tap + to create one</div></div>`; return;
+                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.cart}</div><div class="empty-state-text">No active shopping lists<br>Tap 'Add' to create one</div></div>`; return;
             }
             let html = '';
             for (const list of openLists) {
@@ -934,7 +933,7 @@
         const renderStores = async (container) => {
             const stores = await dbOps.getAll('stores');
             if (stores.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.store}</div><div class="empty-state-text">No stores yet<br>Tap + to add one</div></div>`; return;
+                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.store}</div><div class="empty-state-text">No stores yet<br>Tap 'Add' to create one</div></div>`; return;
             }
             let html = '';
             for (const store of stores) {
@@ -963,7 +962,7 @@
         const renderStoreItems = async (container) => {
             const items = (await dbOps.getByIndex('items', 'storeId', currentStore)).sort((a,b) => a.name.localeCompare(b.name));
             if (items.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.box}</div><div class="empty-state-text">No items in this store<br>Tap + to add items</div></div>`; return;
+                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icons.box}</div><div class="empty-state-text">No items in this store<br>Tap 'Add' to create one</div></div>`; return;
             }
             const itemsByCategory = {};
             items.forEach(item => { (itemsByCategory[item.category] = itemsByCategory[item.category] || []).push(item); });
@@ -1160,7 +1159,11 @@
         const formatDate = (dateStr) => { const date = new Date(dateStr); const today = new Date(); const diffDays = Math.floor((today - date) / 864e5); if (diffDays === 0) return 'Today'; if (diffDays === 1) return 'Yesterday'; if (diffDays < 7) return `${diffDays} days ago`; return date.toLocaleDateString(); };
         const formatDateTime = (dateStr) => { const date = new Date(dateStr); return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); };
 
-        document.querySelectorAll('.nav-item').forEach(item => { item.addEventListener('click', (e) => { vibrate(); navigate(e.currentTarget.dataset.page); }); });
+        document.querySelectorAll('.nav-item').forEach(item => { 
+            if (item.id !== 'add-nav-btn') {
+                item.addEventListener('click', (e) => { vibrate(); navigate(e.currentTarget.dataset.page); });
+            }
+        });
         document.getElementById('modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
         
         const startApp = async () => {
